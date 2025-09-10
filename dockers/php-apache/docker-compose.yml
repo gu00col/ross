@@ -1,0 +1,22 @@
+version: "3.9"
+
+services:
+  php-apache:
+    image: php:8.2-apache
+    container_name: php-apache
+    restart: unless-stopped
+    ports:
+      - "${PHP_APACHE_PORT:-8080}:80"
+    volumes:
+      - ${PHP_WWW_PATH:-../../public_html}:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=${PHP_APACHE_DOCUMENT_ROOT:-/var/www/html}
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+    depends_on:
+      - postgresql
+      - redis
+
+networks:
+  ross-network:
+    external: true

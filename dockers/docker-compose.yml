@@ -1,0 +1,86 @@
+version: "3.9"
+
+services:
+  # PostgreSQL - Banco de dados principal
+  postgresql:
+    image: pgvector/pgvector:pg15
+    container_name: pgverctor
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-ross}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres123}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ${POSTGRES_DATA_PATH:-./postgresql/data}:/var/lib/postgresql/data
+      - ./postgresql/init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+
+  # Redis - Cache e sessões
+  redis:
+    image: redis:7-alpine
+    container_name: redis
+    restart: unless-stopped
+    # Sem porta exposta conforme solicitado
+    command: redis-server --appendonly yes
+    volumes:
+      - ${REDIS_DATA_VOLUME:-redis_data}:/data
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+
+  # PHP Apache - Servidor web
+  php-apache:
+    image: php:8.2-apache
+    container_name: php-apache
+    restart: unless-stopped
+    ports:
+      - "${PHP_APACHE_PORT:-8080}:80"
+    volumes:
+      - ${PHP_WWW_PATH:-../public_html}:/var/www/html
+    environment:
+      - APACHE_DOCUMENT_ROOT=${PHP_APACHE_DOCUMENT_ROOT:-/var/www/html}
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+    depends_on:
+      - postgresql
+      - redis
+
+  # N8N - Automação de workflows
+  n8n:
+    image: n8nio/n8n:latest
+    container_name: n8n
+    restart: unless-stopped
+    ports:
+      - "${N8N_PORT:-5678}:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=${N8N_BASIC_AUTH_ACTIVE:-true}
+      - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER:-admin}
+      - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD:-admin123}
+      - N8N_HOST=${N8N_HOST:-localhost}
+      - N8N_PORT=${N8N_PORT:-5678}
+      - N8N_PROTOCOL=${N8N_PROTOCOL:-http}
+      - WEBHOOK_URL=${N8N_WEBHOOK_URL:-http://localhost:5678/}
+      - GENERIC_TIMEZONE=${N8N_TIMEZONE:-America/Sao_Paulo}
+      - DB_TYPE=${N8N_DB_TYPE:-postgresdb}
+      - DB_POSTGRESDB_HOST=${N8N_DB_POSTGRESDB_HOST:-postgresql}
+      - DB_POSTGRESDB_PORT=${N8N_DB_POSTGRESDB_PORT:-5432}
+      - DB_POSTGRESDB_DATABASE=${N8N_DB_POSTGRESDB_DATABASE:-ross}
+      - DB_POSTGRESDB_USER=${N8N_DB_POSTGRESDB_USER:-postgres}
+      - DB_POSTGRESDB_PASSWORD=${N8N_DB_POSTGRESDB_PASSWORD:-postgres123}
+    volumes:
+      - ${N8N_DATA_PATH:-./n8n/data}:/home/node/.n8n
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+    depends_on:
+      - postgresql
+      - redis
+
+volumes:
+  redis_data:
+
+networks:
+  ross-network:
+    driver: bridge

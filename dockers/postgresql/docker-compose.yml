@@ -1,0 +1,23 @@
+version: "3.9"
+
+services:
+  postgresql:
+    image: pgvector/pgvector:pg15
+    container_name: pgverctor
+    restart: unless-stopped
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB:-ross}
+      - POSTGRES_USER=${POSTGRES_USER:-postgres}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-postgres123}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ${POSTGRES_DATA_PATH:-./data}:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/01-init.sql
+    networks:
+      - ${NETWORK_NAME:-ross-network}
+
+networks:
+  ross-network:
+    external: true

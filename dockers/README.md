@@ -1,146 +1,282 @@
-# 🐳 Docker Compose - Projeto ROSS
+# ROSS - Analista Jurídico (Docker)
 
-Este diretório contém a configuração Docker Compose para o projeto ROSS, incluindo N8N, PHP-Apache, PostgreSQL e Redis.
+Sistema de Análise Contratual Automatizada usando Docker e tecnologias modernas.
 
-## 📁 Estrutura
+## 🚀 Instalação Rápida
 
+### Instalação Completa
+```bash
+cd dockers
+./install.sh
+```
+
+### Migração do Banco (Manual)
+```bash
+cd dockers
+./migrate.sh
+```
+
+## ⚙️ Como Funciona
+
+### **install.sh** (Principal)
+- **Instala Docker Compose** se não existir
+- **Verifica se vendor existe** antes de instalar
+- **Executa docker-compose** automaticamente
+- **Instala PHP** apenas se necessário (sem vendor)
+- **Nunca executa migrações** automaticamente
+
+### **migrate.sh** (Manual)
+- **Verifica containers** rodando
+- **Testa conexão** com banco
+- **Lista tabelas existentes**
+- **Pede confirmação** se banco tem dados
+- **Executa migrações** com segurança
+
+### **Dockerfile PHP**
+- **Executa install.sh** automaticamente no container
+- **Só instala** se vendor não existir
+- **Preserva alterações** manuais do usuário
+
+## 🏗️ Arquitetura do Sistema
+
+### Containers
+- **php-apache**: Servidor web PHP 8.2 + Apache
+- **postgresql**: Banco de dados PostgreSQL com pgvector
+- **redis**: Cache e sessões
+- **n8n**: Automação de workflows
+
+### Estrutura de Pastas
 ```
 dockers/
-├── docker-compose.yml          # Compose principal (orquestra todos os serviços)
-├── .env.example               # Variáveis de ambiente principais
-├── n8n/
-│   ├── docker-compose.yml     # Compose específico do N8N
-│   ├── .env.example          # Variáveis do N8N
-│   └── data/                 # Volume de dados do N8N
+├── docker-compose.yml          # Orquestração dos containers
+├── install-all.sh             # Script de instalação completa
 ├── php-apache/
-│   ├── docker-compose.yml     # Compose específico do PHP-Apache
-│   └── .env.example          # Variáveis do PHP-Apache
+│   ├── install.sh             # Script de instalação do PHP
+│   └── docker-compose.yml     # Configuração específica do PHP
 ├── postgresql/
-│   ├── docker-compose.yml     # Compose específico do PostgreSQL
-│   ├── .env.example          # Variáveis do PostgreSQL
-│   └── data/                 # Volume de dados do PostgreSQL
+│   └── init.sql               # Script de inicialização do banco
+├── n8n/
+│   └── data/                  # Dados do N8N
 └── redis/
-    ├── docker-compose.yml     # Compose específico do Redis
-    └── .env.example          # Variáveis do Redis
+    └── data/                  # Dados do Redis
 ```
 
-## 🚀 Como Usar
+## 🔧 Configuração
 
-### 1. Configuração Inicial
+### Variáveis de Ambiente
+As configurações estão no arquivo `../public_html/.env`:
 
-1. **Copie os arquivos de exemplo:**
-   ```bash
-   # Na pasta principal
-   cp .env.example .env
-   
-   # Em cada subpasta (opcional para uso individual)
-   cp n8n/.env.example n8n/.env
-   cp php-apache/.env.example php-apache/.env
-   cp postgresql/.env.example postgresql/.env
-   cp redis/.env.example redis/.env
-   ```
+```env
+# Banco de Dados
+DB_HOST=postgresql
+DB_DATABASE=ross
+DB_USERNAME=postgres
+DB_PASSWORD=postgres123
 
-2. **Edite as variáveis conforme necessário:**
-   ```bash
-   nano .env
-   ```
+# Cache e Sessões
+CACHE_DRIVER=redis
+SESSION_DRIVER=redis
 
-### 2. Executando os Serviços
+# Aplicação
+APP_URL=http://localhost:8080
+```
 
-#### Opção A: Todos os serviços juntos (Recomendado)
+### Portas
+- **8080**: ROSS (PHP/Apache)
+- **5432**: PostgreSQL
+- **5678**: N8N
+- **6379**: Redis (interno)
+
+## 📋 Comandos Úteis
+
+### Gerenciamento de Containers
 ```bash
-cd /home/luisoliveira/desenvolvimento/ross/dockers
+# Iniciar todos os containers
 docker-compose up -d
-```
 
-#### Opção B: Serviços individuais
-```bash
-# N8N
-cd n8n && docker-compose up -d
+# Parar todos os containers
+docker-compose down
 
-# PHP-Apache
-cd php-apache && docker-compose up -d
+# Reiniciar containers
+docker-compose restart
 
-# PostgreSQL
-cd postgresql && docker-compose up -d
-
-# Redis
-cd redis && docker-compose up -d
-```
-
-### 3. Comandos Úteis
-
-```bash
 # Ver logs
 docker-compose logs -f
 
-# Parar todos os serviços
+# Ver logs de um container específico
+docker-compose logs -f php-apache
+```
+
+### Comandos Úteis
+```bash
+# Acessar container PHP
+docker exec -it php-apache bash
+
+# Ver logs
+docker-compose logs -f
+
+# Parar sistema
 docker-compose down
 
-# Parar e remover volumes
-docker-compose down -v
+# Reinstalar (remove vendor primeiro)
+rm -rf ../public_html/vendor
+./install.sh
+```
 
-# Rebuild dos serviços
-docker-compose up -d --build
+### Comandos no Banco de Dados
+```bash
+# Acessar PostgreSQL
+docker exec -it pgverctor psql -U postgres -d ross
 
-# Ver status dos containers
+# Backup do banco
+docker exec pgverctor pg_dump -U postgres ross > backup.sql
+
+# Restaurar backup
+docker exec -i pgverctor psql -U postgres -d ross < backup.sql
+```
+
+## 🛠️ Desenvolvimento
+
+### Estrutura do Projeto
+```
+public_html/
+├── app/                       # Código da aplicação
+│   ├── Controllers/           # Controladores
+│   ├── Models/               # Modelos
+│   ├── Services/             # Serviços
+│   ├── Middleware/           # Middlewares
+│   └── Config/               # Configurações
+├── assets/                   # Assets estáticos
+├── storage/                  # Arquivos de armazenamento
+├── .env                      # Variáveis de ambiente
+├── composer.json             # Dependências PHP
+└── index.php                 # Ponto de entrada
+```
+
+### Tecnologias Utilizadas
+- **PHP 8.2**: Linguagem principal
+- **Composer**: Gerenciamento de dependências
+- **League Route**: Sistema de roteamento
+- **PostgreSQL**: Banco de dados principal
+- **Redis**: Cache e sessões
+- **Apache**: Servidor web
+- **Docker**: Containerização
+
+## 🔍 Troubleshooting
+
+### Problemas Comuns
+
+#### Container PHP não inicia
+```bash
+# Verificar logs
+docker-compose logs php-apache
+
+# Reconstruir container
+docker-compose up -d --build php-apache
+```
+
+#### Erro de permissões
+```bash
+# Corrigir permissões
+docker exec -it php-apache chmod -R 777 /var/www/html/storage/
+```
+
+#### Banco de dados não conecta
+```bash
+# Verificar se PostgreSQL está rodando
+docker-compose ps postgresql
+
+# Verificar logs do banco
+docker-compose logs postgresql
+```
+
+#### Mod_rewrite não funciona
+```bash
+# Habilitar mod_rewrite
+docker exec -it php-apache a2enmod rewrite
+docker exec -it php-apache service apache2 restart
+```
+
+### Logs e Debug
+```bash
+# Ver todos os logs
+docker-compose logs
+
+# Ver logs em tempo real
+docker-compose logs -f
+
+# Ver logs de erro do PHP
+docker exec -it php-apache tail -f /var/log/apache2/error.log
+```
+
+## 📊 Monitoramento
+
+### Status dos Containers
+```bash
+# Ver status
 docker-compose ps
+
+# Ver uso de recursos
+docker stats
 ```
 
-## 🌐 Acessos
-
-| Serviço | URL | Credenciais |
-|---------|-----|-------------|
-| **N8N** | http://localhost:5678 | admin / admin123 |
-| **PHP-Apache** | http://localhost:8080 | - |
-| **PostgreSQL** | localhost:5432 | postgres / postgres123 |
-| **Redis** | Interno apenas | - |
-
-## ⚙️ Configurações Importantes
-
-### Variáveis de Ambiente Principais
-
-- **POSTGRES_DB**: Nome do banco de dados (padrão: ross)
-- **POSTGRES_USER**: Usuário do PostgreSQL (padrão: postgres)
-- **POSTGRES_PASSWORD**: Senha do PostgreSQL (padrão: postgres123)
-- **N8N_BASIC_AUTH_USER**: Usuário do N8N (padrão: admin)
-- **N8N_BASIC_AUTH_PASSWORD**: Senha do N8N (padrão: admin123)
-- **PHP_APACHE_PORT**: Porta do Apache (padrão: 8080)
-- **N8N_PORT**: Porta do N8N (padrão: 5678)
-
-### Volumes
-
-- **PostgreSQL**: `./postgresql/data` → `/var/lib/postgresql/data`
-- **N8N**: `./n8n/data` → `/home/node/.n8n`
-- **PHP**: `../public_html` → `/var/www/html`
-- **Redis**: Volume interno para persistência
-
-## 🔧 Troubleshooting
-
-### Problema: Porta já em uso
+### Health Checks
 ```bash
-# Verificar qual processo está usando a porta
-sudo netstat -tulpn | grep :5432
+# Verificar PHP
+curl http://localhost:8080
 
-# Parar o processo ou alterar a porta no .env
+# Verificar N8N
+curl http://localhost:5678
+
+# Verificar PostgreSQL
+docker exec -it pgverctor pg_isready
 ```
 
-### Problema: Permissões de volume
+## 🚀 Deploy em Produção
+
+### 1. Configurar Variáveis de Produção
 ```bash
-# Ajustar permissões
-sudo chown -R 999:999 postgresql/data
-sudo chown -R 1000:1000 n8n/data
+# Editar .env
+APP_ENV=production
+APP_DEBUG=false
+DB_PASSWORD=senha_forte_aqui
+JWT_SECRET=chave_secreta_forte_aqui
 ```
 
-### Problema: Rede não encontrada
+### 2. Otimizar Containers
 ```bash
-# Criar a rede manualmente
-docker network create ross-network
+# Instalar dependências de produção
+docker exec -it php-apache composer install --optimize-autoloader --no-dev
+
+# Limpar cache
+docker exec -it php-apache php artisan cache:clear
 ```
 
-## 📝 Notas
+### 3. Backup
+```bash
+# Backup do banco
+docker exec pgverctor pg_dump -U postgres ross > backup_$(date +%Y%m%d).sql
 
-- O Redis não expõe porta externa por segurança
-- Todos os serviços estão conectados na rede `ross-network`
-- O N8N está configurado para usar PostgreSQL como banco de dados
-- Os volumes são persistentes, mantendo dados entre reinicializações
+# Backup dos volumes
+docker run --rm -v ross_postgresql_data:/data -v $(pwd):/backup alpine tar czf /backup/postgresql_backup.tar.gz -C /data .
+```
+
+## 📚 Documentação Adicional
+
+- [Composer](https://getcomposer.org/doc/)
+- [League Route](https://route.thephpleague.com/)
+- [PostgreSQL](https://www.postgresql.org/docs/)
+- [Redis](https://redis.io/documentation)
+- [Docker](https://docs.docker.com/)
+
+## 🤝 Contribuição
+
+1. Fork o projeto
+2. Crie uma branch para sua feature
+3. Commit suas mudanças
+4. Push para a branch
+5. Abra um Pull Request
+
+## 📄 Licença
+
+Este projeto está sob a licença MIT. Veja o arquivo LICENSE para mais detalhes.

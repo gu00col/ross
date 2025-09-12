@@ -65,7 +65,7 @@ include 'partials/sidebar.php';
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-file-earmark-text me-2"></i>
                             Informações do Contrato
                         </h6>
@@ -99,7 +99,7 @@ include 'partials/sidebar.php';
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-graph-up me-2"></i>
                             Resumo Executivo
                         </h6>
@@ -135,7 +135,7 @@ include 'partials/sidebar.php';
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-search me-2"></i>
                             Análise Detalhada
                         </h6>
@@ -206,7 +206,7 @@ include 'partials/sidebar.php';
             <div class="col-12">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-paperclip me-2"></i>
                             Anexos
                         </h6>
@@ -249,9 +249,6 @@ include 'partials/sidebar.php';
     </div>
 </main>
 
-<script>
-const contractId = '<?php echo htmlspecialchars($contract_id); ?>';
-</script>
-<script src="assets/js/contract_report.js"></script>
+<!-- JavaScript removido para evitar interferência com modais -->
 
 <?php include 'partials/footer.php'; ?>

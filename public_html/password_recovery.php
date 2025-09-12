@@ -133,31 +133,6 @@ include 'partials/header.php';
     </div>
 </div>
 
-<script>
-// Form validation
-(function() {
-    'use strict';
-    const forms = document.querySelectorAll('.needs-validation');
-    
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
-})();
-
-// Mostrar modal de confirmação se houver sucesso
-<?php if (isset($_SESSION['recovery_sent'])): ?>
-document.addEventListener('DOMContentLoaded', function() {
-    const recoveryModal = new bootstrap.Modal(document.getElementById('recoveryModal'));
-    recoveryModal.show();
-});
-<?php unset($_SESSION['recovery_sent']); ?>
-<?php endif; ?>
-</script>
+<!-- JavaScript removido para evitar interferência com modais -->
 
 <?php include 'partials/footer.php'; ?>

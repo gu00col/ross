@@ -33,17 +33,20 @@ services:
 
   # PHP Apache - Servidor web
   php-apache:
-    image: php:8.2-apache
+    build:
+      context: ./php-apache
+      dockerfile: Dockerfile
     container_name: php-apache
     restart: unless-stopped
     ports:
-      - "${PHP_APACHE_PORT:-8080}:80"
+      - "8080:80"
     volumes:
-      - ${PHP_WWW_PATH:-../public_html}:/var/www/html
+      - ../public_html:/var/www/html
+      - ./php-apache/install.sh:/var/www/html/dockers/php-apache/install.sh
     environment:
-      - APACHE_DOCUMENT_ROOT=${PHP_APACHE_DOCUMENT_ROOT:-/var/www/html}
+      - APACHE_DOCUMENT_ROOT=/var/www/html/public_html
     networks:
-      - ${NETWORK_NAME:-ross-network}
+      - ross-network
     depends_on:
       - postgresql
       - redis

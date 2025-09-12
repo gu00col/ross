@@ -152,7 +152,7 @@ abstract class Controller
     private function validateField($field, $value, $rule, &$errors)
     {
         if (strpos($rule, ':') !== false) {
-            list($rule, $param) = explode(':', $rule, 2);
+            [$rule, $param] = explode(':', $rule, 2);
         }
         
         switch ($rule) {

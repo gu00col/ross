@@ -1,306 +1,286 @@
 <?php
-/**
- * Model Base
- * Sistema de Análise Contratual Automatizada
- * 
- * @package App\Models
- * @author Sistema Ross
- * @version 1.0.0
- */
 
 namespace App\Models;
 
-use App\Core\Database;
+/**
+ * Classe base para todos os models
+ * Sistema ROSS - Analista Jurídico
+ */
 
 abstract class BaseModel
 {
-    protected $table;
+    /**
+     * @var \PDO Instância da conexão com o banco de dados
+     */
     protected $db;
-    protected $fillable = [];
+
+    /**
+     * @var string Nome da tabela
+     */
+    protected $table;
+
+    /**
+     * @var string Nome da chave primária
+     */
     protected $primaryKey = 'id';
-    
+
+    /**
+     * Construtor da classe base
+     */
     public function __construct()
     {
-        $this->db = new Database();
+        $this->db = $this->getConnection();
     }
 
     /**
-     * Buscar todos os registros
-     * 
-     * @param array $filters Filtros de busca
-     * @param string $orderBy Campo para ordenação
-     * @param string $orderDirection Direção da ordenação (ASC/DESC)
-     * @param int $limit Limite de registros
-     * @param int $offset Offset para paginação
-     * @return array Lista de registros
+     * Obtém a conexão com o banco de dados
+     * @return \PDO
+     * @throws \Exception
      */
-    public function getAll($filters = [], $orderBy = null, $orderDirection = 'ASC', $limit = null, $offset = 0)
+    private function getConnection(): \PDO
     {
-        $sql = "SELECT * FROM {$this->table}";
-        $params = [];
-        $conditions = [];
+        try {
+            $host = $_ENV['DB_HOST'] ?? 'localhost';
+            $port = $_ENV['DB_PORT'] ?? '5432';
+            $dbname = $_ENV['DB_DATABASE'] ?? 'ross';
+            $username = $_ENV['DB_USERNAME'] ?? 'postgres';
+            $password = $_ENV['DB_PASSWORD'] ?? '';
 
-        // Aplicar filtros
-        foreach ($filters as $field => $value) {
-            if (in_array($field, $this->fillable) && $value !== null && $value !== '') {
-                if (is_array($value)) {
-                    $placeholders = [];
-                    foreach ($value as $i => $v) {
-                        $placeholder = $field . '_' . $i;
-                        $placeholders[] = ':' . $placeholder;
-                        $params[$placeholder] = $v;
-                    }
-                    $conditions[] = "{$field} IN (" . implode(',', $placeholders) . ")";
-                } else {
-                    $conditions[] = "{$field} = :{$field}";
-                    $params[$field] = $value;
-                }
-            }
+            $dsn = "pgsql:host={$host};port={$port};dbname={$dbname}";
+            
+            $pdo = new \PDO($dsn, $username, $password, [
+                \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION,
+                \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_ASSOC,
+                \PDO::ATTR_EMULATE_PREPARES => false,
+            ]);
+
+            return $pdo;
+        } catch (\PDOException $e) {
+            throw new \Exception("Erro na conexão com o banco de dados: " . $e->getMessage());
         }
-
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
-        }
-
-        // Ordenação
-        if ($orderBy && in_array($orderBy, $this->fillable)) {
-            $sql .= " ORDER BY {$orderBy} {$orderDirection}";
-        }
-
-        // Limite e offset
-        if ($limit) {
-            $sql .= " LIMIT :limit OFFSET :offset";
-            $params['limit'] = $limit;
-            $params['offset'] = $offset;
-        }
-
-        return $this->db->fetchAll($sql, $params);
     }
 
     /**
-     * Buscar registro por ID
-     * 
-     * @param mixed $id ID do registro
-     * @return array|null Dados do registro
+     * Busca um registro por ID
+     * @param string $id ID do registro
+     * @return array|null
      */
-    public function findById($id)
+    public function findById(string $id): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE {$this->primaryKey} = :id";
-        return $this->db->fetch($sql, ['id' => $id]);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        $stmt->execute();
+        
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     /**
-     * Criar novo registro
-     * 
-     * @param array $data Dados do registro
-     * @return bool Sucesso da operação
+     * Busca todos os registros
+     * @param array $conditions Condições WHERE
+     * @param string $orderBy Campo para ordenação
+     * @param string $direction Direção da ordenação (ASC/DESC)
+     * @param int $limit Limite de registros
+     * @param int $offset Offset para paginação
+     * @return array
      */
-    public function create($data)
-    {
-        $validatedData = $this->validate($data);
-        return $this->db->insert($this->table, $validatedData);
-    }
-
-    /**
-     * Atualizar registro
-     * 
-     * @param mixed $id ID do registro
-     * @param array $data Dados para atualizar
-     * @return bool Sucesso da operação
-     */
-    public function update($id, $data)
-    {
-        $validatedData = $this->validate($data, true);
-        return $this->db->update($this->table, $validatedData, "{$this->primaryKey} = :id", ['id' => $id]);
-    }
-
-    /**
-     * Deletar registro
-     * 
-     * @param mixed $id ID do registro
-     * @return bool Sucesso da operação
-     */
-    public function delete($id)
-    {
-        return $this->db->delete($this->table, "{$this->primaryKey} = :id", ['id' => $id]);
-    }
-
-    /**
-     * Contar registros
-     * 
-     * @param array $filters Filtros de busca
-     * @return int Número de registros
-     */
-    public function count($filters = [])
-    {
-        $sql = "SELECT COUNT(*) as count FROM {$this->table}";
-        $params = [];
-        $conditions = [];
-
-        foreach ($filters as $field => $value) {
-            if (in_array($field, $this->fillable) && $value !== null && $value !== '') {
-                $conditions[] = "{$field} = :{$field}";
-                $params[$field] = $value;
-            }
-        }
-
-        if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
-        }
-
-        $result = $this->db->fetch($sql, $params);
-        return $result['count'] ?? 0;
-    }
-
-    /**
-     * Verificar se registro existe
-     * 
-     * @param mixed $id ID do registro
-     * @return bool Se existe
-     */
-    public function exists($id)
-    {
-        return $this->findById($id) !== null;
-    }
-
-    /**
-     * Buscar primeiro registro que atenda aos critérios
-     * 
-     * @param array $filters Filtros de busca
-     * @return array|null Primeiro registro encontrado
-     */
-    public function findFirst($filters = [])
+    public function findAll(array $conditions = [], string $orderBy = null, string $direction = 'ASC', int $limit = null, int $offset = 0): array
     {
         $sql = "SELECT * FROM {$this->table}";
         $params = [];
-        $conditions = [];
-
-        foreach ($filters as $field => $value) {
-            if (in_array($field, $this->fillable) && $value !== null && $value !== '') {
-                $conditions[] = "{$field} = :{$field}";
-                $params[$field] = $value;
-            }
-        }
 
         if (!empty($conditions)) {
-            $sql .= " WHERE " . implode(' AND ', $conditions);
+            $whereClause = [];
+            foreach ($conditions as $field => $value) {
+                $whereClause[] = "{$field} = :{$field}";
+                $params[$field] = $value;
+            }
+            $sql .= " WHERE " . implode(' AND ', $whereClause);
         }
 
-        $sql .= " LIMIT 1";
+        if ($orderBy) {
+            $sql .= " ORDER BY {$orderBy} {$direction}";
+        }
 
-        return $this->db->fetch($sql, $params);
+        if ($limit) {
+            $sql .= " LIMIT {$limit} OFFSET {$offset}";
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        return $stmt->fetchAll();
     }
 
     /**
-     * Executar consulta SQL personalizada
-     * 
+     * Insere um novo registro
+     * @param array $data Dados para inserção
+     * @return string ID do registro inserido
+     */
+    public function create(array $data): string
+    {
+        $fields = array_keys($data);
+        $placeholders = ':' . implode(', :', $fields);
+        
+        $sql = "INSERT INTO {$this->table} (" . implode(', ', $fields) . ") VALUES ({$placeholders})";
+        
+        // Tratar tipos de dados especiais
+        $processedData = [];
+        foreach ($data as $key => $value) {
+            if (is_bool($value)) {
+                $processedData[$key] = $value ? 'true' : 'false';
+            } else {
+                $processedData[$key] = $value;
+            }
+        }
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($processedData);
+        
+        // Para PostgreSQL, usar RETURNING id
+        if ($this->db->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'pgsql') {
+            $sqlWithReturning = $sql . " RETURNING {$this->primaryKey}";
+            $stmt = $this->db->prepare($sqlWithReturning);
+            $stmt->execute($processedData);
+            $result = $stmt->fetch();
+            return $result ? (string)$result[$this->primaryKey] : null;
+        }
+        
+        $lastId = $this->db->lastInsertId();
+        return $lastId ? (string)$lastId : null;
+    }
+
+    /**
+     * Atualiza um registro
+     * @param string $id ID do registro
+     * @param array $data Dados para atualização
+     * @return bool
+     */
+    public function update(string $id, array $data): bool
+    {
+        $fields = [];
+        foreach (array_keys($data) as $field) {
+            $fields[] = "{$field} = :{$field}";
+        }
+        
+        $sql = "UPDATE {$this->table} SET " . implode(', ', $fields) . " WHERE {$this->primaryKey} = :id";
+        $data['id'] = $id;
+        
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute($data);
+    }
+
+    /**
+     * Remove um registro
+     * @param string $id ID do registro
+     * @return bool
+     */
+    public function delete(string $id): bool
+    {
+        $sql = "DELETE FROM {$this->table} WHERE {$this->primaryKey} = :id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':id', $id);
+        
+        return $stmt->execute();
+    }
+
+    /**
+     * Conta registros com condições
+     * @param array $conditions Condições WHERE
+     * @return int
+     */
+    public function count(array $conditions = []): int
+    {
+        $sql = "SELECT COUNT(*) as total FROM {$this->table}";
+        $params = [];
+
+        if (!empty($conditions)) {
+            $whereClause = [];
+            foreach ($conditions as $field => $value) {
+                $whereClause[] = "{$field} = :{$field}";
+                $params[$field] = $value;
+            }
+            $sql .= " WHERE " . implode(' AND ', $whereClause);
+        }
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        $result = $stmt->fetch();
+        return (int) $result['total'];
+    }
+
+    /**
+     * Executa uma consulta SQL personalizada
      * @param string $sql SQL da consulta
      * @param array $params Parâmetros da consulta
-     * @return array Resultado da consulta
+     * @return array
      */
-    public function query($sql, $params = [])
+    protected function query(string $sql, array $params = []): array
     {
-        return $this->db->fetchAll($sql, $params);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        return $stmt->fetchAll();
     }
 
     /**
-     * Executar comando SQL personalizado
-     * 
-     * @param string $sql SQL do comando
-     * @param array $params Parâmetros do comando
-     * @return bool Sucesso da operação
+     * Executa uma consulta SQL personalizada e retorna um único resultado
+     * @param string $sql SQL da consulta
+     * @param array $params Parâmetros da consulta
+     * @return array|null
      */
-    public function execute($sql, $params = [])
+    protected function queryOne(string $sql, array $params = []): ?array
     {
-        return $this->db->execute($sql, $params);
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     /**
-     * Iniciar transação
-     * 
-     * @return bool Sucesso da operação
+     * Inicia uma transação
+     * @return bool
      */
-    public function beginTransaction()
+    protected function beginTransaction(): bool
     {
         return $this->db->beginTransaction();
     }
 
     /**
-     * Confirmar transação
-     * 
-     * @return bool Sucesso da operação
+     * Confirma uma transação
+     * @return bool
      */
-    public function commit()
+    protected function commit(): bool
     {
         return $this->db->commit();
     }
 
     /**
-     * Reverter transação
-     * 
-     * @return bool Sucesso da operação
+     * Desfaz uma transação
+     * @return bool
      */
-    public function rollback()
+    protected function rollback(): bool
     {
         return $this->db->rollback();
     }
 
     /**
-     * Validar dados antes de inserir/atualizar
-     * 
-     * @param array $data Dados para validar
-     * @param bool $isUpdate Se é uma atualização
-     * @return array Dados validados
-     * @throws \InvalidArgumentException
+     * Verifica se existem registros na tabela
+     * @return bool
      */
-    public function validate($data, $isUpdate = false)
+    public function hasRecords(): bool
     {
-        $validated = [];
-        
-        foreach ($this->fillable as $field) {
-            if ($field === $this->primaryKey && !$isUpdate) {
-                continue; // Chave primária é gerada automaticamente
-            }
-            
-            if ($field === 'created_at' && !$isUpdate) {
-                continue; // created_at é gerado automaticamente
-            }
-            
-            if (isset($data[$field])) {
-                $validated[$field] = $data[$field];
-            }
+        try {
+            $sql = "SELECT COUNT(*) FROM {$this->table}";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $count = $stmt->fetchColumn();
+            return $count > 0;
+        } catch (\Exception $e) {
+            return false;
         }
-        
-        return $validated;
-    }
-
-    /**
-     * Obter nome da tabela
-     * 
-     * @return string Nome da tabela
-     */
-    public function getTableName()
-    {
-        return $this->table;
-    }
-
-    /**
-     * Obter campos preenchíveis
-     * 
-     * @return array Campos preenchíveis
-     */
-    public function getFillable()
-    {
-        return $this->fillable;
-    }
-
-    /**
-     * Obter chave primária
-     * 
-     * @return string Chave primária
-     */
-    public function getPrimaryKey()
-    {
-        return $this->primaryKey;
     }
 }

@@ -1,279 +1,318 @@
 <?php
-/**
- * Model de Usuário
- * Sistema de Análise Contratual Automatizada
- * 
- * @package App\Models
- * @author Sistema Ross
- * @version 1.0.0
- */
 
 namespace App\Models;
 
-use App\Core\Database;
+/**
+ * Model para a tabela users
+ * Sistema ROSS - Analista Jurídico
+ */
+
 
 class User extends BaseModel
 {
+    /**
+     * @var string Nome da tabela
+     */
     protected $table = 'users';
-    
-    // Campos da tabela
-    protected $fillable = [
-        'id',
-        'nome',
-        'email',
-        'password',
-        'active',
-        'is_superuser',
-        'created_at',
-        'updated_at'
-    ];
-    
-    // Status do usuário
-    const STATUS_ACTIVE = true;
-    const STATUS_INACTIVE = false;
-    
-    public function __construct()
-    {
-        parent::__construct();
-    }
 
     /**
-     * Buscar usuário por email
-     * 
-     * @param string $email Email do usuário
-     * @return array|null Dados do usuário
+     * @var string Nome da chave primária
      */
-    public function findByEmail($email)
+    protected $primaryKey = 'id';
+
+    /**
+     * Busca usuário por e-mail
+     * @param string $email E-mail do usuário
+     * @return array|null
+     */
+    public function findByEmail(string $email): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE email = :email";
-        return $this->db->fetch($sql, ['email' => $email]);
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        
+        $result = $stmt->fetch();
+        return $result ?: null;
     }
 
     /**
-     * Verificar se email já existe
-     * 
-     * @param string $email Email para verificar
-     * @param string $excludeId ID para excluir da verificação (para updates)
-     * @return bool Se email existe
+     * Busca usuários ativos
+     * @param array $conditions Condições adicionais
+     * @param string $orderBy Campo para ordenação
+     * @param string $direction Direção da ordenação
+     * @param int $limit Limite de registros
+     * @param int $offset Offset para paginação
+     * @return array
      */
-    public function emailExists($email, $excludeId = null)
+    public function findActive(array $conditions = [], string $orderBy = 'created_at', string $direction = 'DESC', int $limit = null, int $offset = 0): array
     {
-        $sql = "SELECT COUNT(*) as count FROM {$this->table} WHERE email = :email";
-        $params = ['email' => $email];
-        
-        if ($excludeId) {
-            $sql .= " AND id != :exclude_id";
-            $params['exclude_id'] = $excludeId;
-        }
-        
-        $result = $this->db->fetch($sql, $params);
-        return $result['count'] > 0;
+        $conditions['active'] = true;
+        return $this->findAll($conditions, $orderBy, $direction, $limit, $offset);
     }
 
     /**
-     * Criar novo usuário
-     * 
-     * @param array $data Dados do usuário
-     * @return bool Sucesso da operação
+     * Busca superusuários
+     * @return array
      */
-    public function create($data)
+    public function findSuperUsers(): array
     {
-        // Verificar se email já existe
-        if (isset($data['email']) && $this->emailExists($data['email'])) {
-            throw new \InvalidArgumentException('Email já está em uso');
-        }
-        
-        // Criptografar senha se fornecida
-        if (isset($data['password'])) {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        }
-        
-        $validatedData = $this->validate($data);
-        return $this->db->insert($this->table, $validatedData);
+        return $this->findAll(['is_superuser' => true, 'active' => true], 'created_at', 'ASC');
     }
 
     /**
-     * Atualizar usuário
-     * 
+     * Cria um novo usuário
+     * @param array $userData Dados do usuário
+     * @return string ID do usuário criado
+     * @throws Exception
+     */
+    public function createUser(array $userData): string
+    {
+        // Validar dados obrigatórios
+        $requiredFields = ['nome', 'email', 'password'];
+        foreach ($requiredFields as $field) {
+            if (empty($userData[$field])) {
+                throw new Exception("Campo obrigatório '{$field}' não fornecido");
+            }
+        }
+
+        // Verificar se e-mail já existe
+        if ($this->findByEmail($userData['email'])) {
+            throw new Exception("E-mail já cadastrado no sistema");
+        }
+
+        // Criptografar senha
+        $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+
+        // Remover campos que não devem ser salvos no banco
+        unset($userData['password_confirmation']);
+
+        // Limpar dados - remover campos vazios que podem causar problemas
+        $userData = array_filter($userData, function($value) {
+            return $value !== '' && $value !== null;
+        });
+
+        // Definir valores padrão
+        $userData['active'] = isset($userData['active']) ? (bool)$userData['active'] : true;
+        $userData['is_superuser'] = isset($userData['is_superuser']) ? (bool)$userData['is_superuser'] : false;
+        $userData['created_at'] = date('Y-m-d H:i:s');
+        $userData['updated_at'] = date('Y-m-d H:i:s');
+
+        return $this->create($userData);
+    }
+
+    /**
+     * Atualiza dados do usuário
      * @param string $id ID do usuário
-     * @param array $data Dados para atualizar
-     * @return bool Sucesso da operação
+     * @param array $userData Dados para atualização
+     * @return bool
+     * @throws Exception
      */
-    public function update($id, $data)
+    public function updateUser(string $id, array $userData): bool
     {
-        // Verificar se email já existe (excluindo o próprio usuário)
-        if (isset($data['email']) && $this->emailExists($data['email'], $id)) {
-            throw new \InvalidArgumentException('Email já está em uso');
+        // Verificar se usuário existe
+        $user = $this->findById($id);
+        if (!$user) {
+            throw new Exception("Usuário não encontrado");
         }
-        
-        // Criptografar senha se fornecida
-        if (isset($data['password']) && !empty($data['password'])) {
-            $data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-        } else {
-            // Remover senha se estiver vazia para não sobrescrever
-            unset($data['password']);
+
+        // Se e-mail foi alterado, verificar se já existe
+        if (isset($userData['email']) && $userData['email'] !== $user['email']) {
+            $existingUser = $this->findByEmail($userData['email']);
+            if ($existingUser && $existingUser['id'] !== $id) {
+                throw new Exception("E-mail já cadastrado para outro usuário");
+            }
         }
-        
-        // Adicionar updated_at
-        $data['updated_at'] = date('Y-m-d H:i:s');
-        
-        $validatedData = $this->validate($data, true);
-        return $this->db->update($this->table, $validatedData, 'id = :id', ['id' => $id]);
+
+        // Se senha foi fornecida, criptografar
+        if (isset($userData['password'])) {
+            $userData['password'] = password_hash($userData['password'], PASSWORD_DEFAULT);
+        }
+
+        // Atualizar timestamp
+        $userData['updated_at'] = date('Y-m-d H:i:s');
+
+        return $this->update($id, $userData);
     }
 
     /**
-     * Verificar senha do usuário
-     * 
-     * @param string $email Email do usuário
-     * @param string $password Senha para verificar
-     * @return array|null Dados do usuário se senha correta
+     * Verifica credenciais de login
+     * @param string $email E-mail do usuário
+     * @param string $password Senha do usuário
+     * @return array|null Dados do usuário se credenciais válidas
      */
-    public function verifyPassword($email, $password)
+    public function authenticate(string $email, string $password): ?array
     {
         $user = $this->findByEmail($email);
         
         if (!$user) {
             return null;
         }
-        
+
+        if (!$user['active']) {
+            return null;
+        }
+
         if (!password_verify($password, $user['password'])) {
             return null;
         }
-        
-        // Remover senha do retorno
+
+        // Remover senha do retorno por segurança
         unset($user['password']);
+        
         return $user;
     }
 
     /**
-     * Ativar usuário
-     * 
+     * Ativa/desativa usuário
      * @param string $id ID do usuário
-     * @return bool Sucesso da operação
-     */
-    public function activate($id)
-    {
-        return $this->update($id, [
-            'active' => self::STATUS_ACTIVE,
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-    }
-
-    /**
-     * Desativar usuário
-     * 
-     * @param string $id ID do usuário
-     * @return bool Sucesso da operação
-     */
-    public function deactivate($id)
-    {
-        return $this->update($id, [
-            'active' => self::STATUS_INACTIVE,
-            'updated_at' => date('Y-m-d H:i:s')
-        ]);
-    }
-
-    /**
-     * Buscar usuários ativos
-     * 
-     * @param array $filters Filtros de busca
-     * @return array Lista de usuários ativos
-     */
-    public function getActive($filters = [])
-    {
-        $filters['active'] = self::STATUS_ACTIVE;
-        return $this->getAll($filters);
-    }
-
-    /**
-     * Buscar superusuários
-     * 
-     * @return array Lista de superusuários
-     */
-    public function getSuperusers()
-    {
-        $sql = "SELECT * FROM {$this->table} WHERE is_superuser = true ORDER BY created_at";
-        return $this->db->fetchAll($sql);
-    }
-
-    /**
-     * Contar usuários por status
-     * 
      * @param bool $active Status ativo/inativo
-     * @return int Número de usuários
+     * @return bool
      */
-    public function countByStatus($active)
+    public function setActiveStatus(string $id, bool $active): bool
     {
-        $sql = "SELECT COUNT(*) as count FROM {$this->table} WHERE active = :active";
-        $result = $this->db->fetch($sql, ['active' => $active]);
-        return $result['count'] ?? 0;
+        return $this->update($id, [
+            'active' => $active,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**
-     * Obter estatísticas de usuários
-     * 
-     * @return array Estatísticas
+     * Define usuário como superusuário
+     * @param string $id ID do usuário
+     * @param bool $isSuperuser Status de superusuário
+     * @return bool
      */
-    public function getStats()
+    public function setSuperUserStatus(string $id, bool $isSuperuser): bool
     {
-        $stats = [];
-        
-        $stats['total'] = $this->count();
-        $stats['active'] = $this->countByStatus(self::STATUS_ACTIVE);
-        $stats['inactive'] = $this->countByStatus(self::STATUS_INACTIVE);
-        $stats['superusers'] = $this->count(['is_superuser' => true]);
-        
-        return $stats;
+        return $this->update($id, [
+            'is_superuser' => $isSuperuser,
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**
-     * Buscar usuários recentes
-     * 
-     * @param int $limit Limite de resultados
-     * @return array Usuários recentes
+     * Altera senha do usuário
+     * @param string $id ID do usuário
+     * @param string $newPassword Nova senha
+     * @return bool
      */
-    public function getRecent($limit = 5)
+    public function changePassword(string $id, string $newPassword): bool
     {
-        $sql = "SELECT id, nome, email, active, created_at FROM {$this->table} 
-                ORDER BY created_at DESC LIMIT :limit";
-        return $this->db->fetchAll($sql, ['limit' => $limit]);
+        return $this->update($id, [
+            'password' => password_hash($newPassword, PASSWORD_DEFAULT),
+            'updated_at' => date('Y-m-d H:i:s')
+        ]);
     }
 
     /**
-     * Validar dados antes de inserir/atualizar
-     * 
-     * @param array $data Dados para validar
-     * @param bool $isUpdate Se é uma atualização
-     * @return array Dados validados
-     * @throws \InvalidArgumentException
+     * Busca usuários por período de criação
+     * @param string $startDate Data inicial (Y-m-d)
+     * @param string $endDate Data final (Y-m-d)
+     * @return array
      */
-    public function validate($data, $isUpdate = false)
+    public function findByDateRange(string $startDate, string $endDate): array
     {
-        $validated = parent::validate($data, $isUpdate);
+        $sql = "SELECT * FROM {$this->table} 
+                WHERE DATE(created_at) BETWEEN :start_date AND :end_date 
+                ORDER BY created_at DESC";
         
-        // Validações específicas
-        if (isset($validated['email'])) {
-            if (!filter_var($validated['email'], FILTER_VALIDATE_EMAIL)) {
-                throw new \InvalidArgumentException('Email inválido');
-            }
+        return $this->query($sql, [
+            'start_date' => $startDate,
+            'end_date' => $endDate
+        ]);
+    }
+
+    /**
+     * Estatísticas de usuários
+     * @return array
+     */
+    public function getStatistics(): array
+    {
+        $sql = "SELECT 
+                    COUNT(*) as total_users,
+                    COUNT(CASE WHEN active = true THEN 1 END) as active_users,
+                    COUNT(CASE WHEN active = false THEN 1 END) as inactive_users,
+                    COUNT(CASE WHEN is_superuser = true THEN 1 END) as super_users,
+                    COUNT(CASE WHEN DATE(created_at) = CURRENT_DATE THEN 1 END) as users_today,
+                    COUNT(CASE WHEN DATE(created_at) >= CURRENT_DATE - INTERVAL '7 days' THEN 1 END) as users_this_week,
+                    COUNT(CASE WHEN DATE(created_at) >= CURRENT_DATE - INTERVAL '30 days' THEN 1 END) as users_this_month
+                FROM {$this->table}";
+        
+        $result = $this->queryOne($sql);
+        
+        return [
+            'total_users' => (int) $result['total_users'],
+            'active_users' => (int) $result['active_users'],
+            'inactive_users' => (int) $result['inactive_users'],
+            'super_users' => (int) $result['super_users'],
+            'users_today' => (int) $result['users_today'],
+            'users_this_week' => (int) $result['users_this_week'],
+            'users_this_month' => (int) $result['users_this_month']
+        ];
+    }
+
+    /**
+     * Busca usuários com paginação
+     * @param int $page Página atual
+     * @param int $perPage Registros por página
+     * @param array $filters Filtros de busca
+     * @return array
+     */
+    public function getPaginated(int $page = 1, int $perPage = 10, array $filters = []): array
+    {
+        $offset = ($page - 1) * $perPage;
+        $conditions = [];
+
+        // Aplicar filtros
+        if (!empty($filters['search'])) {
+            $search = $filters['search'];
+            $sql = "SELECT * FROM {$this->table} 
+                    WHERE (nome ILIKE :search OR email ILIKE :search)";
+            $params = ['search' => "%{$search}%"];
+        } else {
+            $sql = "SELECT * FROM {$this->table}";
+            $params = [];
         }
-        
-        if (isset($validated['nome']) && empty(trim($validated['nome']))) {
-            throw new \InvalidArgumentException('Nome é obrigatório');
+
+        if (!empty($filters['active'])) {
+            $sql .= empty($filters['search']) ? " WHERE" : " AND";
+            $sql .= " active = :active";
+            $params['active'] = $filters['active'];
         }
-        
-        if (!$isUpdate && (!isset($validated['password']) || empty($validated['password']))) {
-            throw new \InvalidArgumentException('Senha é obrigatória');
+
+        if (!empty($filters['is_superuser'])) {
+            $sql .= (strpos($sql, 'WHERE') !== false) ? " AND" : " WHERE";
+            $sql .= " is_superuser = :is_superuser";
+            $params['is_superuser'] = $filters['is_superuser'];
         }
-        
-        if (isset($validated['active']) && !is_bool($validated['active'])) {
-            $validated['active'] = (bool) $validated['active'];
-        }
-        
-        if (isset($validated['is_superuser']) && !is_bool($validated['is_superuser'])) {
-            $validated['is_superuser'] = (bool) $validated['is_superuser'];
-        }
-        
-        return $validated;
+
+        $sql .= " ORDER BY created_at DESC LIMIT :limit OFFSET :offset";
+        $params['limit'] = $perPage;
+        $params['offset'] = $offset;
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        $users = $stmt->fetchAll();
+
+        // Contar total de registros
+        $countSql = str_replace("SELECT *", "SELECT COUNT(*)", $sql);
+        $countSql = preg_replace('/LIMIT.*$/', '', $countSql);
+        $countStmt = $this->db->prepare($countSql);
+        unset($params['limit'], $params['offset']);
+        $countStmt->execute($params);
+        $total = $countStmt->fetchColumn();
+
+        return [
+            'users' => $users,
+            'pagination' => [
+                'current_page' => $page,
+                'per_page' => $perPage,
+                'total' => (int) $total,
+                'total_pages' => ceil($total / $perPage),
+                'has_next' => $page < ceil($total / $perPage),
+                'has_prev' => $page > 1
+            ]
+        ];
     }
 }

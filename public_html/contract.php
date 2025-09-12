@@ -2,262 +2,312 @@
 /**
  * Detalhes do Contrato
  * Página para visualizar detalhes de um contrato específico
+ * Este arquivo é incluído pelo ContractController
  */
 
-// Iniciar sessão se não estiver iniciada
-if (session_status() === PHP_SESSION_NONE) {
-    session_start();
+// Preparar dados para renderização
+$analysisData = [];
+if (isset($contractData['analysis_json'])) {
+    // Se analysis_json é uma string JSON, decodificar
+    if (is_string($contractData['analysis_json'])) {
+        $decoded = json_decode($contractData['analysis_json'], true);
+        if (json_last_error() === JSON_ERROR_NONE && is_array($decoded)) {
+            $analysisData = $decoded;
+        }
+    }
+    // Se analysis_json já é um array
+    elseif (is_array($contractData['analysis_json'])) {
+        $analysisData = $contractData['analysis_json'];
+    }
 }
 
-// Verificar se usuário está logado
-if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
-    exit;
+// Separar dados por seção
+$basicInfo = array_filter($analysisData, function($item) {
+    return isset($item['section_id']) && $item['section_id'] == 1;
+});
+
+$leonineClauses = array_filter($analysisData, function($item) {
+    return isset($item['section_id']) && $item['section_id'] == 2;
+});
+
+$inconsistencies = array_filter($analysisData, function($item) {
+    return isset($item['section_id']) && $item['section_id'] == 3;
+});
+
+$recommendations = array_filter($analysisData, function($item) {
+    return isset($item['section_id']) && $item['section_id'] == 4;
+});
+
+// Calcular estatísticas
+$attentionClausesCount = count($leonineClauses);
+$inconsistenciesCount = count($inconsistencies);
+
+// Contar recomendações (linhas que começam com número)
+$recommendationsCount = 0;
+foreach ($recommendations as $item) {
+    if (isset($item['content'])) {
+        $lines = explode("\n", $item['content']);
+        foreach ($lines as $line) {
+            if (preg_match('/^\s*\d+\.\s/', $line)) {
+                $recommendationsCount++;
+            }
+        }
+    }
 }
 
-// Verificar se foi fornecido ID do contrato
-if (!isset($_GET['id']) || empty($_GET['id'])) {
-    header('Location: contracts.php');
-    exit;
+/**
+ * Função para formatar conteúdo
+ */
+function formatContent($content) {
+    if (!$content) return '';
+    
+    // Converter quebras de linha em <br>
+    $formatted = str_replace("\n", '<br>', $content);
+    
+    // Destacar texto em negrito
+    $formatted = preg_replace('/\*\*(.*?)\*\*/', '<strong>$1</strong>', $formatted);
+    
+    // Destacar texto em itálico
+    $formatted = preg_replace('/\*(.*?)\*/', '<em>$1</em>', $formatted);
+    
+    // Destacar cláusulas específicas
+    $formatted = preg_replace('/(Cláusula \d+[\.\d]*)/', '<span class="badge bg-light text-dark">$1</span>', $formatted);
+    
+    return $formatted;
 }
 
-$contract_id = $_GET['id'];
-$page_title = "Detalhes do Contrato - Sistema de Análise Contratual";
-include 'partials/header.php';
-include 'partials/sidebar.php';
+/**
+ * Função para formatar conteúdo de recomendações
+ */
+function formatRecommendationContent($content) {
+    if (!$content) return '';
+    
+    // Dividir por quebras de linha duplas
+    $sections = preg_split('/\n\s*\n/', $content);
+    
+    $html = '';
+    foreach ($sections as $section) {
+        $section = trim($section);
+        if (!$section) continue;
+        
+        // Verificar se é uma lista numerada
+        if (preg_match('/^\d+\./', $section)) {
+            $listItems = preg_split('/\n(?=\d+\.)/', $section);
+            $html .= '<ol class="list-group list-group-numbered mb-3">';
+            foreach ($listItems as $item) {
+                $item = trim($item);
+                if ($item) {
+                    $cleanItem = preg_replace('/^\d+\.\s*/', '', $item);
+                    $html .= '<li class="list-group-item">' . formatContent($cleanItem) . '</li>';
+                }
+            }
+            $html .= '</ol>';
+        } else {
+            $html .= '<p class="mb-3">' . formatContent($section) . '</p>';
+        }
+    }
+    
+    return $html;
+}
+
+/**
+ * Função para criar seção de detalhes
+ */
+function createDetailsSection($details) {
+    if (!is_array($details) || empty($details)) return '';
+    
+    $html = '<div class="mt-3 p-3 bg-light rounded">';
+    $html .= '<h6 class="text-primary mb-3 fw-bold">Detalhes Adicionais</h6>';
+    
+    foreach ($details as $key => $value) {
+        if ($value && trim($value)) {
+            $html .= '<div class="mb-3">';
+            $html .= '<h6 class="text-uppercase fw-bold text-muted small">' . htmlspecialchars($key) . '</h6>';
+            $html .= '<p class="mb-0 small">' . formatContent($value) . '</p>';
+            $html .= '</div>';
+        }
+    }
+    
+    $html .= '</div>';
+    return $html;
+}
 ?>
 
-<main class="main-content">
-    <div class="container-fluid">
-        <!-- Header -->
-        <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-            <div>
-                <h1 class="h2">Detalhes do Contrato</h1>
-                <nav aria-label="breadcrumb">
-                    <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="home.php">Dashboard</a></li>
-                        <li class="breadcrumb-item"><a href="contracts.php">Contratos</a></li>
-                        <li class="breadcrumb-item active" aria-current="page" id="contractBreadcrumb">Carregando...</li>
-                    </ol>
-                </nav>
-            </div>
-            <div class="btn-toolbar mb-2 mb-md-0">
-                <div class="btn-group me-2">
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="downloadContract()">
-                        <i class="bi bi-download me-1"></i>
-                        Download
-                    </button>
-                    <button type="button" class="btn btn-sm btn-outline-secondary" onclick="shareContract()">
-                        <i class="bi bi-share me-1"></i>
-                        Compartilhar
-                    </button>
-                </div>
-                <button type="button" class="btn btn-sm btn-primary" onclick="viewFullReport()">
-                    <i class="bi bi-file-text me-1"></i>
-                    Relatório Completo
-                </button>
-            </div>
-        </div>
-
-        <!-- Informações do Contrato -->
-        <div class="row mb-4">
-            <div class="col-lg-8">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="bi bi-info-circle me-2"></i>
-                            Informações do Contrato
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <dl class="row">
-                                    <dt class="col-sm-4">Nome do Arquivo:</dt>
-                                    <dd class="col-sm-8" id="contractFilename">-</dd>
-                                    
-                                    <dt class="col-sm-4">Status:</dt>
-                                    <dd class="col-sm-8" id="contractStatus">-</dd>
-                                    
-                                    <dt class="col-sm-4">Data de Upload:</dt>
-                                    <dd class="col-sm-8" id="contractUploadDate">-</dd>
-                                    
-                                    <dt class="col-sm-4">Data de Análise:</dt>
-                                    <dd class="col-sm-8" id="contractAnalysisDate">-</dd>
-                                </dl>
-                            </div>
-                            <div class="col-md-6">
-                                <dl class="row">
-                                    <dt class="col-sm-4">Tamanho:</dt>
-                                    <dd class="col-sm-8" id="contractSize">-</dd>
-                                    
-                                    <dt class="col-sm-4">Páginas:</dt>
-                                    <dd class="col-sm-8" id="contractPages">-</dd>
-                                    
-                                    <dt class="col-sm-4">ID do Contrato:</dt>
-                                    <dd class="col-sm-8"><code id="contractId"><?php echo htmlspecialchars($contract_id); ?></code></dd>
-                                    
-                                    <dt class="col-sm-4">Link de Armazenamento:</dt>
-                                    <dd class="col-sm-8">
-                                        <a href="#" id="contractStorageLink" target="_blank" class="text-decoration-none">
-                                            <i class="bi bi-box-arrow-up-right me-1"></i>
-                                            Ver no Google Drive
-                                        </a>
-                                    </dd>
-                                </dl>
-                            </div>
+<div class="container-fluid py-4">
+    <!-- Hero Section Simplificado -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body bg-primary text-dark rounded">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                          
+                            <p class="card-text h2 text-light">Resumo dos pontos identificados na análise jurídica</p>
                         </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="col-lg-4">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="bi bi-graph-up me-2"></i>
-                            Estatísticas da Análise
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <div class="row text-center">
-                            <div class="col-6 mb-3">
-                                <div class="border-end">
-                                    <h4 class="text-primary" id="totalAnalysisPoints">0</h4>
-                                    <small class="text-muted">Pontos de Análise</small>
+                        <div class="col-md-4">
+                            <div class="row text-center">
+                                <div class="col-4">
+                                    <div class="bg-beige bg-opacity-20 rounded p-1">
+                                        <h3 class="mb-1 text-dark"><?php echo $attentionClausesCount; ?></h3>
+                                        <small class="text-dark-50">Pontos de Atenção</small>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-6 mb-3">
-                                <h4 class="text-warning" id="riskPoints">0</h4>
-                                <small class="text-muted">Riscos Identificados</small>
-                            </div>
-                            <div class="col-6">
-                                <h4 class="text-info" id="gapPoints">0</h4>
-                                <small class="text-muted">Brechas Encontradas</small>
-                            </div>
-                            <div class="col-6">
-                                <h4 class="text-success" id="recommendations">0</h4>
-                                <small class="text-muted">Recomendações</small>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Análise do Contrato -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="bi bi-search me-2"></i>
-                            Análise do Contrato
-                        </h6>
-                    </div>
-                    <div class="card-body">
-                        <!-- Tabs de Análise -->
-                        <ul class="nav nav-tabs" id="analysisTabs" role="tablist">
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link active" id="dados-tab" data-bs-toggle="tab" data-bs-target="#dados" type="button" role="tab">
-                                    <i class="bi bi-info-circle me-1"></i>
-                                    Dados Essenciais
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="riscos-tab" data-bs-toggle="tab" data-bs-target="#riscos" type="button" role="tab">
-                                    <i class="bi bi-exclamation-triangle me-1"></i>
-                                    Riscos e Cláusulas
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="brechas-tab" data-bs-toggle="tab" data-bs-target="#brechas" type="button" role="tab">
-                                    <i class="bi bi-search me-1"></i>
-                                    Brechas e Inconsistências
-                                </button>
-                            </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="parecer-tab" data-bs-toggle="tab" data-bs-target="#parecer" type="button" role="tab">
-                                    <i class="bi bi-file-text me-1"></i>
-                                    Parecer Final
-                                </button>
-                            </li>
-                        </ul>
-                        
-                        <div class="tab-content" id="analysisTabContent">
-                            <!-- Dados Essenciais -->
-                            <div class="tab-pane fade show active" id="dados" role="tabpanel">
-                                <div class="mt-3" id="dadosContent">
-                                    <div class="text-center py-4">
-                                        <i class="bi bi-hourglass-split fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2">Carregando dados essenciais...</p>
+                                <div class="col-4">
+                                    <div class="bg-beige bg-opacity-20 rounded p-1">
+                                        <h3 class="mb-1 text-dark"><?php echo $inconsistenciesCount; ?></h3>
+                                        <small class="text-dark-50">Inconsistências</small>
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="bg-beige bg-opacity-20 rounded p-1">
+                                        <h3 class="mb-1 text-dark"><?php echo $recommendationsCount; ?></h3>
+                                        <small class="text-dark-50">Recomendações</small>
                                     </div>
                                 </div>
                             </div>
-                            
-                            <!-- Riscos e Cláusulas -->
-                            <div class="tab-pane fade" id="riscos" role="tabpanel">
-                                <div class="mt-3" id="riscosContent">
-                                    <div class="text-center py-4">
-                                        <i class="bi bi-hourglass-split fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2">Carregando análise de riscos...</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Brechas e Inconsistências -->
-                            <div class="tab-pane fade" id="brechas" role="tabpanel">
-                                <div class="mt-3" id="brechasContent">
-                                    <div class="text-center py-4">
-                                        <i class="bi bi-hourglass-split fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2">Carregando análise de brechas...</p>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            <!-- Parecer Final -->
-                            <div class="tab-pane fade" id="parecer" role="tabpanel">
-                                <div class="mt-3" id="parecerContent">
-                                    <div class="text-center py-4">
-                                        <i class="bi bi-hourglass-split fs-1 text-muted"></i>
-                                        <p class="text-muted mt-2">Carregando parecer final...</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Texto Original do Contrato -->
-        <div class="row">
-            <div class="col-12">
-                <div class="card shadow mb-4">
-                    <div class="card-header py-3 d-flex justify-content-between align-items-center">
-                        <h6 class="m-0 font-weight-bold text-primary">
-                            <i class="bi bi-file-text me-2"></i>
-                            Texto Original do Contrato
-                        </h6>
-                        <button class="btn btn-sm btn-outline-secondary" onclick="toggleRawText()">
-                            <i class="bi bi-eye me-1"></i>
-                            <span id="toggleTextBtn">Mostrar</span>
-                        </button>
-                    </div>
-                    <div class="card-body" id="rawTextContainer" style="display: none;">
-                        <div class="bg-light p-3 rounded">
-                            <pre id="rawTextContent" class="mb-0" style="white-space: pre-wrap; font-size: 0.9rem;">Carregando texto original...</pre>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</main>
 
-<script>
-const contractId = '<?php echo htmlspecialchars($contract_id); ?>';
-</script>
-<script src="assets/js/contract.js"></script>
+    <?php if (empty($analysisData)): ?>
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center py-5">
+                    <i class="bi bi-exclamation-triangle fs-1 text-warning"></i>
+                    <h5 class="mt-3">Nenhuma análise encontrada</h5>
+                    <p class="text-muted">Este contrato ainda não possui dados de análise ou não foi encontrado.</p>
+                </div>
+            </div>
+        </div>
+    <?php else: ?>
+        <!-- Informações Básicas -->
+        <?php if (!empty($basicInfo)): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="text-primary mb-3">
+                    <i class="bi bi-info-circle me-2"></i>
+                    Informações Básicas
+                </h4>
+                <div class="row">
+                    <?php foreach ($basicInfo as $item): ?>
+                        <div class="col-lg-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-light">
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-info me-2">Básico</span>
+                                        <strong><?php echo htmlspecialchars($item['label']); ?></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><?php echo formatContent($item['content']); ?></p>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
 
-<?php include 'partials/footer.php'; ?>
+        <!-- Pontos de Atenção -->
+        <?php if (!empty($leonineClauses)): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="text-danger mb-3">
+                    <i class="bi bi-exclamation-triangle me-2"></i>
+                    Pontos de Atenção
+                </h4>
+                <div class="row">
+                    <?php foreach ($leonineClauses as $item): ?>
+                        <?php $hasDetails = isset($item['details']) && is_array($item['details']) && !empty($item['details']); ?>
+                        <div class="col-lg-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-danger text-white">
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-white text-danger me-2">Atenção</span>
+                                        <strong><?php echo htmlspecialchars($item['label']); ?></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><?php echo formatContent($item['content']); ?></p>
+                                    <?php if ($hasDetails): ?>
+                                        <?php echo createDetailsSection($item['details']); ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Inconsistências -->
+        <?php if (!empty($inconsistencies)): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="text-warning mb-3">
+                    <i class="bi bi-exclamation-circle me-2"></i>
+                    Inconsistências e Ambiguidades
+                </h4>
+                <div class="row">
+                    <?php foreach ($inconsistencies as $item): ?>
+                        <?php $hasDetails = isset($item['details']) && is_array($item['details']) && !empty($item['details']); ?>
+                        <div class="col-lg-6 mb-3">
+                            <div class="card h-100">
+                                <div class="card-header bg-warning text-dark">
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-dark text-white me-2">Inconsistência</span>
+                                        <strong><?php echo htmlspecialchars($item['label']); ?></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <p class="card-text"><?php echo formatContent($item['content']); ?></p>
+                                    <?php if ($hasDetails): ?>
+                                        <?php echo createDetailsSection($item['details']); ?>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+
+        <!-- Recomendações -->
+        <?php if (!empty($recommendations)): ?>
+        <div class="row mb-4">
+            <div class="col-12">
+                <h4 class="text-success mb-3">
+                    <i class="bi bi-lightbulb me-2"></i>
+                    Recomendações e Parecer Final
+                </h4>
+                <div class="row">
+                    <?php foreach ($recommendations as $item): ?>
+                        <div class="col-12 mb-5">
+                            <div class="card mb-5">
+                                <div class="card-header bg-success text-dark">
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-beige text-success me-2">Recomendação</span>
+                                        <strong><?php echo htmlspecialchars($item['label']); ?></strong>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="recommendation-content">
+                                        <?php echo formatRecommendationContent($item['content']); ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    <?php endforeach; ?>
+                </div>
+            </div>
+        </div>
+        <?php endif; ?>
+    <?php endif; ?>
+
+</div>

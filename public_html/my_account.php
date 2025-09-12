@@ -32,7 +32,7 @@ include 'partials/sidebar.php';
             <div class="col-lg-8">
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-person me-2"></i>
                             Informações Pessoais
                         </h6>
@@ -77,7 +77,7 @@ include 'partials/sidebar.php';
                 <!-- Alterar Senha -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-shield-lock me-2"></i>
                             Alterar Senha
                         </h6>
@@ -128,7 +128,7 @@ include 'partials/sidebar.php';
                 <!-- Estatísticas da Conta -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-graph-up me-2"></i>
                             Estatísticas
                         </h6>
@@ -152,7 +152,7 @@ include 'partials/sidebar.php';
                 <!-- Configurações de Notificação -->
                 <div class="card shadow mb-4">
                     <div class="card-header py-3">
-                        <h6 class="m-0 font-weight-bold text-primary">
+                        <h6 class="m-0 fw-bold text-primary">
                             <i class="bi bi-bell me-2"></i>
                             Notificações
                         </h6>

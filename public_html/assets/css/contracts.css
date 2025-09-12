@@ -1,0 +1,402 @@
+/**
+ * Estilos personalizados para a página de Contratos
+ * Sistema ROSS - Analista Jurídico
+ * Escopo: apenas na página de contratos
+ */
+
+/* Aplicar estilos apenas quando a classe contracts-page estiver presente */
+.contracts-page {
+    --ross-blue: #0D2149;
+    --ross-light-blue: #1a3a7a;
+    --ross-beige: #F9EBE0;
+    --ross-dark-beige: #f2e0c7;
+    --ross-text-dark: #1e293b;
+    --ross-text-muted: #64748b;
+}
+
+/* ===== HEADER E BOTÕES ===== */
+.contracts-page .contracts-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 2rem 0;
+    margin-bottom: 2rem;
+    border-radius: 0 0 15px 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.contracts-page .contracts-header h1 {
+    font-weight: 700;
+    margin: 0;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.contracts-page .btn-novo-contrato {
+    background: linear-gradient(45deg, #28a745, #20c997);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+}
+
+.contracts-page .btn-novo-contrato:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+    background: linear-gradient(45deg, #20c997, #28a745);
+}
+
+/* ===== FILTROS ===== */
+.contracts-page .filters-card {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 2rem;
+}
+
+.contracts-page .filters-card .card-body {
+    padding: 1.5rem;
+}
+
+.contracts-page .form-label {
+    font-weight: 600;
+    color: #495057;
+    margin-bottom: 0.5rem;
+}
+
+.contracts-page .form-select,
+.contracts-page .form-control {
+    border-radius: 8px;
+    border: 1px solid #ced4da;
+    transition: all 0.3s ease;
+}
+
+.contracts-page .form-select:focus,
+.contracts-page .form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.contracts-page .btn-filter {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.contracts-page .btn-filter:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+.contracts-page .btn-clear {
+    background: #6c757d;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    padding: 10px 20px;
+    transition: all 0.3s ease;
+}
+
+.contracts-page .btn-clear:hover {
+    background: #5a6268;
+    transform: translateY(-1px);
+}
+
+/* ===== TABELA ===== */
+.contracts-page .contracts-table-card {
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: none;
+    overflow: hidden;
+}
+
+.contracts-page .contracts-table-card .card-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1.5rem;
+}
+
+.contracts-page .contracts-table-card .card-header h6 {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.contracts-page .table {
+    margin-bottom: 0;
+}
+
+.contracts-page .table thead th {
+    background: #f8f9fa;
+    border: none;
+    font-weight: 700;
+    color: #495057;
+    padding: 1rem;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+}
+
+.contracts-page .table tbody td {
+    padding: 1rem;
+    vertical-align: middle;
+    border-color: #f1f3f4;
+}
+
+.contracts-page .table tbody tr:hover {
+    background-color: #f8f9fa;
+    transition: background-color 0.3s ease;
+}
+
+/* ===== BADGES DE STATUS ===== */
+.contracts-page .badge {
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.5rem 0.75rem;
+    border-radius: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.contracts-page .badge.bg-warning {
+    background: linear-gradient(45deg, #ffc107, #ff8c00) !important;
+    color: #000;
+}
+
+.contracts-page .badge.bg-info {
+    background: linear-gradient(45deg, #17a2b8, #007bff) !important;
+    color: white;
+}
+
+.contracts-page .badge.bg-success {
+    background: linear-gradient(45deg, #28a745, #20c997) !important;
+    color: white;
+}
+
+.contracts-page .badge.bg-danger {
+    background: linear-gradient(45deg, #dc3545, #e83e8c) !important;
+    color: white;
+}
+
+/* ===== BOTÕES DE AÇÃO ===== */
+.contracts-page .btn-action {
+    border-radius: 6px;
+    padding: 6px 12px;
+    margin: 0 2px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+}
+
+.contracts-page .btn-action:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.contracts-page .btn-action.btn-outline-primary:hover {
+    background: #007bff;
+    border-color: #007bff;
+    color: white;
+}
+
+.contracts-page .btn-action.btn-outline-warning:hover {
+    background: #ffc107;
+    border-color: #ffc107;
+    color: #000;
+}
+
+.contracts-page .btn-action.btn-outline-danger:hover {
+    background: #dc3545;
+    border-color: #dc3545;
+    color: white;
+}
+
+/* ===== PAGINAÇÃO ===== */
+.contracts-page .pagination {
+    margin-top: 2rem;
+}
+
+.contracts-page .page-link {
+    border: none;
+    color: #667eea;
+    font-weight: 600;
+    padding: 0.75rem 1rem;
+    margin: 0 2px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.contracts-page .page-link:hover {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    color: white;
+    transform: translateY(-1px);
+}
+
+.contracts-page .page-item.active .page-link {
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
+}
+
+/* ===== MODAL ===== */
+.contracts-page .modal-content {
+    border-radius: 15px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.contracts-page .modal-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 15px 15px 0 0;
+    padding: 1.5rem;
+}
+
+.contracts-page .modal-title {
+    font-weight: 700;
+    margin: 0;
+}
+
+.contracts-page .btn-close {
+    filter: invert(1);
+}
+
+.contracts-page .modal-body {
+    padding: 2rem;
+}
+
+.contracts-page .modal-footer {
+    border: none;
+    padding: 1.5rem 2rem;
+    background: #f8f9fa;
+    border-radius: 0 0 15px 15px;
+}
+
+/* ===== ESTADOS VAZIOS ===== */
+.contracts-page .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: #6c757d;
+}
+
+.contracts-page .empty-state i {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.contracts-page .empty-state p {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+/* ===== RESPONSIVIDADE ===== */
+@media (max-width: 768px) {
+    .contracts-page .contracts-header {
+        padding: 1.5rem 0;
+        text-align: center;
+    }
+
+    .contracts-page .btn-novo-contrato {
+        width: 100%;
+        margin-top: 1rem;
+    }
+
+    .contracts-page .filters-card .row>div {
+        margin-bottom: 1rem;
+    }
+
+    .contracts-page .table-responsive {
+        border-radius: 0;
+    }
+
+    .contracts-page .btn-action {
+        margin: 2px;
+        padding: 8px 12px;
+    }
+}
+
+/* ===== ANIMAÇÕES ===== */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.contracts-page .contracts-table-card {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.contracts-page .filters-card {
+    animation: fadeInUp 0.4s ease-out;
+}
+
+/* ===== LOADING STATES ===== */
+.contracts-page .loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.contracts-page .loading::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    margin: -10px 0 0 -10px;
+    border: 2px solid #f3f3f3;
+    border-top: 2px solid #667eea;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+    /* ===== BOTÕES DE AÇÃO SIMPLES ===== */
+.btn-icon {
+    color: var(--ross-blue) !important;
+    padding: 0 !important;
+    margin-right: 10px !important;
+}
+
+.btn-icon:hover {
+    color: var(--ross-text-muted) !important;
+}
+
+.btn-icon.disabled {
+    color: var(--ross-text-muted) !important;
+    border: none !important;
+}
+
+.btn-icon.disabled:hover {
+    color: var(--ross-text-muted) !important;
+    border: none !important;
+}
+.btn-icon:last-child{
+    margin-right: 0 !important;
+}

@@ -1,0 +1,215 @@
+[
+    {
+        "label": "Partes Envolvidas",
+        "content": "CONTRATANTE: EMPRESA CONTRATANTE LTDA, CNPJ nº [CNPJ DA CONTRATANTE], estabelecida em [ENDEREÇO DA CONTRATANTE].\nCONTRATADA: EMPRESA CONTRATADA LTDA, CNPJ nº [CNPJ DA CONTRATADA], estabelecida em [ENDEREÇO DA CONTRATADA].",
+        "details": {},
+        "section_id": 1,
+        "display_order": 1
+    },
+    {
+        "label": "Objeto do Contrato",
+        "content": "Prestação de serviços combinados de Atividade de Consultoria Empresarial em Tecnologia da Informação, em regime de não-exclusividade.",
+        "details": {},
+        "section_id": 1,
+        "display_order": 2
+    },
+    {
+        "label": "Vigência",
+        "content": "12 (doze) meses, a partir de [DATA DE INÍCIO], podendo ser prorrogado por Aditivo Contratual.",
+        "details": {},
+        "section_id": 1,
+        "display_order": 3
+    },
+    {
+        "label": "Valor e Forma de Pagamento",
+        "content": "Parcelas mensais, iguais e sucessivas no valor de R$ 8.000,00 (oito mil reais), descontados valores relativos a adiantamentos e despesas não previstas no item 5.1. O pagamento será efetuado no dia 10 do mês subsequente ao da prestação dos Serviços, mediante entrega da nota fiscal/fatura até o dia 20 do mês anterior.",
+        "details": {},
+        "section_id": 1,
+        "display_order": 4
+    },
+    {
+        "label": "Foro",
+        "content": "Foro da comarca de [CIDADE]/[UF].",
+        "details": {},
+        "section_id": 1,
+        "display_order": 5
+    },
+    {
+        "label": "Cláusula 1.1.1 - Declaração de Não Vínculo Empregatício",
+        "content": "A cláusula tenta afastar a relação de emprego por mera declaração da CONTRATADA, o que não é suficiente para descaracterizar um vínculo se os fatos da prestação de serviço indicarem subordinação, pessoalidade, onerosidade e não eventualidade.",
+        "details": {
+            "Ponto de Atenção": "A declaração contratual não tem força para afastar a realidade dos fatos. É crucial que a CONTRATADA mantenha sua autonomia e não se submeta a controle de jornada, subordinação hierárquica ou pessoalidade na execução dos serviços. A CONTRATANTE deve se atentar para não configurar elementos de vínculo empregatício.",
+            "Descrição do Risco": "Risco de reconhecimento de vínculo empregatício pela Justiça do Trabalho, caso a prestação de serviços ocorra com características de subordinação jurídica, pessoalidade, não eventualidade e onerosidade, independentemente da declaração contratual. A CONTRATANTE pode ser responsabilizada solidária ou subsidiariamente.",
+            "Citação do Trecho Relevante": "A CONTRATADA declara que opta pela presente forma de contratação, por livre e espontânea vontade, reconhecendo que em razão da espécie dos Serviços a serem executados pelo CONTRATADA não haverá, sob nenhuma circunstância, a configuração de relação de emprego com a CONTRATANTE..."
+        },
+        "section_id": 2,
+        "display_order": 1
+    },
+    {
+        "label": "Cláusula 3.1 e 3.2 - Descontos e Valor Final",
+        "content": "A cláusula permite descontos amplos e estabelece que o valor é final e insuscetível de majoração, o que pode gerar desequilíbrio financeiro para a CONTRATADA.",
+        "details": {
+            "Ponto de Atenção": "Negociar a especificação dos tipos de despesas passíveis de desconto e prever mecanismos de reajuste ou revisão do valor da contraprestação em caso de alterações significativas nas condições econômicas ou no escopo dos serviços.",
+            "Descrição do Risco": "A CONTRATADA pode ter seu pagamento reduzido por 'despesas a qualquer título' não especificadas, gerando incerteza sobre o valor líquido a receber. Além disso, a impossibilidade de reajuste ou majoração do valor, mesmo diante de aumentos de custos ou complexidade dos serviços, pode tornar o contrato economicamente inviável a longo prazo para a CONTRATADA.",
+            "Citação do Trecho Relevante": "3.1 – ...descontados valores relativos a adiantamentos e despesas a qualquer título que não estejam previstos no item 5.1. ... 3.2 – O valor da contraprestação é final, insuscetível de qualquer agravo ou majoração."
+        },
+        "section_id": 2,
+        "display_order": 2
+    },
+    {
+        "label": "Cláusula 3.6 e 4.4 - Dedução de Débitos e Suspensão de Pagamento",
+        "content": "A CONTRATANTE possui prerrogativa unilateral para deduzir débitos e suspender pagamentos, o que pode ser abusivo e gerar desequilíbrio contratual.",
+        "details": {
+            "Ponto de Atenção": "Recomenda-se negociar a inclusão de um procedimento formal para a dedução ou suspensão, exigindo notificação prévia, prazo para regularização e, se possível, a necessidade de mútuo acordo ou decisão judicial para débitos contestados. Limitar a suspensão de pagamentos a descumprimentos graves e comprovados.",
+            "Descrição do Risco": "A CONTRATANTE pode reter pagamentos ou realizar compensações sem prévia discussão ou comprovação judicial do débito, colocando a CONTRATADA em posição de vulnerabilidade financeira. A suspensão de pagamentos por atraso na documentação, mesmo que por poucos dias, pode impactar o fluxo de caixa da CONTRATADA.",
+            "Citação do Trecho Relevante": "3.6 – A CONTRATANTE poderá deduzir débitos ou indenizações imputáveis à CONTRATADA de quaisquer créditos decorrentes deste contrato, como também poderá suspender qualquer pagamento no caso de descumprimento de obrigações por parte da CONTRATANTE.\n4.4 - Em caso de recusa ou atraso na apresentação da documentação prevista no item acima, a CONTRATANTE poderá suspender o pagamento do valor devido à CONTRATADA até que referida documentação seja apresentada."
+        },
+        "section_id": 2,
+        "display_order": 3
+    },
+    {
+        "label": "Cláusula 5.1 e 5.3 - Reembolso de Despesas",
+        "content": "O reembolso de despesas é restrito e condicionado à autorização prévia, transferindo grande parte dos custos operacionais para a CONTRATADA.",
+        "details": {
+            "Ponto de Atenção": "Negociar a ampliação das categorias de despesas reembolsáveis e/ou a flexibilização do requisito de autorização prévia para despesas de baixo valor ou de natureza emergencial, ou ainda, a inclusão de um valor fixo para despesas operacionais.",
+            "Descrição do Risco": "A CONTRATADA pode arcar com despesas necessárias à execução dos serviços que não se enquadrem nas categorias listadas ou que não obtenham autorização prévia, impactando sua rentabilidade. A necessidade de autorização prévia pode gerar burocracia e atrasos, dificultando a agilidade da CONTRATADA.",
+            "Citação do Trecho Relevante": "5.1 - A CONTRATANTE reembolsará à CONTRATADA, única e exclusivamente, pelos custos incorridos com transporte, estada, alimentação (excluídas bebidas alcoólicas) e telefone durante e para a prestação dos Serviços desde que previamente autorizados por um diretor da CONTRATANTE.\n5.3 - Fica estabelecido que as despesas identificadas no item 5.1 são as únicas despesas reembolsáveis pela CONTRATANTE, sendo que a mesma não se responsabiliza por quaisquer outras despesas incorridas pela CONTRATADA."
+        },
+        "section_id": 2,
+        "display_order": 4
+    },
+    {
+        "label": "Cláusula 6.7, alínea 'a' - Restrição à Subcontratação/Delegação",
+        "content": "A cláusula restringe a capacidade da CONTRATADA de subcontratar ou delegar serviços, limitando a execução apenas a sócios e/ou empregados da CONTRATADA.",
+        "details": {
+            "Ponto de Atenção": "Recomenda-se negociar a flexibilização desta cláusula para permitir a subcontratação ou delegação, mediante prévia aprovação da CONTRATANTE, ou para serviços específicos, mantendo a responsabilidade principal da CONTRATADA. A autonomia na gestão dos meios de produção é um pilar da contratação de PJ.",
+            "Descrição do Risco": "Esta restrição limita a autonomia empresarial da CONTRATADA na gestão de seus recursos e na forma de execução dos serviços, podendo ser interpretada como um indício de subordinação, o que fragiliza a tese de ausência de vínculo empregatício (Cláusula 1.1.1). Além disso, pode impedir a CONTRATADA de escalar seus serviços ou buscar expertise externa quando necessário.",
+            "Citação do Trecho Relevante": "a) Abster-se de ceder, subcontratar ou delegar a terceiros, no todo ou em parte, os Serviços objeto deste contrato, ficando acordado, portanto, que somente poderão executar os Serviços sócios e/ou empregados da CONTRATADA;"
+        },
+        "section_id": 2,
+        "display_order": 5
+    },
+    {
+        "label": "Cláusula 7 - Propriedade Intelectual Ampla",
+        "content": "Todos os bens resultantes dos serviços, incluindo dados, informações, relatórios, projetos, softwares, invenções, etc., tornam-se propriedade exclusiva da CONTRATANTE sem pagamento adicional.",
+        "details": {
+            "Ponto de Atenção": "Avaliar se a remuneração total do contrato é compatível com a cessão integral e irrestrita de todos os direitos de propriedade intelectual. Negociar a delimitação do escopo da propriedade intelectual cedida apenas ao que for estritamente necessário para o objeto do contrato, ou prever remuneração adicional para invenções e inovações que excedam o escopo original.",
+            "Descrição do Risco": "A abrangência da transferência de propriedade intelectual é extremamente ampla, incluindo 'invenções' e 'descobertas'. Se a CONTRATADA desenvolver uma tecnologia ou solução inovadora que possa ter aplicação fora do escopo deste contrato, ela perderá a propriedade e o direito de exploração sem remuneração adicional, o que pode ser desproporcional.",
+            "Citação do Trecho Relevante": "7.1 - A CONTRATADA reconhece que todos os bens eventualmente disponibilizados à esta para a prestação dos Serviços, assim como todos os bens resultantes da prestação dos Serviços, tais como dados, informações, relatórios, projetos, análises, obras intelectuais, programas de computador, invenções, descobertas, bem como todas as alterações e atualizações em relação a eles planejadas, desenvolvidas e implementadas, passíveis ou não de proteção legal (os “BENS”), serão, independente do pagamento de quaisquer valores adicionais àqueles estipulados no presente contrato, de exclusiva propriedade da CONTRATANTE..."
+        },
+        "section_id": 2,
+        "display_order": 6
+    },
+    {
+        "label": "Cláusula 8.9 - Não Concorrência Pós-Contratual",
+        "content": "A CONTRATADA se compromete a não desenvolver parcerias ou contratos com concorrentes da CONTRATANTE por 12 meses após o término do contrato, sem previsão de compensação.",
+        "details": {
+            "Ponto de Atenção": "Recomenda-se negociar a exclusão desta cláusula ou, alternativamente, sua delimitação em termos de escopo de atividade e área geográfica e, crucialmente, a inclusão de uma compensação financeira adequada à CONTRATADA pelo período de restrição, sob pena de nulidade.",
+            "Descrição do Risco": "A cláusula de não concorrência, sem delimitação geográfica e sem previsão de compensação financeira à CONTRATADA, pode ser considerada abusiva e nula, conforme a jurisprudência brasileira. Ela restringe indevidamente a liberdade de trabalho e a atividade econômica da CONTRATADA após o término da relação contratual, podendo inviabilizar sua atuação no mercado.",
+            "Citação do Trecho Relevante": "8.9 - Fica desde já acordado que a CONTRATADA se compromete a não desenvolver parcerias ou contratos de prestação de serviços com concorrentes da CONTRATANTE por um período mínimo de 12 (doze) meses após o término do seu contrato de prestação de serviços."
+        },
+        "section_id": 2,
+        "display_order": 7
+    },
+    {
+        "label": "Cláusula 10.2 e 10.3 - Responsabilidade por Demandas Trabalhistas/Tributárias",
+        "content": "A CONTRATADA assume a obrigação de isentar e reembolsar integralmente a CONTRATANTE por quaisquer condenações trabalhistas, tributárias ou previdenciárias relacionadas aos serviços ou profissionais da CONTRATADA.",
+        "details": {
+            "Ponto de Atenção": "A CONTRATADA deve estar ciente do alto risco financeiro que assume. É fundamental que a CONTRATADA mantenha sua autonomia e evite qualquer característica que possa configurar vínculo empregatício. A cláusula é leonina ao tentar transferir integralmente uma responsabilidade que é primária da CONTRATANTE em caso de fraude ou descaracterização.",
+            "Descrição do Risco": "Embora seja comum a CONTRATANTE buscar se resguardar, esta cláusula transfere integralmente o risco de um eventual reconhecimento de vínculo empregatício ou de outras responsabilidades para a CONTRATADA, incluindo custas e honorários advocatícios. Se houver descaracterização da PJ e reconhecimento de vínculo, a CONTRATANTE é a principal responsável, e a cláusula tenta reverter essa responsabilidade, o que pode ser questionado judicialmente, mas impõe um ônus financeiro significativo à CONTRATADA.",
+            "Citação do Trecho Relevante": "10.2 – Caso a CONTRATANTE seja citada em reclamação trabalhista, ação judicial ou auto de infração, que verse sobre vínculo de emprego, doenças profissionais ou acidentes de trabalho dos profissionais da CONTRATADA e/ou sobre tributos e contribuições previdenciárias relativas aos Serviços ou aos profissionais da CONTRATADA, este compromete-se a realizar todos os procedimentos necessários a fim de isentar a CONTRATANTE de toda e qualquer responsabilidade, patrimonial ou não, sobre as referidas demandas ou autuações. ... 10.3 – Caso a CONTRATANTE seja compelida a pagar indenizações, condenações trabalhistas, tributos e/ou contribuições previdenciárias por conta dos Serviços e/ou dos profissionais da CONTRATADA, este fica obrigado a reembolsá-la integralmente por tudo quanto for por ela, CONTRATANTE, gasto a esse respeito, inclusive custas e honorários advocatícios."
+        },
+        "section_id": 2,
+        "display_order": 8
+    },
+    {
+        "label": "Cláusula 10.4 - Não Aliciamento de Pessoal",
+        "content": "A CONTRATADA não poderá aliciar ou contratar ex-colaboradores da CONTRATANTE por 2 anos após o término do vínculo deles com a CONTRATANTE.",
+        "details": {
+            "Ponto de Atenção": "Avaliar o impacto desta restrição no modelo de negócios da CONTRATADA. Embora cláusulas de não aliciamento sejam comuns, o prazo e a abrangência podem ser considerados excessivos se não houver justificativa clara e proporcionalidade.",
+            "Descrição do Risco": "Esta cláusula restringe a capacidade da CONTRATADA de contratar profissionais qualificados que possam ter trabalhado para a CONTRATANTE, limitando seu acesso a talentos no mercado e sua capacidade de crescimento, por um período considerável de 2 anos.",
+            "Citação do Trecho Relevante": "10.4 – A CONTRATADA não persuadirá, atrairá, contratará ou tentará atrair ou contratar qualquer sócio, pessoa empregada, prestador de serviço estratégico a deixar seu emprego ou terminar seu vínculo contratual com a CONTRATANTE, por qualquer razão ou fim, ou contratar quaisquer dessas pessoas que tenham deixado de prestar serviços para a CONTRATANTE no prazo de 2 (dois) anos..."
+        },
+        "section_id": 2,
+        "display_order": 9
+    },
+    {
+        "label": "Cláusula 11.1 e 11.2 - Responsabilidade Ampla da CONTRATADA",
+        "content": "A CONTRATADA responde por 'todas as perdas e danos' e 'quaisquer responsabilidades cíveis, trabalhistas, administrativas, tributárias, penais' causados à CONTRATANTE e terceiros, com obrigação de indenizar e manter indene.",
+        "details": {
+            "Ponto de Atenção": "Recomenda-se negociar a limitação da responsabilidade da CONTRATADA ao valor do contrato ou a um múltiplo dele, exceto em casos de dolo ou culpa grave. A responsabilidade penal, por exemplo, é personalíssima e não pode ser transferida contratualmente. A cláusula, como está, é potencialmente leonina e desproporcional.",
+            "Descrição do Risco": "A abrangência da responsabilidade da CONTRATADA é excessivamente ampla, podendo expô-la a riscos desproporcionais. A obrigação de 'manter indene' a CONTRATANTE por 'quaisquer responsabilidades' e 'todas as perdas e danos' pode significar que a CONTRATADA arcará com custos e prejuízos que, em uma análise mais justa, poderiam ser mitigados ou compartilhados.",
+            "Citação do Trecho Relevante": "11.1 - A CONTRATADA responderá por todas as perdas e danos causados à CONTRATANTE e a terceiros relacionados à execução dos Serviços ora contratados, e que tenham por causa atos de sua responsabilidade, obrigando-se a CONTRATADA a indenizar e manter indene a CONTRATANTE e quaisquer terceiros, ressarcindo-os, de forma integral, por todos os danos emergentes por eles experimentados, incluindo custas, honorários advocatícios, dentre outros.\n11.2 - A CONTRATADA assume, também, quaisquer responsabilidades cíveis, trabalhistas, administrativas, tributárias, penais relacionados aos serviços prestados e que tenham por causa atos de sua responsabilidade, imputadas pelas autoridades competentes para a sua regulamentação e fiscalização, obrigando-se a isentar, indenizar e manter indene a CONTRATANTE e quaisquer terceiros por demandas, ações, autuações, de caráter patrimonial ou não, daí resultantes."
+        },
+        "section_id": 2,
+        "display_order": 10
+    },
+    {
+        "label": "Cláusula 12.7 - Controle sobre a Ausência do Sócio/Titular da CONTRATADA",
+        "content": "A CONTRATANTE estabelece um limite de 30 dias de ausência para o sócio/titular da CONTRATADA, com desconto no pagamento caso o limite seja excedido.",
+        "details": {
+            "Ponto de Atenção": "Esta é uma cláusula extremamente perigosa e leonina. A CONTRATADA, como pessoa jurídica, deve ter autonomia para gerir seus recursos humanos e suas ausências. A CONTRATANTE não deve controlar a 'folga' do sócio da CONTRATADA. Recomenda-se a exclusão imediata desta cláusula, pois ela compromete a natureza da contratação de serviços de PJ e expõe ambas as partes a um risco trabalhista elevado.",
+            "Descrição do Risco": "Esta cláusula representa uma forte ingerência na gestão interna da CONTRATADA e na autonomia de seu sócio/titular, tratando-o como se fosse um empregado da CONTRATANTE. Isso é um fortíssimo indício de subordinação jurídica e pessoalidade, elementos essenciais para a configuração de vínculo empregatício, contrariando a Cláusula 1.1.1 e aumentando significativamente o risco trabalhista para a CONTRATANTE e o risco de descaracterização da PJ para a CONTRATADA.",
+            "Citação do Trecho Relevante": "12.7 – Quando o sócio ou titular da empresa CONTRATADA for o responsável pela execução dos serviços, poderá deixar de executá-los até o limite de 30 dias no ano, consecutivos ou não, a seu exclusivo critrio e conveniência, sem que haja prejuízo no pagamento do valor acordado na cláusula 3.1. Excedido este limite, a CONTRATANTE poderá descontar o valor proporcional aos dias excedentes ao limite estabelecido acima, no preço dos serviços."
+        },
+        "section_id": 2,
+        "display_order": 11
+    },
+    {
+        "label": "Inconsistência Crítica: Vínculo Empregatício vs. Autonomia",
+        "content": "A Cláusula 1.1.1 declara expressamente a inexistência de vínculo empregatício, mas a Cláusula 12.7 impõe um controle direto sobre a ausência do sócio ou titular da CONTRATADA, limitando-a a 30 dias anuais e prevendo desconto no pagamento em caso de excedente. Esta é uma contradição fundamental que fragiliza a natureza da contratação de pessoa jurídica, pois o controle de jornada ou disponibilidade do sócio é um fortíssimo indício de subordinação e pessoalidade, elementos essenciais para a configuração de vínculo empregatício.",
+        "details": {
+            "Localização": "Cláusula 1.1.1. OBJETO e Cláusula 12.7. DISPOSIÇÕES GERAIS",
+            "Impacto Potencial": "Risco elevado de descaracterização da prestação de serviços como PJ e reconhecimento de vínculo empregatício pela Justiça do Trabalho, com todas as suas consequências trabalhistas e previdenciárias para a CONTRATANTE, e a perda da autonomia e modelo de negócio para a CONTRATADA."
+        },
+        "section_id": 3,
+        "display_order": 1
+    },
+    {
+        "label": "Ambiguidade na Dedução de Valores",
+        "content": "A Cláusula 3.1 permite descontos de 'valores relativos a adiantamentos e despesas a qualquer título que não estejam previstos no item 5.1'. A expressão 'a qualquer título' é excessivamente vaga e não especifica quais tipos de despesas, além das mencionadas no item 5.1, poderiam ser descontadas. Isso gera incerteza e potencial para disputas sobre o valor final a ser pago à CONTRATADA.",
+        "details": {
+            "Localização": "Cláusula 3.1. VALOR E FORMA DE PAGAMENTO",
+            "Impacto Potencial": "Insegurança jurídica e financeira para a CONTRATADA, que pode ter seu pagamento reduzido por motivos não claramente definidos, e potencial para litígios sobre a interpretação e aplicação dos descontos."
+        },
+        "section_id": 3,
+        "display_order": 2
+    },
+    {
+        "label": "Lacuna na Resilição Unilateral",
+        "content": "A Cláusula 2.1.2 permite a resilição unilateral 'a qualquer momento' sem prever um aviso prévio mínimo ou uma multa compensatória. Embora o direito à resilição seja legítimo, a ausência de um prazo razoável para a outra parte se reorganizar ou de uma compensação por investimentos feitos na relação contratual representa uma lacuna que pode gerar prejuízos e desequilíbrio, especialmente para a CONTRATADA que pode ter investido recursos na execução dos serviços.",
+        "details": {
+            "Localização": "Cláusula 2.1.2. VIGÊNCIA E RESCISÃO",
+            "Impacto Potencial": "Prejuízos financeiros e operacionais para a parte que sofrer a resilição sem aviso prévio adequado, especialmente se houver investimentos significativos ou dependência da continuidade do contrato."
+        },
+        "section_id": 3,
+        "display_order": 3
+    },
+    {
+        "label": "Incompletude da Cláusula 6.1",
+        "content": "A Cláusula 6.1 apresenta uma frase incompleta: 'Para a execução dos serviços, a CONTRATADA poderá utilizar profissionais qualificados e especializados, sendo que, em função dessa qualificação e especialização exigidas para a execução dos serviços.' A oração não é concluída, deixando a intenção da cláusula ambígua ou sem sentido prático, o que pode gerar incerteza sobre as obrigações ou direitos relacionados à utilização de profissionais.",
+        "details": {
+            "Localização": "Cláusula 6.1. OBRIGAÇÕES DAS PARTES",
+            "Impacto Potencial": "Falta de clareza sobre as obrigações ou direitos relacionados à utilização de profissionais, podendo gerar interpretações diversas ou a ineficácia da disposição."
+        },
+        "section_id": 3,
+        "display_order": 4
+    },
+    {
+        "label": "Falha na Eficácia da Cláusula de Não Concorrência",
+        "content": "A Cláusula 8.9 impõe uma obrigação de não concorrência à CONTRATADA por 12 meses após o término do contrato, sem prever qualquer compensação financeira por essa restrição. Conforme a jurisprudência brasileira, cláusulas de não concorrência sem delimitação geográfica, de escopo e, principalmente, sem contrapartida financeira, são frequentemente consideradas nulas por cercear a liberdade de trabalho e a livre iniciativa da CONTRATADA.",
+        "details": {
+            "Localização": "Cláusula 8.9. CONFIDENCIALIDADE E EXCLUSIVIDADE",
+            "Impacto Potencial": "A cláusula pode ser declarada nula judicialmente, tornando-a ineficaz para a CONTRATANTE e, ao mesmo tempo, gerando uma falsa expectativa de restrição para a CONTRATADA, que pode se sentir indevidamente limitada em sua atuação profissional."
+        },
+        "section_id": 3,
+        "display_order": 5
+    },
+    {
+        "label": "Parecer Final e Recomendações",
+        "content": "O contrato, em sua forma atual, apresenta um desequilíbrio significativo em favor da CONTRATANTE e expõe a CONTRATADA a riscos jurídicos e financeiros consideráveis. A principal fragilidade reside na potencial descaracterização da prestação de serviços como pessoa jurídica para uma relação de emprego, especialmente em virtude da Cláusula 12.7, que exerce controle direto sobre a autonomia do sócio/titular da CONTRATADA. Além disso, as cláusulas de responsabilidade ampla e ilimitada, a não concorrência sem compensação, e a rigidez nas condições financeiras e de reembolso de despesas, tornam o contrato desvantajoso e potencialmente insustentável para a CONTRATADA a longo prazo.\n\n**Recomendações para a CONTRATADA:**\n\n1.  **Renegociação Urgente da Cláusula 12.7:** Exigir a exclusão imediata desta cláusula, pois ela é o maior indício de vínculo empregatício e compromete a natureza da contratação de PJ. A CONTRATANTE não deve controlar a disponibilidade do sócio da CONTRATADA.\n2.  **Flexibilização da Cláusula 6.7(a):** Negociar a permissão para subcontratação ou delegação de serviços, mediante prévia aprovação da CONTRATANTE, para preservar a autonomia empresarial da CONTRATADA.\n3.  **Clareza nas Condições Financeiras (Cláusula 3.1, 3.2, 3.6, 4.4):**\n    *   Definir claramente o que são 'despesas a qualquer título' passíveis de desconto ou remover a generalidade.\n    *   Incluir um mecanismo de reajuste anual ou revisão do valor da contraprestação.\n    *   Estabelecer um procedimento formal para a suspensão de pagamentos e dedução de débitos, com notificação prévia e prazo para regularização.\n4.  **Revisão do Reembolso de Despesas (Cláusula 5.1, 5.3):** Ampliar as categorias de despesas reembolsáveis e/ou flexibilizar a necessidade de autorização prévia para despesas de baixo valor ou operacionais.\n5.  **Cláusula de Não Concorrência (Cláusula 8.9):** Negociar a exclusão da cláusula ou, caso mantida, exigir uma compensação financeira justa e proporcional ao período e escopo da restrição, além de delimitação geográfica e de atividade.\n6.  **Limitação de Responsabilidade (Cláusula 11.1, 11.2):** Propor um teto para a responsabilidade da CONTRATADA (ex: valor total do contrato ou um múltiplo), exceto em casos de dolo ou culpa grave comprovados. Esclarecer que a responsabilidade penal é personalíssima e não pode ser transferida contratualmente.\n7.  **Autonomia na Execução:** Assegurar que, na prática, a CONTRATADA mantenha total autonomia na forma de execução dos serviços, sem subordinação hierárquica, controle de jornada ou pessoalidade, para mitigar o risco de vínculo empregatício.\n8.  **Revisão da Cláusula 6.1:** Corrigir a frase incompleta para que a intenção seja clara.\n\nÉ fundamental que a CONTRATADA não assine este contrato sem as devidas alterações, pois as cláusulas atuais podem comprometer seriamente sua viabilidade e expô-la a riscos legais e financeiros desnecessários. Recomenda-se buscar assessoria jurídica independente para auxiliar nas negociações.",
+        "details": {},
+        "section_id": 4,
+        "display_order": 1
+    }
+]

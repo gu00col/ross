@@ -70,40 +70,53 @@ class Contract extends BaseModel
 
         $sql .= " ORDER BY created_at DESC";
 
-        return $this->db->fetchAll($sql, $params);
+        return $this->query($sql, $params);
     }
 
     /**
      * Buscar contrato por ID
+     * 
+     * @param string $id ID do contrato
+     * @return array|null Dados do contrato ou null se não encontrado
      */
-    public function findById($id)
+    public function findById(string $id): ?array
     {
         $sql = "SELECT * FROM {$this->table} WHERE id = :id";
-        return $this->db->fetch($sql, ['id' => $id]);
+        return $this->queryOne($sql, ['id' => $id]);
     }
 
     /**
      * Criar novo contrato
+     * 
+     * @param array $data Dados do contrato
+     * @return string ID do contrato criado
      */
-    public function create($data)
+    public function create(array $data): string
     {
-        return $this->db->insert($this->table, $data);
+        return parent::create($data);
     }
 
     /**
      * Atualizar contrato
+     * 
+     * @param string $id ID do contrato
+     * @param array $data Dados para atualização
+     * @return bool Sucesso da operação
      */
-    public function update($id, $data)
+    public function update(string $id, array $data): bool
     {
-        return $this->db->update($this->table, $data, 'id = :id', ['id' => $id]);
+        return parent::update($id, $data);
     }
 
     /**
      * Deletar contrato
+     * 
+     * @param string $id ID do contrato
+     * @return bool Sucesso da operação
      */
-    public function delete($id)
+    public function delete(string $id): bool
     {
-        return $this->db->delete($this->table, 'id = :id', ['id' => $id]);
+        return parent::delete($id);
     }
 
     /**
@@ -112,7 +125,7 @@ class Contract extends BaseModel
     public function getByStatus($status)
     {
         $sql = "SELECT * FROM {$this->table} WHERE status = :status ORDER BY created_at DESC";
-        return $this->db->fetchAll($sql, ['status' => $status]);
+        return $this->query($sql, ['status' => $status]);
     }
 
     /**
@@ -121,7 +134,7 @@ class Contract extends BaseModel
     public function countByStatus($status)
     {
         $sql = "SELECT COUNT(*) as count FROM {$this->table} WHERE status = :status";
-        $result = $this->db->fetch($sql, ['status' => $status]);
+        $result = $this->queryOne($sql, ['status' => $status]);
         return $result['count'] ?? 0;
     }
 
@@ -132,7 +145,8 @@ class Contract extends BaseModel
     {
         $stats = [];
         
-        $stats['total'] = $this->db->fetch("SELECT COUNT(*) as count FROM {$this->table}")['count'];
+        $result = $this->queryOne("SELECT COUNT(*) as count FROM {$this->table}");
+        $stats['total'] = $result['count'] ?? 0;
         $stats['pending'] = $this->countByStatus('pending');
         $stats['processing'] = $this->countByStatus('processing');
         $stats['processed'] = $this->countByStatus('processed');
@@ -147,7 +161,7 @@ class Contract extends BaseModel
     public function getRecent($limit = 5)
     {
         $sql = "SELECT * FROM {$this->table} ORDER BY created_at DESC LIMIT :limit";
-        return $this->db->fetchAll($sql, ['limit' => $limit]);
+        return $this->query($sql, ['limit' => $limit]);
     }
 
     /**
@@ -189,7 +203,7 @@ class Contract extends BaseModel
 
         $sql .= " ORDER BY created_at DESC";
 
-        return $this->db->fetchAll($sql, $params);
+        return $this->query($sql, $params);
     }
 
     /**
@@ -214,7 +228,7 @@ class Contract extends BaseModel
             $sql .= " AND " . implode(' AND ', $conditions);
         }
 
-        $result = $this->db->fetch($sql, $params);
+        $result = $this->queryOne($sql, $params);
         return $result['count'] ?? 0;
     }
 
@@ -235,7 +249,7 @@ class Contract extends BaseModel
                 FROM {$this->table} 
                 WHERE user_id = :user_id";
         
-        return $this->db->fetch($sql, ['user_id' => $userId]);
+        return $this->queryOne($sql, ['user_id' => $userId]);
     }
 
     /**
@@ -267,7 +281,7 @@ class Contract extends BaseModel
                 ORDER BY text_embedding <=> :embedding::vector
                 LIMIT :limit";
                 
-        return $this->db->fetchAll($sql, [
+        return $this->query($sql, [
             'embedding' => $vectorString,
             'threshold' => $threshold,
             'limit' => $limit
@@ -293,7 +307,8 @@ class Contract extends BaseModel
                 SET text_embedding = :embedding::vector 
                 WHERE id = :id";
                 
-        return $this->db->execute($sql, [
+        $stmt = $this->db->prepare($sql);
+        return $stmt->execute([
             'embedding' => $vectorString,
             'id' => $id
         ]);
@@ -337,7 +352,7 @@ class Contract extends BaseModel
 
         $sql .= " ORDER BY created_at DESC";
 
-        return $this->db->fetchAll($sql, $params);
+        return $this->query($sql, $params);
     }
 
     /**
@@ -349,7 +364,7 @@ class Contract extends BaseModel
     public function getFullAnalysis($contractId)
     {
         $sql = "SELECT * FROM v_contract_analysis WHERE contract_id = :contract_id";
-        return $this->db->fetchAll($sql, ['contract_id' => $contractId]);
+        return $this->query($sql, ['contract_id' => $contractId]);
     }
 
     /**
@@ -382,6 +397,30 @@ class Contract extends BaseModel
         }
         
         return $this->update($id, $data);
+    }
+
+    /**
+     * Executa uma consulta SQL personalizada
+     * 
+     * @param string $sql SQL da consulta
+     * @param array $params Parâmetros da consulta
+     * @return array Resultados da consulta
+     */
+    public function executeQuery(string $sql, array $params = []): array
+    {
+        return $this->query($sql, $params);
+    }
+    
+    /**
+     * Executa uma consulta SQL personalizada e retorna um único resultado
+     * 
+     * @param string $sql SQL da consulta
+     * @param array $params Parâmetros da consulta
+     * @return array|null Resultado único ou null
+     */
+    public function executeQueryOne(string $sql, array $params = []): ?array
+    {
+        return $this->queryOne($sql, $params);
     }
 
     /**

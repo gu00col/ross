@@ -1,187 +1,167 @@
 <?php
 /**
- * Classe de Roteamento
- * Sistema de Análise Contratual
+ * Sistema de roteamento do ROSS
+ * Gerencia rotas amigáveis e redirecionamentos
  */
-
-namespace App\Core;
 
 class Router
 {
-    private $routes = [];
-    private $middleware = [];
-
+    /**
+     * @var array Rotas configuradas
+     */
+    private $routes;
+    
+    /**
+     * @var string Rota atual
+     */
+    private $currentRoute;
+    
+    /**
+     * Construtor
+     */
     public function __construct()
     {
-        $this->loadRoutes();
+        $this->routes = require_once __DIR__ . '/../Config/routes.php';
+        $this->currentRoute = $this->getCurrentRoute();
     }
-
+    
     /**
-     * Carregar rotas
+     * Obtém a rota atual
+     * @return string
      */
-    private function loadRoutes()
+    private function getCurrentRoute(): string
     {
-        // Rotas básicas
-        $this->routes = [
-            'GET' => [
-                '/' => 'HomeController@index',
-                '/login' => 'AuthController@login',
-                '/logout' => 'AuthController@logout',
-                '/home' => 'DashboardController@index',
-                '/contracts' => 'ContractController@index',
-                '/contract/{id}' => 'ContractController@show',
-                '/my-account' => 'UserController@account',
-                '/settings' => 'SettingsController@index',
-            ],
-            'POST' => [
-                '/login' => 'AuthController@loginProcess',
-                '/logout' => 'AuthController@logoutProcess',
-                '/upload' => 'ContractController@upload',
-                '/update-profile' => 'UserController@updateProfile',
-                '/change-password' => 'UserController@changePassword',
-            ],
-        ];
-    }
-
-    /**
-     * Despachar requisição
-     */
-    public function dispatch()
-    {
-        $method = $_SERVER['REQUEST_METHOD'];
-        $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+        $requestUri = $_SERVER['REQUEST_URI'];
+        $scriptName = $_SERVER['SCRIPT_NAME'];
         
-        // Remover barra final
-        $uri = rtrim($uri, '/');
-        if (empty($uri)) {
-            $uri = '/';
-        }
-
-        // Buscar rota
-        $route = $this->findRoute($method, $uri);
+        // Remover query string
+        $requestUri = strtok($requestUri, '?');
         
-        if (!$route) {
-            $this->handle404();
-            return;
+        // Remover barra inicial
+        $requestUri = ltrim($requestUri, '/');
+        
+        // Remover script name se estiver presente
+        if (strpos($requestUri, basename($scriptName)) === 0) {
+            $requestUri = substr($requestUri, strlen(basename($scriptName)));
+            $requestUri = ltrim($requestUri, '/');
         }
-
-        // Executar middleware
-        $this->runMiddleware($route);
-
-        // Executar controller
-        $this->runController($route);
+        
+        return $requestUri ?: '/';
     }
-
+    
     /**
-     * Buscar rota
+     * Resolve a rota atual
+     * @return string|null
      */
-    private function findRoute($method, $uri)
+    public function resolve(): ?string
     {
-        if (!isset($this->routes[$method])) {
-            return null;
+        // Verificar redirecionamentos especiais
+        if (isset($this->routes['redirects'][$this->currentRoute])) {
+            return $this->routes['redirects'][$this->currentRoute];
         }
-
-        foreach ($this->routes[$method] as $route => $handler) {
-            if ($this->matchRoute($route, $uri)) {
-                return [
-                    'route' => $route,
-                    'handler' => $handler,
-                    'params' => $this->extractParams($route, $uri)
-                ];
+        
+        // Verificar rotas públicas
+        if (isset($this->routes['public'][$this->currentRoute])) {
+            return $this->routes['public'][$this->currentRoute];
+        }
+        
+        // Verificar rotas protegidas
+        if (isset($this->routes['protected'][$this->currentRoute])) {
+            // Verificar se usuário está logado
+            if (!$this->isUserLoggedIn()) {
+                $this->redirectToLogin();
+                return null;
+            }
+            return $this->routes['protected'][$this->currentRoute];
+        }
+        
+        // Verificar rotas da API
+        if (strpos($this->currentRoute, 'api/') === 0) {
+            $apiRoute = substr($this->currentRoute, 4); // Remove 'api/'
+            if (isset($this->routes['api'][$apiRoute])) {
+                return $this->routes['api'][$apiRoute];
             }
         }
-
+        
+        // Rota não encontrada
         return null;
     }
-
+    
     /**
-     * Verificar se rota corresponde
+     * Verifica se usuário está logado
+     * @return bool
      */
-    private function matchRoute($route, $uri)
+    private function isUserLoggedIn(): bool
     {
-        // Converter parâmetros {id} para regex
-        $pattern = preg_replace('/\{([^}]+)\}/', '([^/]+)', $route);
-        $pattern = '#^' . $pattern . '$#';
-        
-        return preg_match($pattern, $uri);
-    }
-
-    /**
-     * Extrair parâmetros da rota
-     */
-    private function extractParams($route, $uri)
-    {
-        $params = [];
-        $routeParts = explode('/', $route);
-        $uriParts = explode('/', $uri);
-        
-        foreach ($routeParts as $index => $part) {
-            if (preg_match('/\{([^}]+)\}/', $part, $matches)) {
-                $params[$matches[1]] = $uriParts[$index] ?? null;
-            }
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
         
-        return $params;
+        return isset($_SESSION['user_id']);
     }
-
+    
     /**
-     * Executar middleware
+     * Redireciona para login
      */
-    private function runMiddleware($route)
+    private function redirectToLogin(): void
     {
-        // Implementar middleware se necessário
+        header('Location: /login');
+        exit;
     }
-
+    
     /**
-     * Executar controller
+     * Redireciona para uma rota
+     * @param string $route
      */
-    private function runController($route)
+    public function redirect(string $route): void
     {
-        list($controller, $method) = explode('@', $route['handler']);
-        
-        $controllerClass = "App\\Controllers\\{$controller}";
-        
-        if (!class_exists($controllerClass)) {
-            throw new \Exception("Controller {$controllerClass} não encontrado");
-        }
-        
-        $controllerInstance = new $controllerClass();
-        
-        if (!method_exists($controllerInstance, $method)) {
-            throw new \Exception("Método {$method} não encontrado no controller {$controllerClass}");
-        }
-        
-        // Passar parâmetros para o método
-        call_user_func_array([$controllerInstance, $method], $route['params']);
+        header("Location: /{$route}");
+        exit;
     }
-
+    
     /**
-     * Tratar erro 404
+     * Gera URL para uma rota
+     * @param string $route
+     * @return string
      */
-    private function handle404()
+    public function url(string $route): string
     {
-        http_response_code(404);
-        
-        if (file_exists(APP_PATH . '/Views/errors/404.php')) {
-            include APP_PATH . '/Views/errors/404.php';
-        } else {
-            echo '<h1>404 - Página não encontrada</h1>';
-        }
+        return "/{$route}";
     }
-
+    
     /**
-     * Adicionar rota
+     * Verifica se a rota atual é protegida
+     * @return bool
      */
-    public function addRoute($method, $route, $handler)
+    public function isProtectedRoute(): bool
     {
-        $this->routes[$method][$route] = $handler;
+        return isset($this->routes['protected'][$this->currentRoute]);
     }
-
+    
     /**
-     * Adicionar middleware
+     * Verifica se a rota atual é pública
+     * @return bool
      */
-    public function addMiddleware($name, $callback)
+    public function isPublicRoute(): bool
     {
-        $this->middleware[$name] = $callback;
+        return isset($this->routes['public'][$this->currentRoute]);
+    }
+    
+    /**
+     * Obtém todas as rotas
+     * @return array
+     */
+    public function getRoutes(): array
+    {
+        return $this->routes;
+    }
+    
+    /**
+     * Obtém a rota atual
+     * @return string
+     */
+    public function getCurrentRouteName(): string
+    {
+        return $this->currentRoute;
     }
 }

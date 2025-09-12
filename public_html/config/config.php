@@ -11,7 +11,7 @@ if (file_exists(__DIR__ . '/../.env')) {
         if (strpos(trim($line), '#') === 0) {
             continue;
         }
-        list($name, $value) = explode('=', $line, 2);
+        [$name, $value] = explode('=', $line, 2);
         $_ENV[trim($name)] = trim($value);
     }
 }

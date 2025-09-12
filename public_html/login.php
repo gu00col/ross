@@ -1,7 +1,7 @@
 <?php
 /**
  * Página de Login
- * Sistema de autenticação de usuários
+ * Sistema de autenticação de usuários - ROSS Analista Jurídico
  */
 
 // Iniciar sessão se não estiver iniciada
@@ -11,158 +11,155 @@ if (session_status() === PHP_SESSION_NONE) {
 
 // Verificar se usuário já está logado
 if (isset($_SESSION['user_id'])) {
-    header('Location: home.php');
+    header('Location: /home');
     exit;
 }
 
-$page_title = "Login - Sistema de Análise Contratual";
-include 'partials/header.php';
+// Carregar sistema de mensagens flash
+require_once 'vendor/autoload.php';
+$flashService = new \App\Services\FlashMessageService();
+$adminSetupService = new \App\Services\AdminSetupService();
+
+$page_title = "Login - ROSS Analista Jurídico";
 ?>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?php echo $page_title; ?></title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome para ícones -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- CSS customizado -->
+    <link href="assets/css/login.css" rel="stylesheet">
+</head>
+<body class="login-body">
+    <div class="container-fluid vh-100 p-0">
+        <div class="row g-0 h-100">
+            <!-- Painel esquerdo - Logo e branding -->
+            <div class="col-lg-8 col-md-6 login-left-panel d-flex align-items-center justify-content-center">
+                <div class="text-center">
+                <img src="assets/images/logo-ross.png" 
+                             alt="Logo ROSS" 
+                             class="logo-image mb-4">
+              
+                    <h1 class="brand-text">ROSS</h1>
+                </div>
+            </div>
 
-<main class="login-page">
-    <div class="container">
-        <div class="row min-vh-100 align-items-center justify-content-center">
-            <div class="col-md-6 col-lg-4">
-                <div class="card shadow-lg border-0">
-                    <div class="card-body p-5">
-                        <div class="text-center mb-4">
-                            <img src="assets/images/logo.svg" 
-                                 alt="Logo" 
-                                 class="mb-3" 
-                                 style="height: 60px;">
-                            <h3 class="fw-bold text-primary">Entrar</h3>
-                            <p class="text-muted">Acesse sua conta para continuar</p>
-                        </div>
-
-                        <?php if (isset($_SESSION['error_message'])): ?>
-                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                                <i class="bi bi-exclamation-triangle me-2"></i>
-                                <?php echo htmlspecialchars($_SESSION['error_message']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            <!-- Painel direito - Formulário de login -->
+            <div class="col-lg-4 col-md-6 login-right-panel d-flex align-items-center justify-content-center">
+                <div class="container-fluid px-4">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-sm-10 col-md-8 col-lg-10">
+                            <!-- Header -->
+                            <div class="text-center mb-4">
+                                <h2 class="login-title">ROSS</h2>
+                                <p class="login-subtitle">Analista Jurídico</p>
                             </div>
-                            <?php unset($_SESSION['error_message']); ?>
-                        <?php endif; ?>
 
-                        <?php if (isset($_SESSION['success_message'])): ?>
-                            <div class="alert alert-success alert-dismissible fade show" role="alert">
-                                <i class="bi bi-check-circle me-2"></i>
-                                <?php echo htmlspecialchars($_SESSION['success_message']); ?>
-                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            <!-- Instruções -->
+                            <div class="text-center mb-4">
+                                <p class="instruction-text mb-1">Digite suas credenciais</p>
+                                <p class="instruction-text">para entrar</p>
                             </div>
-                            <?php unset($_SESSION['success_message']); ?>
-                        <?php endif; ?>
 
-                        <form action="partials/auth/login_process.php" method="POST" novalidate>
-                            <div class="mb-3">
-                                <label for="email" class="form-label">
-                                    <i class="bi bi-envelope me-1"></i>
-                                    E-mail
-                                </label>
-                                <input type="email" 
-                                       class="form-control" 
-                                       id="email" 
-                                       name="email" 
-                                       required
-                                       value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
-                                <div class="invalid-feedback">
-                                    Por favor, insira um e-mail válido.
+                            <!-- Mensagens flash -->
+                            <?php echo $flashService->render(); ?>
+
+                            <!-- Informações do administrador (primeira vez) -->
+                            <?php if ($adminSetupService->needsInitialSetup()): ?>
+                                <?php $adminInfo = $adminSetupService->getDefaultAdminInfo(); ?>
+                                <div class="alert alert-info">
+                                    <h6 class="alert-heading">
+                                        <i class="fas fa-info-circle me-2"></i>
+                                        Configuração Inicial
+                                    </h6>
+                                    <p class="mb-2">Use as credenciais do administrador para fazer o primeiro login:</p>
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <strong>E-mail:</strong><br>
+                                            <code><?php echo htmlspecialchars($adminInfo['email']); ?></code>
+                                        </div>
+                                        <div class="col-6">
+                                            <strong>Nome:</strong><br>
+                                            <code><?php echo htmlspecialchars($adminInfo['nome']); ?></code>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <small class="text-muted">
+                                        <i class="fas fa-shield-alt me-1"></i>
+                                        A senha está configurada no arquivo .env
+                                    </small>
                                 </div>
-                            </div>
+                            <?php endif; ?>
 
-                            <div class="mb-3">
-                                <label for="password" class="form-label">
-                                    <i class="bi bi-lock me-1"></i>
-                                    Senha
-                                </label>
-                                <div class="input-group">
+                            <!-- Formulário de login -->
+                            <form class="needs-validation" action="/login" method="POST" novalidate>
+                                <div class="form-floating mb-3">
+                                    <input type="email" 
+                                           class="form-control" 
+                                           id="email" 
+                                           name="email" 
+                                           placeholder="Digite seu e-mail"
+                                           required
+                                           value="<?php echo isset($_POST['email']) ? htmlspecialchars($_POST['email']) : ''; ?>">
+                                    <label for="email">E-mail</label>
+                                    <div class="invalid-feedback">
+                                        Por favor, insira um e-mail válido.
+                                    </div>
+                                </div>
+
+                                <div class="form-floating mb-3">
                                     <input type="password" 
                                            class="form-control" 
                                            id="password" 
                                            name="password" 
+                                           placeholder="Digite sua senha"
                                            required>
-                                    <button class="btn btn-outline-secondary" 
-                                            type="button" 
-                                            id="togglePassword">
-                                        <i class="bi bi-eye"></i>
+                                    <label for="password">Senha</label>
+                                    <div class="invalid-feedback">
+                                        Por favor, insira sua senha.
+                                    </div>
+                                </div>
+
+                                <div class="text-end mb-3">
+                                    <a href="password_recovery.php" class="text-decoration-none forgot-link">Esqueci minha senha</a>
+                                </div>
+
+                                <div class="d-grid mb-4">
+                                    <button type="submit" class="btn btn-primary btn-lg">
+                                        Entrar
                                     </button>
                                 </div>
-                                <div class="invalid-feedback">
-                                    Por favor, insira sua senha.
-                                </div>
-                            </div>
+                            </form>
 
-                            <div class="mb-3 form-check">
-                                <input type="checkbox" 
-                                       class="form-check-input" 
-                                       id="remember" 
-                                       name="remember">
-                                <label class="form-check-label" for="remember">
-                                    Lembrar de mim
-                                </label>
-                            </div>
-
-                            <div class="d-grid mb-3">
-                                <button type="submit" class="btn btn-primary btn-lg">
-                                    <i class="bi bi-box-arrow-in-right me-2"></i>
-                                    Entrar
-                                </button>
-                            </div>
-
+                            <!-- Footer -->
                             <div class="text-center">
-                                <a href="password_recovery.php" class="text-decoration-none">
-                                    <i class="bi bi-question-circle me-1"></i>
-                                    Esqueci minha senha
-                                </a>
+                                <p class="footer-text mb-0">
+                                    <span class="footer-version">ROSS Analista Jurídico V 0.1</span><br>
+                                    <span class="footer-author">Criado por Luis Oliveira</span>
+                                </p>
                             </div>
-                        </form>
+                        </div>
                     </div>
-                </div>
-
-                <div class="text-center mt-4">
-                    <p class="text-muted">
-                        Não tem uma conta? 
-                        <a href="register.php" class="text-decoration-none fw-semibold">
-                            Cadastre-se aqui
-                        </a>
-                    </p>
                 </div>
             </div>
         </div>
     </div>
-</main>
 
-<script>
-// Toggle password visibility
-document.getElementById('togglePassword').addEventListener('click', function() {
-    const password = document.getElementById('password');
-    const icon = this.querySelector('i');
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
-    if (password.type === 'password') {
-        password.type = 'text';
-        icon.classList.remove('bi-eye');
-        icon.classList.add('bi-eye-slash');
-    } else {
-        password.type = 'password';
-        icon.classList.remove('bi-eye-slash');
-        icon.classList.add('bi-eye');
-    }
-});
-
-// Form validation
-(function() {
-    'use strict';
-    const forms = document.querySelectorAll('.needs-validation');
-    
-    Array.from(forms).forEach(form => {
-        form.addEventListener('submit', event => {
-            if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-            form.classList.add('was-validated');
-        }, false);
-    });
-})();
-</script>
-
-<?php include 'partials/footer.php'; ?>
+    <!-- JavaScript customizado -->
+    <script src="assets/js/login.js"></script>
+</body>
+</html>

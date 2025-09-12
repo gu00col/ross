@@ -1,0 +1,20 @@
+RewriteEngine On
+
+# Redirecionar todas as rotas para index.php (exceto arquivos existentes)
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Bloquear acesso a arquivos sensíveis
+<Files "*.env">
+    Order allow,deny
+    Deny from all
+</Files>
+
+<Files "*.log">
+    Order allow,deny
+    Deny from all
+</Files>
+
+# Bloquear acesso a pastas do sistema
+RewriteRule ^(app|config|vendor)/ - [F,L]

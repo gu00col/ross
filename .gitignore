@@ -1,0 +1,109 @@
+# Arquivos de ambiente e configuração sensível
+.env
+.env.*
+!.env.example
+*.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+
+# Arquivos de configuração do sistema
+config/database.php
+config/app.php
+config/mail.php
+config/services.php
+
+# Logs
+*.log
+logs/
+storage/logs/
+var/log/
+
+# Cache e temporários
+cache/
+tmp/
+temp/
+*.tmp
+*.temp
+
+# Arquivos de IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Arquivos do sistema operacional
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Dependências
+node_modules/
+vendor/
+composer.lock
+
+# Arquivos de build
+dist/
+build/
+public/build/
+
+# Arquivos de backup
+*.bak
+*.backup
+*.old
+
+# Arquivos de sessão
+sessions/
+session/
+
+# Arquivos de upload
+uploads/
+files/
+storage/app/
+
+# Arquivos de banco de dados
+*.sqlite
+*.db
+*.sql
+
+# Arquivos de configuração local
+local.php
+local_config.php
+
+# Arquivos de chaves e certificados
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+
+# Arquivos de configuração específicos do projeto
+database.php
+app.php
+mail.php
+services.php
+
+# Arquivos de cache do PHP
+*.cache
+opcache/
+
+# Arquivos de debug
+debug.log
+error.log
+access.log
+
+# Arquivos de configuração do Docker (se contiverem dados sensíveis)
+docker-compose.override.yml
+docker-compose.local.yml
+
+# Arquivos de configuração do servidor
+.htaccess.local
+nginx.conf.local
+apache.conf.local

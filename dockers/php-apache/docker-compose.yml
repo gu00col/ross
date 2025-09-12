@@ -1,8 +1,8 @@
-version: "3.9"
-
 services:
   php-apache:
-    image: php:8.2-apache
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: php-apache
     restart: unless-stopped
     ports:
@@ -13,9 +13,6 @@ services:
       - APACHE_DOCUMENT_ROOT=${PHP_APACHE_DOCUMENT_ROOT:-/var/www/html}
     networks:
       - ${NETWORK_NAME:-ross-network}
-    depends_on:
-      - postgresql
-      - redis
 
 networks:
   ross-network:

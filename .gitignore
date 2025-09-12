@@ -9,6 +9,11 @@
 .env.production
 .env.staging
 
+# Arquivos .env em subdiretórios
+**/.env
+**/.env.*
+!**/.env.example
+
 # Arquivos de configuração do sistema
 config/database.php
 config/app.php

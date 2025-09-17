@@ -24,6 +24,11 @@ class Route extends Bootstrap
             'controller' => 'HomeController',
             'action' => 'index'
         );
+        $routes['login'] = array(
+            'route' => 'login',
+            'controller' => 'IndexController',
+            'action' => 'autenticar'
+        );
         $routes['contratos'] = array(
             'route' => 'contratos',
             'controller' => 'ContratosController',
@@ -33,6 +38,11 @@ class Route extends Bootstrap
             'route' => 'minha_conta',
             'controller' => 'MinhaContaController',
             'action' => 'index'
+        );
+        $routes['change_password'] = array(
+            'route' => 'change_password',
+            'controller' => 'MinhaContaController',
+            'action' => 'changePassword'
         );
         $routes['notFound'] = array(
             'route' => '404',

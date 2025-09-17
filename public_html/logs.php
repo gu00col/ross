@@ -25,5 +25,4 @@ function logMessage($message) {
     // Verificar se o arquivo de log existe e escrever a mensagem no final do arquivo
     file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
-?>
 

@@ -12,6 +12,49 @@ use MF\Model\Model;
  */
 class User extends Model
 {
+    private $id;
+    private $nome;
+    private $email;
+    private $password;
+    private $active;
+    private $is_superuser;
+
+    public function __get($atributo) {
+        return $this->$atributo;
+    }
+
+    public function __set($atributo, $valor) {
+        $this->$atributo = $valor;
+    }
+
+    /**
+     * Busca um usuário pelo endereço de e-mail.
+     * Utiliza prepared statements para prevenir SQL Injection.
+     *
+     * @return User|null Retorna uma instância de User ou null se não encontrado.
+     */
+    public function getUserByEmail() {
+        $query = "SELECT id, nome, email, password, active, is_superuser FROM users WHERE email = :email";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':email', $this->__get('email'));
+        $stmt->execute();
+
+        $user_data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($user_data) {
+            $user = new User($this->db);
+            $user->__set('id', $user_data['id']);
+            $user->__set('nome', $user_data['nome']);
+            $user->__set('email', $user_data['email']);
+            $user->__set('password', $user_data['password']);
+            $user->__set('active', $user_data['active']);
+            $user->__set('is_superuser', $user_data['is_superuser']);
+            return $user;
+        }
+
+        return null;
+    }
+
     /**
      * Obtém todos os usuários ativos
      * 
@@ -48,43 +91,42 @@ class User extends Model
     }
 
     /**
-     * Obtém um usuário por ID
-     * 
-     * @param string $id UUID do usuário
-     * @return array|null Dados do usuário ou null se não encontrado
+     * Busca um usuário pelo seu ID.
+     *
+     * @return User|null Retorna uma instância de User ou null se não encontrado.
      */
-    public function getUserById(string $id): ?array
-    {
-        $stmt = $this->db->prepare("
-            SELECT id, nome, email, active, is_superuser, created_at, updated_at 
-            FROM users 
-            WHERE id = :id
-        ");
-        $stmt->bindParam(':id', $id, \PDO::PARAM_STR);
+    public function getUserById() {
+        $query = "SELECT id, nome, email, password FROM users WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $this->__get('id'));
         $stmt->execute();
-        
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $result ?: null;
+
+        $user_data = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        if ($user_data) {
+            $user = new User($this->db);
+            $user->__set('id', $user_data['id']);
+            $user->__set('nome', $user_data['nome']);
+            $user->__set('email', $user_data['email']);
+            $user->__set('password', $user_data['password']);
+            return $user;
+        }
+
+        return null;
     }
 
     /**
-     * Obtém um usuário por email
-     * 
-     * @param string $email Email do usuário
-     * @return array|null Dados do usuário ou null se não encontrado
+     * Atualiza a senha de um usuário no banco de dados.
+     *
+     * @return bool Retorna true se a atualização foi bem-sucedida, false caso contrário.
      */
-    public function getUserByEmail(string $email): ?array
-    {
-        $stmt = $this->db->prepare("
-            SELECT id, nome, email, password, active, is_superuser, created_at, updated_at 
-            FROM users 
-            WHERE email = :email
-        ");
-        $stmt->bindParam(':email', $email, \PDO::PARAM_STR);
-        $stmt->execute();
+    public function updatePassword() {
+        $query = "UPDATE users SET password = :password, updated_at = CURRENT_TIMESTAMP WHERE id = :id";
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':password', $this->__get('password'));
+        $stmt->bindValue(':id', $this->__get('id'));
         
-        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-        return $result ?: null;
+        return $stmt->execute();
     }
 
     /**
@@ -233,3 +275,5 @@ class User extends Model
         return $stmt->fetchColumn() > 0;
     }
 }
+
+?>

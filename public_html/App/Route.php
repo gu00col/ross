@@ -19,6 +19,11 @@ class Route extends Bootstrap
             'controller' => 'IndexController',
             'action' => 'index'
         );
+        $routes['home'] = array(
+            'route' => 'home',
+            'controller' => 'HomeController',
+            'action' => 'index'
+        );
         $routes['notFound'] = array(
             'route' => '404',
             'controller' => 'NotFoundController',

@@ -4,49 +4,62 @@ require_once('./logs.php');
 ?>
 <!doctype html>
 <html lang="pt-Br">
-
 <head>
-    <?php includeFileWithVariables('./App/Views/layouts/title-meta.phtml', array('title' => 'Renata')); ?>
-    <!-- CSS, JS -->
-    <?php
-    require_once './App/Views/layouts/head-css.phtml';
-    ?>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-        }
-        .wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-        }
-        .main {
-            flex: 1;
-            overflow-y: auto;
-        }
-    </style>
+    <?php includeFileWithVariables('./App/Views/layouts/title-meta.phtml', array('title' => 'Dashboard')); ?>
+    <!-- CSS -->
+    <?php require_once './App/Views/layouts/head-css.phtml'; ?>
 </head>
+<body class="d-flex">
 
-<body>
-    <div class="wrapper">
-        <!-- Header -->
-        <?php
-        require_once './App/Views/layouts/topbar.phtml';
-        ?>
+    <!-- =============================================== -->
+    <!-- Barra Lateral (Sidebar) / Offcanvas -->
+    <!-- =============================================== -->
+    <aside class="sidebar offcanvas-md offcanvas-start" tabindex="-1" id="sidebarMenu">
+        <!-- Header do Offcanvas com logo e botão de fechar -->
+        <div class="offcanvas-header">
+            <div class="logo-container d-flex align-items-center">
+                <img src="./Assets/images/logo-ross.svg" alt="ROSS Logo" class="me-3" style="height: 50px;">
+                <div>
+                    <h1 class="logo-title mb-0">ROSS</h1>
+                    <p class="logo-subtitle mb-0">Analista Jurídico</p>
+                </div>
+            </div>
+            <!-- Botão de fechar visível apenas no modo offcanvas (mobile) -->
+            <button type="button" class="btn-close btn-close-white d-md-none" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <!-- Corpo do Offcanvas com a navegação -->
+        <div class="offcanvas-body d-flex flex-column">
+             <!-- A navegação agora fica diretamente no corpo, com margem superior para espaçamento -->
+            <nav class="nav flex-column mt-5">
+                <a class="nav-link active" href="#">
+                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
+                    Dashboard
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="bi bi-file-earmark-text me-2"></i>
+                    Contratos
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="bi bi-gear me-2"></i>
+                    Configurações
+                </a>
+                <a class="nav-link" href="#">
+                    <i class="bi bi-person me-2"></i>
+                    Minha Conta
+                </a>
+            </nav>
+        </div>
+    </aside>
 
-        <!-- Main -->
-            <?php print_r($this->content()); ?>
-        <!-- Footer -->
-        <?php
-        require_once './App/Views/layouts/footer.phtml';
-        ?>
-    </div>
+    <!-- =============================================== -->
+    <!-- Conteúdo Principal (Main Content) -->
+    <!-- =============================================== -->
+    <main class="main-content flex-grow-1 p-4">
+        <?php print_r($this->content()); ?>
+    </main>
 
-    <!-- Bootstrap JavaScript Libraries -->
-    <?php
-    require_once './App/Views/layouts/footer-js.phtml';
-    ?>
+    <!-- JS -->
+    <?php require_once './App/Views/layouts/footer-js.phtml'; ?>
 </body>
-
 </html>

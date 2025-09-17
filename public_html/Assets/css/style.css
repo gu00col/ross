@@ -17,57 +17,38 @@
 /* =============================================== */
 /* Estilos Globais */
 /* =============================================== */
-html, body {
-    height: 100%; /* Garante que o html e o body ocupem 100% da altura */
-}
-
 body {
     font-family: var(--font-family);
     background-color: var(--secondary-light-bg);
     color: var(--text-dark);
 }
 
+.main-container {
+    min-height: 100vh;
+}
+
 /* =============================================== */
 /* Estilos da Barra Lateral (Sidebar) e Offcanvas */
 /* =============================================== */
 .sidebar {
-    background-color: var(--primary-dark-blue); /* Cor de fundo padrão */
+    background-color: var(--primary-dark-blue);
     color: var(--text-light);
-    /* Largura fixa para a barra lateral */
     width: 280px;
-    flex-shrink: 0; /* Previne que a sidebar encolha */
+    flex-shrink: 0;
     transition: all 0.3s ease;
-    
-    /* Variáveis do Bootstrap para o offcanvas (mobile) */
-    --bs-offcanvas-color: var(--text-light);
-    --bs-offcanvas-border-width: 0;
-}
-
-/* Correção solicitada para garantir a cor de fundo do menu mobile */
-.offcanvas-md {
-    background-color: var(--primary-dark-blue) !important;
-}
-
-/* Aplica borda arredondada apenas na versão desktop (md e acima) */
-@media (min-width: 768px) {
-    .sidebar.offcanvas-md {
-        border-top-right-radius: 30px;
-        border-bottom-right-radius: 0;
-    }
-}
-
-/* Ajustes para o header e corpo do offcanvas para manter o layout */
-.sidebar .offcanvas-header {
     padding: 1.5rem;
-    border-bottom: none;
+    border-top-right-radius: 30px;
 }
-.sidebar .offcanvas-body {
-    padding: 0 1.5rem 1.5rem 1.5rem;
+
+.mobile-offcanvas {
+     background-color: var(--primary-dark-blue);
+     --bs-offcanvas-color: var(--text-light);
+     --bs-offcanvas-border-width: 0;
+     --bs-offcanvas-width: 280px;
 }
 
 /* Cabeçalho da Sidebar (Logo e Título) */
-.sidebar-header .logo-placeholder,
-.sidebar .offcanvas-header .logo-placeholder {
+.logo-container .logo-placeholder {
     width: 50px;
     height: 50px;
     background-color: var(--text-light);
@@ -80,22 +61,20 @@ body {
     font-size: 1.5rem;
 }
 
-.sidebar-header .logo-title,
-.sidebar .offcanvas-header .logo-title {
+.logo-container .logo-title {
     font-size: 1.75rem;
     font-weight: 700;
     color: var(--text-light);
 }
 
-.sidebar-header .logo-subtitle,
-.sidebar .offcanvas-header .logo-subtitle {
+.logo-container .logo-subtitle {
     font-size: 0.9rem;
     font-weight: 400;
     color: var(--text-muted-light);
 }
 
 /* Navegação da Sidebar */
-.sidebar .nav-link {
+.sidebar-nav .nav-link {
     color: var(--text-muted-light);
     font-size: 1rem;
     padding: 0.75rem 0.5rem;
@@ -104,21 +83,26 @@ body {
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
 }
 
-.sidebar .nav-link i {
+.sidebar-nav .nav-link i {
     font-size: 1.2rem;
 }
 
-.sidebar .nav-link:hover {
+.sidebar-nav .nav-link:hover {
     background-color: rgba(255, 255, 255, 0.1);
     color: var(--text-light);
 }
 
 /* Estilo para o link ativo */
-.sidebar .nav-link.active {
+.sidebar-nav .nav-link.active {
     background-color: rgba(255, 255, 255, 0.15);
     color: var(--text-light);
     font-weight: 600;
 }
+
+.mobile-offcanvas .offcanvas-header {
+    padding: 1.5rem;
+}
+
 
 /* =============================================== */
 /* Estilos do Conteúdo Principal */

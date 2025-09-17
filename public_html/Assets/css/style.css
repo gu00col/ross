@@ -124,6 +124,10 @@ body {
     text-transform: uppercase;
 }
 
+#page-contratos .card .card-title {
+    text-transform: none;
+}
+
 .main-content .stat-card .display-5 {
     color: var(--primary-dark-blue);
     font-weight: 700;
@@ -150,4 +154,16 @@ body {
 }
 .mobile-header .btn:focus {
     box-shadow: none;
+}
+
+#page-contratos .table-actions .btn {
+     width: 32px;
+     height: 32px;
+     display: inline-flex;
+     align-items: center;
+     justify-content: center;
+}
+
+#page-contratos .dropdown-toggle::after {
+    display: none;
 }

@@ -24,6 +24,16 @@ class Route extends Bootstrap
             'controller' => 'HomeController',
             'action' => 'index'
         );
+        $routes['contratos'] = array(
+            'route' => 'contratos',
+            'controller' => 'ContratosController',
+            'action' => 'index'
+        );
+        $routes['minha_conta'] = array(
+            'route' => 'minha_conta',
+            'controller' => 'MinhaContaController',
+            'action' => 'index'
+        );
         $routes['notFound'] = array(
             'route' => '404',
             'controller' => 'NotFoundController',

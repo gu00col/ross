@@ -1,0 +1,67 @@
+<!-- =============================================== -->
+<!-- Conteúdo Principal (Main Content) -->
+<!-- =============================================== -->
+<main class="main-content flex-grow-1 p-4" id="page-minha-conta">
+    <!-- Header Mobile com botão para abrir o Offcanvas -->
+    <div class="d-md-none d-flex justify-content-between align-items-center mb-4 mobile-header">
+        <h5 class="logo-title text-dark mb-0">ROSS</h5>
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+            <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
+        </button>
+    </div>
+
+    <div class="container-fluid px-0">
+        <!-- Cabeçalho da Página Minha Conta -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h2 class="display-6 mb-0">Minha Conta</h2>
+                <p class="text-muted mb-0">Gerencie suas informações pessoais e de segurança.</p>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Card de Informações da Conta -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Informações da Conta</h5>
+                        <dl class="row">
+                            <dt class="col-sm-4">Nome</dt>
+                            <dd class="col-sm-8">João da Silva</dd>
+
+                            <dt class="col-sm-4">Email</dt>
+                            <dd class="col-sm-8">joao.silva@example.com</dd>
+
+                            <dt class="col-sm-4">Data de Criação</dt>
+                            <dd class="col-sm-8">25/08/2025</dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card para Alterar Senha -->
+            <div class="col-lg-6">
+                <div class="card h-100">
+                    <div class="card-body p-4">
+                        <h5 class="card-title mb-4">Alterar Senha</h5>
+                        <form>
+                            <div class="mb-3">
+                                <label for="currentPassword" class="form-label">Senha Atual</label>
+                                <input type="password" class="form-control" id="currentPassword" placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">Nova Senha</label>
+                                <input type="password" class="form-control" id="newPassword" placeholder="••••••••">
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha</label>
+                                <input type="password" class="form-control" id="confirmNewPassword" placeholder="••••••••">
+                            </div>
+                            <button type="submit" class="btn btn-primary mt-2">Salvar Alterações</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,185 @@
+<!-- =============================================== -->
+<!-- Conteúdo Principal (Main Content) -->
+<!-- =============================================== -->
+<main class="main-content flex-grow-1 p-4" id="page-contratos">
+    <!-- Header Mobile com botão para abrir o Offcanvas -->
+    <div class="d-md-none d-flex justify-content-between align-items-center mb-4 mobile-header">
+        <h5 class="logo-title text-dark mb-0">ROSS</h5>
+        <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+            <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
+        </button>
+    </div>
+
+    <div class="container-fluid px-0">
+        <!-- Cabeçalho da Página de Contratos -->
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+            <div>
+                <h2 class="display-6 mb-0">Contratos</h2>
+                <p class="text-muted mb-0">Gerencie e analise todos os seus documentos.</p>
+            </div>
+            <a href="#" class="btn btn-primary d-flex align-items-center">
+                <i class="bi bi-plus-lg me-2"></i> Nova Análise
+            </a>
+        </div>
+
+        <!-- Filtros de Busca -->
+        <div class="card mb-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3">Filtros</h5>
+                <form class="row g-3 align-items-end">
+                    <div class="col-md-5">
+                        <label for="searchName" class="form-label">Buscar por Nome</label>
+                        <input type="text" class="form-control" id="searchName" placeholder="Digite o nome do contrato...">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="searchStatus" class="form-label">Status</label>
+                        <select id="searchStatus" class="form-select">
+                            <option selected>Todos</option>
+                            <option>Processado</option>
+                            <option>Pendente</option>
+                            <option>Com Erro</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <button type="submit" class="btn btn-secondary w-100">Aplicar Filtros</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Tabela de Contratos -->
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Criado em</th>
+                                <th scope="col">Analisado em</th>
+                                <th scope="col">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Contrato Principal 2025</td>
+                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
+                                <td>15/09/2025</td>
+                                <td>15/09/2025</td>
+                                <td class="table-actions">
+                                    <!-- Ações para Desktop -->
+                                    <div class="d-none d-md-inline-flex">
+                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                    <!-- Dropdown para Mobile -->
+                                    <div class="dropdown d-md-none">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Aditivo Contratual Z-14</td>
+                                <td><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Pendente</span></td>
+                                <td>14/09/2025</td>
+                                <td>--</td>
+                                <td class="table-actions">
+                                    <!-- Ações para Desktop -->
+                                    <div class="d-none d-md-inline-flex">
+                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                    <!-- Dropdown para Mobile -->
+                                    <div class="dropdown d-md-none">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Contrato de Fornecimento K</td>
+                                <td><span class="badge bg-danger-subtle text-danger-emphasis rounded-pill">Com Erro</span></td>
+                                <td>13/09/2025</td>
+                                <td>13/09/2025</td>
+                                <td class="table-actions">
+                                    <!-- Ações para Desktop -->
+                                    <div class="d-none d-md-inline-flex">
+                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                    <!-- Dropdown para Mobile -->
+                                    <div class="dropdown d-md-none">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Acordo Comercial Internacional</td>
+                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
+                                <td>12/09/2025</td>
+                                <td>12/09/2025</td>
+                                <td class="table-actions">
+                                    <!-- Ações para Desktop -->
+                                    <div class="d-none d-md-inline-flex">
+                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
+                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                    </div>
+                                    <!-- Dropdown para Mobile -->
+                                    <div class="dropdown d-md-none">
+                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <i class="bi bi-three-dots-vertical"></i>
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
+                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
+                                            <li><hr class="dropdown-divider"></li>
+                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                        </ul>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Paginação -->
+                <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-end">
+                    <ul class="pagination">
+                        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
+                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                        <li class="page-item"><a class="page-link" href="#">2</a></li>
+                        <li class="page-item"><a class="page-link" href="#">3</a></li>
+                        <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</main>

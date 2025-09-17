@@ -28,19 +28,19 @@ require_once('./logs.php');
             </div>
             <!-- Navegação -->
             <nav class="nav flex-column sidebar-nav">
-                <a class="nav-link active" href="#">
+                <a class="nav-link <?= ($this->view->active_page ?? '') == 'home' ? 'active' : '' ?>" href="/home">
                     <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
                     Dashboard
                 </a>
-                <a class="nav-link" href="#">
+                <a class="nav-link <?= ($this->view->active_page ?? '') == 'contratos' ? 'active' : '' ?>" href="/contratos">
                     <i class="bi bi-file-earmark-text me-2"></i>
                     Contratos
                 </a>
-                <a class="nav-link" href="#">
+                <!-- <a class="nav-link" href="#">
                     <i class="bi bi-gear me-2"></i>
                     Configurações
-                </a>
-                <a class="nav-link" href="#">
+                </a> -->
+                <a class="nav-link <?= ($this->view->active_page ?? '') == 'minha_conta' ? 'active' : '' ?>" href="/minha_conta">
                     <i class="bi bi-person me-2"></i>
                     Minha Conta
                 </a>
@@ -70,19 +70,19 @@ require_once('./logs.php');
       <div class="offcanvas-body">
         <!-- Navegação Mobile -->
         <nav class="nav flex-column sidebar-nav mt-4">
-            <a class="nav-link active" href="#">
+            <a class="nav-link <?= ($this->view->active_page ?? '') == 'home' ? 'active' : '' ?>" href="/home">
                 <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
                 Dashboard
             </a>
-            <a class="nav-link" href="#">
+            <a class="nav-link <?= ($this->view->active_page ?? '') == 'contratos' ? 'active' : '' ?>" href="/contratos">
                 <i class="bi bi-file-earmark-text me-2"></i>
                 Contratos
             </a>
-            <a class="nav-link" href="#">
+            <!-- <a class="nav-link" href="#">
                 <i class="bi bi-gear me-2"></i>
                 Configurações
-            </a>
-            <a class="nav-link" href="#">
+            </a> -->
+            <a class="nav-link <?= ($this->view->active_page ?? '') == 'minha_conta' ? 'active' : '' ?>" href="/minha_conta">
                 <i class="bi bi-person me-2"></i>
                 Minha Conta
             </a>

@@ -28,7 +28,7 @@
                 <div class="card stat-card text-center h-100">
                     <div class="card-body p-3 d-flex flex-column justify-content-center">
                         <h5 class="card-title text-info-emphasis">Enviados Hoje</h5>
-                        <p class="display-5">7</p>
+                        <p class="display-5"><?= $this->view->dashboardStats['sent_today'] ?? 0 ?></p>
                         <div class="text-muted"><i class="bi bi-calendar-day me-1"></i>Últimas 24h</div>
                     </div>
                 </div>
@@ -37,7 +37,7 @@
                 <div class="card stat-card text-center h-100">
                     <div class="card-body p-3 d-flex flex-column justify-content-center">
                         <h5 class="card-title text-warning-emphasis">Pendentes</h5>
-                        <p class="display-5">12</p>
+                        <p class="display-5"><?= $this->view->dashboardStats['pending'] ?? 0 ?></p>
                          <div class="text-muted"><i class="bi bi-clock-history me-1"></i>Aguardando análise</div>
                     </div>
                 </div>
@@ -46,7 +46,7 @@
                 <div class="card stat-card text-center h-100">
                     <div class="card-body p-3 d-flex flex-column justify-content-center">
                         <h5 class="card-title text-success-emphasis">Processados</h5>
-                        <p class="display-5">157</p>
+                        <p class="display-5"><?= $this->view->dashboardStats['processed'] ?? 0 ?></p>
                          <div class="text-muted"><i class="bi bi-check-circle me-1"></i>Análise concluída</div>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
                 <div class="card stat-card text-center h-100">
                     <div class="card-body p-3 d-flex flex-column justify-content-center">
                         <h5 class="card-title text-danger-emphasis">Com Erro</h5>
-                        <p class="display-5">3</p>
+                        <p class="display-5"><?= $this->view->dashboardStats['with_error'] ?? 0 ?></p>
                         <div class="text-muted"><i class="bi bi-exclamation-triangle me-1"></i>Requerem atenção</div>
                     </div>
                 </div>
@@ -76,31 +76,23 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Contrato Alpha 2025</td>
-                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
-                                <td>17/09/2025</td>
-                            </tr>
-                            <tr>
-                                <td>Contrato Beta V2</td>
-                                <td><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Pendente</span></td>
-                                <td>17/09/2025</td>
-                            </tr>
-                            <tr>
-                                <td>Aditivo Gamma</td>
-                                <td><span class="badge bg-danger-subtle text-danger-emphasis rounded-pill">Com Erro</span></td>
-                                <td>16/09/2025</td>
-                            </tr>
-                            <tr>
-                                <td>Contrato Delta Imobiliário</td>
-                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
-                                <td>16/09/2025</td>
-                            </tr>
-                            <tr>
-                                <td>Contrato Epsilon Fornecedor</td>
-                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
-                                <td>15/09/2025</td>
-                            </tr>
+                            <?php if (empty($this->view->latestContracts)) { ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">Nenhum contrato encontrado.</td>
+                                </tr>
+                            <?php } else { ?>
+                                <?php 
+                                foreach ($this->view->latestContracts as $contract) { 
+                                    $status = App\Helpers\StatusHelper::formatStatus($contract['status']);
+                                    $formatted_date = date('d/m/Y', strtotime($contract['created_at']));
+                                ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?></td>
+                                        <td><span class="badge <?= $status['class'] ?> rounded-pill"><?= htmlspecialchars($status['text']) ?></span></td>
+                                        <td><?= $formatted_date ?></td>
+                                    </tr>
+                                <?php } ?>
+                            <?php } ?>
                         </tbody>
                     </table>
                 </div>

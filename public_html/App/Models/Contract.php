@@ -269,4 +269,70 @@ class Contract extends Model
         
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
     }
+
+    /**
+     * Busca os últimos 5 contratos de um usuário específico.
+     *
+     * @param string $userId O UUID do usuário.
+     * @return array Uma lista dos últimos 5 contratos.
+     */
+    public function getLatestByUserId(string $userId): array
+    {
+        $query = "
+            SELECT 
+                original_filename, 
+                status, 
+                created_at 
+            FROM 
+                contracts 
+            WHERE 
+                user_id = :user_id
+            ORDER BY 
+                created_at DESC 
+            LIMIT 5
+        ";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Busca as estatísticas do dashboard para um usuário específico.
+     *
+     * @param string $userId O UUID do usuário.
+     * @return array Um array associativo com as contagens.
+     */
+    public function getDashboardStats(string $userId): array
+    {
+        $query = "
+            SELECT
+                COUNT(CASE WHEN CAST(created_at AS DATE) = CURRENT_DATE THEN 1 END) as sent_today,
+                COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
+                COUNT(CASE WHEN status = 'processed' THEN 1 END) as processed,
+                COUNT(CASE WHEN status = 'error' THEN 1 END) as with_error
+            FROM
+                contracts
+            WHERE
+                user_id = :user_id
+        ";
+        
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':user_id', $userId, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        
+        // Garante que o retorno seja um array mesmo que não haja resultados
+        return $result ?: [
+            'sent_today' => 0,
+            'pending' => 0,
+            'processed' => 0,
+            'with_error' => 0
+        ];
+    }
 }
+
+?>

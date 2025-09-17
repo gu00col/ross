@@ -16,7 +16,8 @@
             "MF\\": "vendor/MF/"
         },
         "files": [
-            "App/EnvLoader.php"
+            "App/EnvLoader.php",
+            "App/Helpers/StatusHelper.php"
         ]
     }
 }

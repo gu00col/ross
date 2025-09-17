@@ -1,0 +1,98 @@
+<?php
+require_once("./App/Views/layouts/main.php");
+require_once('./logs.php');
+?>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROSS | Analista Jurídico</title>
+    <link rel="shortcut icon" href="./Assets/images/favicon.ico" type="image/x-icon">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="./Assets/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados -->
+    <style>
+        :root {
+            --ross-blue: #0D2149;
+            --ross-cream: #F9EBE0;
+        }
+        body {
+            font-family: 'Roboto Condensed', sans-serif;
+            margin: 0;
+            background-color: var(--ross-blue);
+        }
+        
+        .login-left-section {
+            background-color: var(--ross-blue);
+        }
+        
+        .login-right-section {
+            background-color: var(--ross-cream);
+            border-radius: 30px 0 0 30px;
+        }
+
+        @media (max-width: 768px) {
+            .login-right-section {
+                border-radius: 0;
+            }
+        }
+        
+        .login-form-control {
+            border: 2px solid var(--ross-blue);
+            background-color: var(--ross-cream);
+        }
+        
+        .login-form-control:focus {
+            border-color: var(--ross-blue);
+            box-shadow: 0 0 0 0.2rem rgba(13, 33, 73, 0.25);
+            background-color: #ffffff;
+        }
+        
+        .login-btn-primary {
+            background-color: var(--ross-blue);
+            border-color: var(--ross-blue);
+            transition: transform 0.2s ease-in-out;
+        }
+        
+        .login-btn-primary:hover {
+            background-color: #0b1a3a;
+            border-color: #0b1a3a;
+            transform: translateY(-2px);
+        }
+        
+        .login-text-primary {
+            color: var(--ross-blue);
+        }
+        
+        .login-logo-mobile {
+            width: 100px;
+            height: auto;
+        }
+        
+        .login-logo-desktop {
+            width: 200px;
+            height: auto;
+            filter: brightness(0) invert(1);
+        }
+        
+        .login-letter-spacing {
+            letter-spacing: 2px;
+        }
+    </style>
+</head>
+<body>
+    <?php print_r($this->content()); ?>
+
+    <!-- Bootstrap JavaScript -->
+    <script src="./Assets/js/bootstrap.min.js"></script>
+    <script src="./Assets/js/popper.min.js"></script>
+</body>
+</html>

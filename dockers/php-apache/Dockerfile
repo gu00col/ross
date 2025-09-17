@@ -33,13 +33,8 @@ RUN echo "upload_max_filesize = 10M" >> /usr/local/etc/php/conf.d/upload.ini
 RUN echo "post_max_size = 10M" >> /usr/local/etc/php/conf.d/upload.ini
 RUN echo "max_execution_time = 300" >> /usr/local/etc/php/conf.d/execution.ini
 
-# Configurar OPcache
-RUN echo "opcache.enable=1" >> /usr/local/etc/php/conf.d/opcache.ini
-RUN echo "opcache.memory_consumption=128" >> /usr/local/etc/php/conf.d/opcache.ini
-RUN echo "opcache.interned_strings_buffer=8" >> /usr/local/etc/php/conf.d/opcache.ini
-RUN echo "opcache.max_accelerated_files=4000" >> /usr/local/etc/php/conf.d/opcache.ini
-RUN echo "opcache.revalidate_freq=2" >> /usr/local/etc/php/conf.d/opcache.ini
-RUN echo "opcache.fast_shutdown=1" >> /usr/local/etc/php/conf.d/opcache.ini
+# Configurar OPcache para desenvolvimento (desabilitado)
+COPY opcache-dev.ini /usr/local/etc/php/conf.d/opcache.ini
 
 # Configurar Apache
 COPY apache-config.conf /etc/apache2/sites-available/000-default.conf

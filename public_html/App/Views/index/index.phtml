@@ -1,0 +1,135 @@
+<main class="main bg-dark text-white pb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="text-center mt-5">
+                    <img src="./Assets/images/logo.png" width="150" alt="Renata">
+                </div>
+                <div class="mt-3 text-center">
+                    <h1>Renata</h1>
+                    <h3>O Template MVC para PHP</h3>
+                </div>
+                <div class="mt-5">
+                    <p>Desenvolvendo diariamente e iniciando diversos projetos em PHP puro, surgiu a necessidade de agilizar o processo de organização e criação. E assim nasce Renata, o Boilerplate para criação de projetos MVC em PHP. Desenvolvido em PHP 8.2, este template vai acelerar significativamente o seu desenvolvimento.</p>
+                    <p>Renata é uma solução prática e eficiente, projetada para desenvolvedores que buscam simplicidade e rapidez na criação de aplicações robustas. Com um conjunto bem definido de rotas, autoload e scripts de conexão com banco de dados, você poderá focar no que realmente importa: construir funcionalidades inovadoras.</p>
+                </div>
+                <div class="mt-3">
+                    <p>
+                        <a href="https://www.linkedin.com/in/luis-g-b-oliveira"> Linkedin Luis Oliveira</a><br>
+                        Desenvolvido por Luis Gustavo Barbosa de Oliveira Acesse o likedin para ficar por dentro de cada novidades 
+                    </p>
+                    <p>
+                        <a href="https://github.com/gu00col/renata_mcv_php_template"> Github do repositório </a><br>
+                        Você pode baixar diretamente do repositório publico do github.
+                    </p>
+                </div>
+                <div class="mt-5">
+                    <h5>O que tem na Renata?</h5>
+                    <ul class="list-group mt-3 list-group-flush bg-dark text-white">
+                        <li class="list-group-item bg-dark text-white">Rotas configuráveis</li>
+                        <li class="list-group-item bg-dark text-white">Autoload eficiente</li>
+                        <li class="list-group-item bg-dark text-white">Script de conexão com o banco de dados</li>
+                        <li class="list-group-item bg-dark text-white">Estrutura de diretórios organizada</li>
+                        <li class="list-group-item bg-dark text-white">Suporte para Controllers, Models e Views</li>
+                        <li class="list-group-item bg-dark text-white">Integração com Composer</li>
+                        <li class="list-group-item bg-dark text-white">Padrões de codificação PSR-4</li>
+                        <li class="list-group-item bg-dark text-white">Documentação clara e objetiva</li>
+                        <li class="list-group-item bg-dark text-white">Exemplos práticos de uso</li>
+                        <li class="list-group-item bg-dark text-white">Facilidade de extensão e personalização</li>
+                    </ul>
+                </div>
+                <div class="mt-5">
+                    <h5>Estrutura de pastas</h5>
+                    <ul class="list-unstyled list-group mt-5 list-group-flush bg-dark text-white">
+                    <li class="folder ">App
+                        <p class="text-white ms-3 small">Diretório principal da aplicação, contendo subdiretórios para controladores, modelos e visualizações.</p>
+                        <ul class="list-unstyled  ms-3">
+                            <li class="folder">Controllers
+                                <p class="text-white ms-3 small">Contém os arquivos dos controladores que lidam com a lógica da aplicação.</p>
+                                <ul class="list-unstyled ms-3">
+                                    <li>IndexController.php</li>
+                                </ul>
+                            </li>
+                            <li class="folder">Models
+                                <p class="text-white ms-3 small">Destinado aos arquivos de modelo.</p>
+                            </li>
+                            <li class="folder">Views
+                                <p class="text-white ms-3 small">Contém os arquivos de visualização que lidam com a camada de apresentação da aplicação.</p>
+                                <ul class="list-unstyled ms-3">
+                                    <li class="folder">index
+                                        <p class="text-white ms-3 small">Contém o arquivo `index.phtml`.</p>
+                                        <ul class="list-unstyled ms-3">
+                                            <li>index.phtml</li>
+                                        </ul>
+                                    </li>
+                                    <li class="folder">layouts
+                                        <p class="text-white ms-3 small">Destinado aos arquivos de layout.</p>
+                                    </li>
+                                    <li>Route.php
+                                        <p class="text-white ms-3 small">Arquivo usado para configurações de roteamento.</p>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="folder">Assets
+                        <p class="text-white ms-3 small">Contém ativos estáticos como arquivos CSS, imagens e JavaScript.</p>
+                        <ul class="list-unstyled ms-3">
+                            <li class="folder">css
+                                <p class="text-white ms-3 small">Destinado aos arquivos CSS.</p>
+                            </li>
+                            <li class="folder">images
+                                <p class="text-white ms-3 small">Destinado aos arquivos de imagem.</p>
+                            </li>
+                            <li class="folder">js
+                                <p class="text-white ms-3 small">Destinado aos arquivos JavaScript.</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="folder">vendor
+                        <p class="text-white ms-3 small">Contém bibliotecas e dependências de terceiros gerenciadas pelo Composer.</p>
+                        <ul class="list-unstyled ms-3">
+                            <li class="folder">composer
+                                <p class="text-white ms-3 small">Contém arquivos relacionados ao Composer.</p>
+                            </li>
+                            <li class="folder">MF
+                                <p class="text-white ms-3 small">Contém subdiretórios para `Controller` e `Init`.</p>
+                                <ul class="list-unstyled ms-3">
+                                    <li class="folder">Controller
+                                        <p class="text-white ms-3 small">Arquivos de controle específicos do framework.</p>
+                                    </li>
+                                    <li class="folder">Init
+                                        <p class="text-white ms-3 small">Arquivos de inicialização e configuração do framework.</p>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>autoload.php
+                                <p class="text-white ms-3 small">Arquivo para autocarregamento de classes.</p>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>.gitignore
+                        <p class="text-white ms-3 small">Especifica arquivos e diretórios a serem ignorados pelo Git.</p>
+                    </li>
+                    <li>.htaccess
+                        <p class="text-white ms-3 small">Arquivo de configuração para o servidor web Apache.</p>
+                    </li>
+                    <li>composer.json
+                        <p class="text-white ms-3 small">Arquivo de configuração do Composer.</p>
+                    </li>
+                    <li>composer.lock
+                        <p class="text-white ms-3 small">Arquivo de bloqueio de dependências do Composer.</p>
+                    </li>
+                    <li>index.php
+                        <p class="text-white ms-3 small">Ponto de entrada da aplicação.</p>
+                    </li>
+                    <li>README.md
+                        <p class="text-white ms-3 small">Arquivo de documentação.</p>
+                    </li>
+                </ul>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</main>

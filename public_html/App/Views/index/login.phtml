@@ -1,0 +1,52 @@
+<main class="container-fluid vh-100 p-0">
+    <div class="row g-0 h-100">
+        
+        <!-- 
+            SEÇÃO ESQUERDA (BRANDING)
+            A classe "d-none" esconde em telas pequenas.
+            A classe "d-md-flex" exibe a partir de telas médias (desktop).
+        -->
+        <section class="col-md-8 d-none d-md-flex flex-column align-items-center justify-content-center login-left-section">
+            <div class="text-center text-white p-5">
+                <img src="./Assets/images/logo-ross.svg" alt="ROSS Logo" class="mb-4 login-logo-desktop">
+                <h1 class="display-3 fw-bold login-letter-spacing">ROSS</h1>
+                <p class="h4 fw-light mt-2">Seu Analista Jurídico com IA</p>
+            </div>
+        </section>
+
+        <!-- 
+            SEÇÃO DIREITA (FORMULÁRIO)
+            A classe "col-12" garante 100% da largura em telas pequenas.
+            A classe "col-md-4" define a largura em telas médias.
+        -->
+        <section class="col-12 col-md-4 d-flex flex-column align-items-center justify-content-center login-right-section">
+            <div class="w-100 p-4" style="max-width: 400px;">
+                <!-- Logo para mobile -->
+                <div class="text-center mb-4 d-block d-md-none">
+                    <img src="./Assets/images/logo-ross-blue.svg" alt="ROSS Logo" class="mb-3 login-logo-mobile">
+                    <p class="h5 fw-light mt-2">Seu Analista Jurídico com IA</p>
+                </div>
+                
+                <header class="text-center mb-5">
+                    <h2 class="h1 fw-bold login-text-primary">Acessar Conta</h2>
+                    <p class="text-muted">Bem-vindo de volta!</p>
+                </header>
+                <form method="POST" action="/login">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control login-form-control" id="email" name="email" placeholder="seu@email.com" required>
+                        <label for="email">E-mail</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control login-form-control" id="password" name="password" placeholder="Senha" required>
+                        <label for="password">Senha</label>
+                    </div>
+                    <div class="text-end mb-4">
+                        <a href="/forgot-password" class="small text-decoration-none login-text-primary">Esqueci minha senha</a>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 fw-bold text-uppercase py-3 login-btn-primary">Entrar</button>
+                </form>
+            </div>
+        </section>
+
+    </div>
+</main>

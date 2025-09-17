@@ -1,0 +1,52 @@
+<?php
+require_once("./App/Views/layouts/main.php");
+require_once('./logs.php');
+?>
+<!doctype html>
+<html lang="pt-Br">
+
+<head>
+    <?php includeFileWithVariables('./App/Views/layouts/title-meta.phtml', array('title' => 'Renata')); ?>
+    <!-- CSS, JS -->
+    <?php
+    require_once './App/Views/layouts/head-css.phtml';
+    ?>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+        }
+        .wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .main {
+            flex: 1;
+            overflow-y: auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrapper">
+        <!-- Header -->
+        <?php
+        require_once './App/Views/layouts/topbar.phtml';
+        ?>
+
+        <!-- Main -->
+            <?php print_r($this->content()); ?>
+        <!-- Footer -->
+        <?php
+        require_once './App/Views/layouts/footer.phtml';
+        ?>
+    </div>
+
+    <!-- Bootstrap JavaScript Libraries -->
+    <?php
+    require_once './App/Views/layouts/footer-js.phtml';
+    ?>
+</body>
+
+</html>

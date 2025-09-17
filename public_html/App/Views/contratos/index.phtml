@@ -38,22 +38,31 @@
         <div class="card mb-4">
             <div class="card-body">
                 <h5 class="card-title mb-3">Filtros</h5>
-                <form class="row g-3 align-items-end">
-                    <div class="col-md-5">
-                        <label for="searchName" class="form-label">Buscar por Nome</label>
-                        <input type="text" class="form-control" id="searchName" placeholder="Digite o nome do contrato...">
+                <form action="/contratos" method="GET" class="row g-3 align-items-end">
+                    <div class="col-lg-4 col-md-12">
+                        <label for="search" class="form-label">Buscar por nome</label>
+                        <input type="text" class="form-control" id="search" name="search" placeholder="Digite o nome do contrato..." value="<?= htmlspecialchars($this->view->filters['search'] ?? '') ?>">
                     </div>
-                    <div class="col-md-4">
-                        <label for="searchStatus" class="form-label">Status</label>
-                        <select id="searchStatus" class="form-select">
-                            <option selected>Todos</option>
-                            <option>Processado</option>
-                            <option>Pendente</option>
-                            <option>Com Erro</option>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="status" class="form-label">Status</label>
+                        <select id="status" name="status" class="form-select">
+                            <option value="">Todos</option>
+                            <option value="pending" <?= (($this->view->filters['status'] ?? '') == 'pending') ? 'selected' : '' ?>>Pendente</option>
+                            <option value="processed" <?= (($this->view->filters['status'] ?? '') == 'processed') ? 'selected' : '' ?>>Processado</option>
+                            <option value="error" <?= (($this->view->filters['status'] ?? '') == 'error') ? 'selected' : '' ?>>Com Erro</option>
                         </select>
                     </div>
-                    <div class="col-md-3">
-                        <button type="submit" class="btn btn-secondary w-100">Aplicar Filtros</button>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="start_date" class="form-label">Data Início</label>
+                        <input type="date" class="form-control" id="start_date" name="start_date" value="<?= htmlspecialchars($this->view->filters['start_date'] ?? '') ?>">
+                    </div>
+                    <div class="col-lg-2 col-md-6">
+                        <label for="end_date" class="form-label">Data Fim</label>
+                        <input type="date" class="form-control" id="end_date" name="end_date" value="<?= htmlspecialchars($this->view->filters['end_date'] ?? '') ?>">
+                    </div>
+                    <div class="col-lg-2 col-md-6 d-flex">
+                        <button type="submit" class="btn btn-primary w-100 me-2">Filtrar</button>
+                        <button type="button" id="clear-filters-btn" class="btn btn-outline-secondary w-100">Limpar</button>
                     </div>
                 </form>
             </div>
@@ -143,7 +152,7 @@
                     <nav aria-label="Navegação da página de contratos" class="mt-4 d-flex justify-content-end">
                         <ul class="pagination">
                             <li class="page-item <?= ($this->view->current_page <= 1) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $this->view->current_page - 1 ?>" aria-label="Anterior">
+                                <a class="page-link" href="?page=<?= $this->view->current_page - 1 ?>&<?= $this->view->filter_query_string ?>" aria-label="Anterior">
                                     <span aria-hidden="true">&laquo;</span>
                                 </a>
                             </li>
@@ -151,7 +160,7 @@
                             <!-- Opcional: Links de página individuais (pode ser adicionado no futuro se necessário) -->
 
                             <li class="page-item <?= ($this->view->current_page >= $this->view->total_pages) ? 'disabled' : '' ?>">
-                                <a class="page-link" href="?page=<?= $this->view->current_page + 1 ?>" aria-label="Próxima">
+                                <a class="page-link" href="?page=<?= $this->view->current_page + 1 ?>&<?= $this->view->filter_query_string ?>" aria-label="Próxima">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
                             </li>

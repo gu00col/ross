@@ -43,9 +43,9 @@ class Contract extends Model
      * @param int $offset Offset para paginação
      * @return array Lista de contratos do usuário
      */
-    public function getContractsByUser(string $userId, int $limit = 10, int $offset = 0): array
+    public function getContractsByUser(string $userId, int $limit = 10, int $offset = 0, array $filters = []): array
     {
-        $stmt = $this->db->prepare("
+        $sql = "
             SELECT 
                 c.id,
                 c.status,
@@ -55,13 +55,42 @@ class Contract extends Model
                 c.analyzed_at,
                 EXTRACT(EPOCH FROM (c.analyzed_at - c.created_at)) AS segundos_para_analisar
             FROM contracts c
-            WHERE c.user_id = :user_id
-            ORDER BY c.created_at DESC
-            LIMIT :limit OFFSET :offset
-        ");
-        $stmt->bindParam(':user_id', $userId, \PDO::PARAM_STR);
-        $stmt->bindParam(':limit', $limit, \PDO::PARAM_INT);
-        $stmt->bindParam(':offset', $offset, \PDO::PARAM_INT);
+        ";
+
+        $where = ['c.user_id = :user_id'];
+        $params = [':user_id' => $userId];
+
+        if (!empty($filters['search'])) {
+            $where[] = 'c.original_filename ILIKE :search';
+            $params[':search'] = '%' . $filters['search'] . '%';
+        }
+        if (!empty($filters['status'])) {
+            $where[] = 'c.status = :status';
+            $params[':status'] = $filters['status'];
+        }
+        if (!empty($filters['start_date'])) {
+            $where[] = 'c.created_at >= :start_date';
+            $params[':start_date'] = $filters['start_date'];
+        }
+        if (!empty($filters['end_date'])) {
+            // Adiciona 1 dia para incluir todos os registros do dia final
+            $where[] = 'c.created_at < :end_date::date + interval \'1 day\'';
+            $params[':end_date'] = $filters['end_date'];
+        }
+
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        $sql .= " ORDER BY c.created_at DESC LIMIT :limit OFFSET :offset";
+        $params[':limit'] = $limit;
+        $params[':offset'] = $offset;
+
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => &$val) {
+             $stmt->bindParam($key, $val, is_int($val) ? \PDO::PARAM_INT : \PDO::PARAM_STR);
+        }
+        
         $stmt->execute();
         
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -73,10 +102,39 @@ class Contract extends Model
      * @param string $userId O UUID do usuário.
      * @return integer A contagem total de contratos.
      */
-    public function getContractCountByUser(string $userId): int
+    public function getContractCountByUser(string $userId, array $filters = []): int
     {
-        $stmt = $this->db->prepare("SELECT COUNT(*) FROM contracts WHERE user_id = :user_id");
-        $stmt->bindParam(':user_id', $userId, \PDO::PARAM_STR);
+        $sql = "SELECT COUNT(*) FROM contracts c";
+        
+        $where = ['c.user_id = :user_id'];
+        $params = [':user_id' => $userId];
+
+        if (!empty($filters['search'])) {
+            $where[] = 'c.original_filename ILIKE :search';
+            $params[':search'] = '%' . $filters['search'] . '%';
+        }
+        if (!empty($filters['status'])) {
+            $where[] = 'c.status = :status';
+            $params[':status'] = $filters['status'];
+        }
+        if (!empty($filters['start_date'])) {
+            $where[] = 'c.created_at >= :start_date';
+            $params[':start_date'] = $filters['start_date'];
+        }
+        if (!empty($filters['end_date'])) {
+            $where[] = 'c.created_at < :end_date::date + interval \'1 day\'';
+            $params[':end_date'] = $filters['end_date'];
+        }
+
+        if (count($where) > 0) {
+            $sql .= " WHERE " . implode(' AND ', $where);
+        }
+
+        $stmt = $this->db->prepare($sql);
+        foreach ($params as $key => &$val) {
+             $stmt->bindParam($key, $val, \PDO::PARAM_STR);
+        }
+
         $stmt->execute();
         
         return (int)$stmt->fetchColumn();

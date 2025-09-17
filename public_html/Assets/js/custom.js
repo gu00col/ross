@@ -5,6 +5,7 @@
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Documento carregado e pronto!');
 
+    // Lógica para o formulário de Upload
     const uploadForm = document.getElementById('uploadForm');
     if (uploadForm) {
         uploadForm.addEventListener('submit', function(event) {
@@ -33,6 +34,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (buttonText) {
                     buttonText.textContent = 'Enviando...';
                 }
+            }
+        });
+    }
+
+    // Lógica para limpar filtros na página de contratos
+    const clearFiltersBtn = document.getElementById('clear-filters-btn');
+    if (clearFiltersBtn) {
+        clearFiltersBtn.addEventListener('click', function() {
+            const filtersForm = this.closest('form');
+            if (filtersForm) {
+                // Reseta todos os campos do formulário
+                filtersForm.reset();
+                
+                // Redireciona para a URL base sem os filtros
+                window.location.href = window.location.pathname;
             }
         });
     }

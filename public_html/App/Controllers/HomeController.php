@@ -15,6 +15,8 @@ class HomeController extends Action
         $this->view->latestContracts = $contract->getLatestByUserId($_SESSION['id']);
         $this->view->dashboardStats = $contract->getDashboardStats($_SESSION['id']);
 
+        $this->view->upload_status = $_GET['upload'] ?? '';
+
         $this->view->active_page = 'home';
         $this->render('index', 'base');
     }

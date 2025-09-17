@@ -10,6 +10,18 @@
         </button>
     </div>
 
+    <?php if ($this->view->upload_status == 'success') { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Sucesso!</strong> Seu contrato foi enviado para análise.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } else if (!empty($this->view->upload_status)) { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro!</strong> Não foi possível enviar seu contrato. Por favor, tente novamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
     <div class="container-fluid px-0">
         <!-- Cabeçalho da Página de Contratos -->
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
@@ -17,9 +29,9 @@
                 <h2 class="display-6 mb-0">Contratos</h2>
                 <p class="text-muted mb-0">Gerencie e analise todos os seus documentos.</p>
             </div>
-            <a href="#" class="btn btn-primary d-flex align-items-center">
+            <button type="button" class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#uploadContractModal">
                 <i class="bi bi-plus-lg me-2"></i> Nova Análise
-            </a>
+            </button>
         </div>
 
         <!-- Filtros de Busca -->
@@ -56,130 +68,100 @@
                             <tr>
                                 <th scope="col">Nome</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Criado em</th>
-                                <th scope="col">Analisado em</th>
-                                <th scope="col">Ações</th>
+                                <th scope="col">Data de Envio</th>
+                                <th scope="col">Tempo de Análise</th>
+                                <th scope="col" class="text-end">Ações</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>Contrato Principal 2025</td>
-                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
-                                <td>15/09/2025</td>
-                                <td>15/09/2025</td>
-                                <td class="table-actions">
-                                    <!-- Ações para Desktop -->
-                                    <div class="d-none d-md-inline-flex">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                    <!-- Dropdown para Mobile -->
-                                    <div class="dropdown d-md-none">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Aditivo Contratual Z-14</td>
-                                <td><span class="badge bg-warning-subtle text-warning-emphasis rounded-pill">Pendente</span></td>
-                                <td>14/09/2025</td>
-                                <td>--</td>
-                                <td class="table-actions">
-                                    <!-- Ações para Desktop -->
-                                    <div class="d-none d-md-inline-flex">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                    <!-- Dropdown para Mobile -->
-                                    <div class="dropdown d-md-none">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton2" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton2">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Contrato de Fornecimento K</td>
-                                <td><span class="badge bg-danger-subtle text-danger-emphasis rounded-pill">Com Erro</span></td>
-                                <td>13/09/2025</td>
-                                <td>13/09/2025</td>
-                                <td class="table-actions">
-                                    <!-- Ações para Desktop -->
-                                    <div class="d-none d-md-inline-flex">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                    <!-- Dropdown para Mobile -->
-                                    <div class="dropdown d-md-none">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton3" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton3">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Acordo Comercial Internacional</td>
-                                <td><span class="badge bg-success-subtle text-success-emphasis rounded-pill">Processado</span></td>
-                                <td>12/09/2025</td>
-                                <td>12/09/2025</td>
-                                <td class="table-actions">
-                                    <!-- Ações para Desktop -->
-                                    <div class="d-none d-md-inline-flex">
-                                        <a href="#" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
-                                        <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
-                                    </div>
-                                    <!-- Dropdown para Mobile -->
-                                    <div class="dropdown d-md-none">
-                                        <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton4" data-bs-toggle="dropdown" aria-expanded="false">
-                                            <i class="bi bi-three-dots-vertical"></i>
-                                        </button>
-                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton4">
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
-                                            <li><a class="dropdown-item" href="#"><i class="bi bi-download me-2"></i>Download</a></li>
-                                            <li><hr class="dropdown-divider"></li>
-                                            <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (empty($this->view->contracts)) { ?>
+                                <tr>
+                                    <td colspan="5" class="text-center">Nenhum contrato encontrado.</td>
+                                </tr>
+                            <?php
+                            } else {
+                                foreach ($this->view->contracts as $contract) {
+                                    $status = App\Helpers\StatusHelper::formatStatus($contract['status']);
+                                    $formatted_date = date('d/m/Y H:i', strtotime($contract['created_at']));
+
+                                    $analysis_time_html = '';
+                                    if (strtolower($contract['status']) === 'processed') {
+                                        if ($contract['segundos_para_analisar'] !== null) {
+                                            $seconds = (int)$contract['segundos_para_analisar'];
+                                            if ($seconds < 1) {
+                                                $analysis_time_html = '&lt; 1s';
+                                            } else {
+                                                $minutes = floor($seconds / 60);
+                                                $remainingSeconds = $seconds % 60;
+                                                $analysis_time_html = ($minutes > 0 ? "{$minutes}m " : '') . "{$remainingSeconds}s";
+                                            }
+                                        } else {
+                                            $analysis_time_html = '-';
+                                        }
+                                    } else {
+                                        $analysis_time_html = '<i class="bi bi-clock text-muted" title="Aguardando processamento"></i>';
+                                    }
+                            ?>
+                                    <tr>
+                                        <td><?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?></td>
+                                        <td><span class="badge <?= $status['class'] ?> rounded-pill"><?= htmlspecialchars($status['text']) ?></span></td>
+                                        <td><?= $formatted_date ?></td>
+                                        <td class="text-center"><?= $analysis_time_html ?></td>
+                                        <td class="table-actions text-end">
+                                            <!-- Ações para Desktop -->
+                                            <div class="d-none d-md-inline-flex">
+                                                <a href="/contrato?contrato_id=<?= htmlspecialchars($contract['id']) ?>" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                                <a href="<?= htmlspecialchars($contract['storage_path']) ?>" target="_blank" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
+                                                <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
+                                            </div>
+                                            <!-- Dropdown para Mobile -->
+                                            <div class="dropdown d-md-none">
+                                                <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                                    <i class="bi bi-three-dots-vertical"></i>
+                                                </button>
+                                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                                    <li><a class="dropdown-item" href="/contrato?contrato_id=<?= htmlspecialchars($contract['id']) ?>"><i class="bi bi-eye me-2"></i>Visualizar</a></li>
+                                                    <li><a class="dropdown-item" href="<?= htmlspecialchars($contract['storage_path']) ?>" target="_blank"><i class="bi bi-download me-2"></i>Download</a></li>
+                                                    <li>
+                                                        <hr class="dropdown-divider">
+                                                    </li>
+                                                    <li><a class="dropdown-item text-danger" href="#"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                                </ul>
+                                            </div>
+                                        </td>
+                                    </tr>
+                            <?php
+                                } // Fecha o foreach
+                            } // Fecha o else
+                            ?>
                         </tbody>
                     </table>
                 </div>
-                <!-- Paginação -->
-                <nav aria-label="Page navigation" class="mt-4 d-flex justify-content-end">
-                    <ul class="pagination">
-                        <li class="page-item disabled"><a class="page-link" href="#">Anterior</a></li>
-                        <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                        <li class="page-item"><a class="page-link" href="#">2</a></li>
-                        <li class="page-item"><a class="page-link" href="#">3</a></li>
-                        <li class="page-item"><a class="page-link" href="#">Próxima</a></li>
-                    </ul>
-                </nav>
+
+                <!-- Navegação da Paginação -->
+                <?php if ($this->view->total_pages > 1) { ?>
+                    <nav aria-label="Navegação da página de contratos" class="mt-4 d-flex justify-content-end">
+                        <ul class="pagination">
+                            <li class="page-item <?= ($this->view->current_page <= 1) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?= $this->view->current_page - 1 ?>" aria-label="Anterior">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            
+                            <!-- Opcional: Links de página individuais (pode ser adicionado no futuro se necessário) -->
+
+                            <li class="page-item <?= ($this->view->current_page >= $this->view->total_pages) ? 'disabled' : '' ?>">
+                                <a class="page-link" href="?page=<?= $this->view->current_page + 1 ?>" aria-label="Próxima">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                <?php } ?>
+
             </div>
         </div>
     </div>
 </main>
+
+<?php require_once __DIR__ . '/../layouts/partials/upload_modal.phtml'; ?>

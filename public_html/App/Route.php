@@ -44,6 +44,11 @@ class Route extends Bootstrap
             'controller' => 'MinhaContaController',
             'action' => 'changePassword'
         );
+        $routes['upload_contract'] = array(
+            'route' => 'upload_contract',
+            'controller' => 'UploadController',
+            'action' => 'process'
+        );
         $routes['notFound'] = array(
             'route' => '404',
             'controller' => 'NotFoundController',

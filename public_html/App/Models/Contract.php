@@ -43,12 +43,18 @@ class Contract extends Model
      * @param int $offset Offset para paginação
      * @return array Lista de contratos do usuário
      */
-    public function getContractsByUser(string $userId, int $limit = 50, int $offset = 0): array
+    public function getContractsByUser(string $userId, int $limit = 10, int $offset = 0): array
     {
         $stmt = $this->db->prepare("
-            SELECT c.*, u.nome as user_name, u.email as user_email
+            SELECT 
+                c.id,
+                c.status,
+                c.original_filename,
+                c.storage_path,
+                c.created_at,
+                c.analyzed_at,
+                EXTRACT(EPOCH FROM (c.analyzed_at - c.created_at)) AS segundos_para_analisar
             FROM contracts c
-            LEFT JOIN users u ON c.user_id = u.id
             WHERE c.user_id = :user_id
             ORDER BY c.created_at DESC
             LIMIT :limit OFFSET :offset
@@ -59,6 +65,21 @@ class Contract extends Model
         $stmt->execute();
         
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Conta o número total de contratos para um usuário específico.
+     *
+     * @param string $userId O UUID do usuário.
+     * @return integer A contagem total de contratos.
+     */
+    public function getContractCountByUser(string $userId): int
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM contracts WHERE user_id = :user_id");
+        $stmt->bindParam(':user_id', $userId, \PDO::PARAM_STR);
+        $stmt->execute();
+        
+        return (int)$stmt->fetchColumn();
     }
 
     /**
@@ -280,15 +301,17 @@ class Contract extends Model
     {
         $query = "
             SELECT 
-                original_filename, 
-                status, 
-                created_at 
+                c.original_filename, 
+                c.status, 
+                c.created_at,
+                c.analyzed_at,
+                EXTRACT(EPOCH FROM (c.analyzed_at - c.created_at)) AS segundos_para_analisar
             FROM 
-                contracts 
+                contracts c
             WHERE 
-                user_id = :user_id
+                c.user_id = :user_id
             ORDER BY 
-                created_at DESC 
+                c.created_at DESC 
             LIMIT 5
         ";
         
@@ -309,7 +332,7 @@ class Contract extends Model
     {
         $query = "
             SELECT
-                COUNT(CASE WHEN CAST(created_at AS DATE) = CURRENT_DATE THEN 1 END) as sent_today,
+                COUNT(CASE WHEN created_at >= NOW() - INTERVAL '24 hours' THEN 1 END) as sent_today,
                 COUNT(CASE WHEN status = 'pending' THEN 1 END) as pending,
                 COUNT(CASE WHEN status = 'processed' THEN 1 END) as processed,
                 COUNT(CASE WHEN status = 'error' THEN 1 END) as with_error

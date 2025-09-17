@@ -1,0 +1,26 @@
+<!-- Modal de Upload de Contrato -->
+<div class="modal fade" id="uploadContractModal" tabindex="-1" aria-labelledby="uploadContractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="uploadContractModalLabel">Nova Análise de Contrato</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="uploadForm" action="/upload_contract" method="POST" enctype="multipart/form-data">
+                    <div class="mb-3">
+                        <label for="contractFile" class="form-label">Selecione o arquivo PDF</label>
+                        <input class="form-control" type="file" id="contractFile" name="contractFile" accept=".pdf" required>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                <button type="submit" form="uploadForm" class="btn btn-primary" id="submitUploadButton">
+                    <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+                    <span class="button-text">Enviar para Análise</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

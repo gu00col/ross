@@ -1,22 +1,23 @@
+
 <div id="page-contrato-detalhe">
     <div class="container-fluid">
-        <!-- Header Mobile -->
-        <div class="d-md-none d-flex justify-content-between align-items-center mb-4 mobile-header">
-            <a href="/home" class="logo-link">
-                <img src="/Assets/images/logo-ross.svg" alt="Ross Logo" style="height: 30px;">
-            </a>
-            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
-                <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
-            </button>
-        </div>
 
         <!-- Cabeçalho Fixo Unificado -->
         <div class="d-flex align-items-center pt-4 pb-3 mb-3 flex-wrap gap-3 border-bottom sticky-top bg-light page-header">
+            
             <!-- Título à Esquerda -->
             <div>
                 <h2 class="display-6 mb-0">Análise de Contrato</h2>
                 <p class="text-muted mb-0 d-none d-md-block">Relatório detalhado dos pontos analisados.</p>
             </div>
+             <!-- Header Mobile com botão para abrir o Offcanvas -->
+            <div class="d-md-none d-flex justify-content-between align-items-center mobile-header">
+                
+                <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
+                    <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
+                </button>
+            </div>
+
 
             <!-- Menu de Navegação à Direita (Desktop) -->
             <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-lg-block">
@@ -68,7 +69,7 @@
                             <div class="card h-100">
                                 <div class="card-body d-flex flex-column justify-content-center text-center">
                                     <h5 class="card-title mb-3">Nível de Risco Geral</h5>
-                                    <div id="riskChart"></div>
+                                    <div id="riskChart" data-risk-percentage="<?= $this->view->riskPercentage ?? 0 ?>"></div>
                                 </div>
                             </div>
                         </div>
@@ -185,8 +186,11 @@
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const riskPercentage = <?= $this->view->riskPercentage ?? 0 ?>;
+    // A inicialização do gráfico é colocada aqui para garantir que rode após o DOM estar pronto
+    // e dentro do escopo correto da página, evitando conflitos globais.
+    const riskChartElement = document.getElementById('riskChart');
+    if (riskChartElement) {
+        const riskPercentage = parseInt(riskChartElement.getAttribute('data-risk-percentage'), 10) || 0;
         let chartColor;
 
         if (riskPercentage <= 33) {
@@ -205,18 +209,11 @@
             },
             plotOptions: {
                 radialBar: {
-                    hollow: {
-                        margin: 0,
-                        size: '65%',
-                    },
+                    hollow: { margin: 0, size: '65%' },
                     dataLabels: {
-                        name: {
-                            show: false,
-                        },
+                        name: { show: false },
                         value: {
-                            formatter: function (val) {
-                                return val + "%";
-                            },
+                            formatter: (val) => val + "%",
                             color: '#1A2D4F',
                             fontSize: '2.5rem',
                             fontWeight: '700',
@@ -227,14 +224,12 @@
                 }
             },
             colors: [chartColor],
-            stroke: {
-                lineCap: 'round'
-            },
+            stroke: { lineCap: 'round' },
             labels: ['Risco'],
         };
 
-        var chart = new ApexCharts(document.querySelector("#riskChart"), options);
+        var chart = new ApexCharts(riskChartElement, options);
         chart.render();
-    });
+    }
 </script>
 <?php $this->endSection(); ?>

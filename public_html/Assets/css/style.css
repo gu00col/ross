@@ -390,3 +390,7 @@ body {
     transform: translateY(-3px);
     background: #64748b;
 }
+
+.cursor-pointer {
+    cursor: pointer;
+}

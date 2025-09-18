@@ -400,6 +400,7 @@ class Contract extends Model
     {
         $query = "
             SELECT 
+                c.id,
                 c.original_filename, 
                 c.status, 
                 c.created_at,

@@ -3,29 +3,29 @@
     <div class="container-fluid">
         <!-- Cabeçalho Fixo Unificado Desktop -->
         <div class="row d-none d-md-flex sticky-top bg-light  pt-4 pb-3 mb-3 flex-wrap border-bottom sticky-top bg-light page-header">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <h2 class="h5 mb-0">Análise de Contrato</h2>
                     <p class="text-muted mb-0 d-none d-md-block">Relatório detalhado dos pontos analisados.</p>
                 </div>
-                <div class="col-md-9">
-                        <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-lg-block">
-                        <div class="container-fluid">
-                            <div class="collapse navbar-collapse" id="navbarNav">
-                                <ul class="navbar-nav nav-pills">
-                                    <?php foreach ($this->view->sectionTitles as $id => $details) {
-                                        // A seção 0 (Resumo) sempre aparece. As outras, só se tiverem itens.
-                                        if ($id != 0 && empty($this->view->groupedAnalysis[$id])) continue;
-                                    ?>
-                                        <li class="nav-item">
-                                            <a class="nav-link" href="#section-<?= $id ?>">
-                                                <i class="bi <?= $details['icon'] ?> me-1"></i><?= $details['title'] ?>
-                                            </a>
-                                        </li>
-                                    <?php } ?>
-                                </ul>
-                            </div>
+                <div class="col-md-8">
+                <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-md-block">
+                    <div class="container-fluid">
+                        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+                            <ul class="navbar-nav nav-pills">
+                                <?php foreach ($this->view->sectionTitles as $id => $details) {
+                                    // A seção 0 (Resumo) sempre aparece. As outras, só se tiverem itens.
+                                    if ($id != 0 && empty($this->view->groupedAnalysis[$id])) continue;
+                                ?>
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#section-<?= $id ?>">
+                                            <i class="bi <?= $details['icon'] ?> me-1"></i><?= $details['title'] ?>
+                                        </a>
+                                    </li>
+                                <?php } ?>
+                            </ul>
                         </div>
-                    </nav>
+                    </div>
+                </nav>
                 </div>
                 <div class="col-md-12">
                     <!-- Breadcrumb -->
@@ -63,7 +63,7 @@
         <?php } else { ?>
 
             <!-- Conteúdo da Análise -->
-            <div class="analysis-content">
+            <div class="analysis-content mt-5">
 
                 <!-- Seção 0: Resumo Executivo Consolidado -->
                 <div id="section-0" class="mb-5">

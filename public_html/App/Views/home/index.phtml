@@ -211,7 +211,7 @@
                                         $analysis_time_html = '<i class="bi bi-clock text-muted" title="Aguardando processamento"></i>';
                                     }
                                 ?>
-                                    <tr>
+                                    <tr onclick="window.location.href='/contrato?contrato_id=<?= $contract['id'] ?>'" class="cursor-pointer">
                                         <td><?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?></td>
                                         <td><span class="badge <?= $status['class'] ?> rounded-pill"><?= htmlspecialchars($status['text']) ?></span></td>
                                         <td><?= $formatted_date ?></td>

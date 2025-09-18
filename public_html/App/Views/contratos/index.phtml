@@ -125,7 +125,7 @@
                                         <td class="table-actions text-end">
                                             <!-- Ações para Desktop -->
                                             <div class="d-none d-md-inline-flex">
-                                                <a href="/contrato?contrato_id=<?= htmlspecialchars($contract['id']) ?>" class="btn btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
+                                                <a href="/contrato?contrato_id=<?= htmlspecialchars($contract['id']) ?>" class="btn <?= ($status['text'] === 'Pendente') ? 'disabled' : '' ?> <?= ($status['text'] === 'Erro') ? 'disabled' : '' ?> btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
                                                 <a href="<?= htmlspecialchars($contract['storage_path']) ?>" target="_blank" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
                                                 <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir"><i class="bi bi-trash"></i></a>
                                             </div>

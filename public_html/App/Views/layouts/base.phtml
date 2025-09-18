@@ -17,10 +17,8 @@ require_once('./logs.php');
         <!-- =============================================== -->
         <aside class="sidebar d-none d-md-flex flex-column">
             <!-- Logo -->
-            <div class="logo-container d-flex align-items-center mb-5">
-                <div class="logo-placeholder me-3">
-                    <span>RS</span>
-                </div>
+            <div class="logo-container d-flex flex-column align-items-center text-center mb-5">
+                <img src="/Assets/images/logo-ross.svg" alt="Logo Ross" class="logo-ross mb-3">
                 <div>
                     <h1 class="logo-title mb-0">ROSS</h1>
                     <p class="logo-subtitle mb-0">Analista Jurídico</p>
@@ -62,17 +60,17 @@ require_once('./logs.php');
     <!-- Offcanvas para MOBILE -->
     <!-- =============================================== -->
     <div class="offcanvas offcanvas-start d-md-none mobile-offcanvas" tabindex="-1" id="mobileMenu">
+    
       <div class="offcanvas-header">
-        <div class="logo-container d-flex align-items-center">
-            <div class="logo-placeholder me-3">
-                <span>RS</span>
-            </div>
+      <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        <div class="logo-container d-flex flex-column align-items-center text-center">
+            <img src="/Assets/images/logo-ross.svg" alt="Logo Ross"  class="logo-ross mb-3">
             <div>
                 <h1 class="logo-title mb-0">ROSS</h1>
                 <p class="logo-subtitle mb-0">Analista Jurídico</p>
             </div>
         </div>
-        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+       
       </div>
       <div class="offcanvas-body d-flex flex-column p-4">
         <!-- Navegação Mobile -->

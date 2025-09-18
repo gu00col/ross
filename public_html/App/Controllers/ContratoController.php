@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use MF\Controller\Action;
 use MF\Model\Container;
+use Parsedown;
 
 class ContratoController extends Action
 {
@@ -54,6 +55,12 @@ class ContratoController extends Action
 
         $this->view->executiveSummary = $executiveSummary;
         $this->view->generalInfo = $groupedAnalysis[1] ?? [];
+
+        // Converter o conteúdo da Seção 4 (Parecer Final) de Markdown para HTML
+        if (isset($groupedAnalysis[4][0]['content'])) {
+            $parsedown = new Parsedown();
+            $this->view->finalReportHtml = $parsedown->text($groupedAnalysis[4][0]['content']);
+        }
 
 
         $this->view->sectionTitles = [

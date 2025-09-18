@@ -244,6 +244,31 @@ body {
     margin: 0 auto;
 }
 
+/* Estilos para o conteúdo renderizado do Markdown */
+.markdown-content h1, .markdown-content h2, .markdown-content h3 {
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+.markdown-content p {
+    margin-bottom: 1rem;
+    line-height: 1.7;
+}
+.markdown-content ul, .markdown-content ol {
+    padding-left: 2rem;
+    margin-bottom: 1rem;
+}
+.markdown-content li {
+    margin-bottom: 0.5rem;
+}
+.markdown-content strong {
+    font-weight: 600;
+}
+.markdown-content a {
+    color: var(--primary-dark-blue);
+    text-decoration: underline;
+}
+
 .info-card {
     border: 1px solid var(--border-color, #e2e8f0);
     box-shadow: none;

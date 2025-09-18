@@ -147,7 +147,9 @@
                         <?php } elseif ($sectionId == 4) { // Seção 4: Parecer Final ?>
                             <div class="card">
                                 <div class="card-body">
-                                    <p><?= nl2br(htmlspecialchars($items[0]['content'])) ?></p>
+                                    <div class="markdown-content">
+                                        <?= $this->view->finalReportHtml ?? '<p>Nenhum parecer final disponível.</p>' ?>
+                                    </div>
                                 </div>
                             </div>
                         <?php } ?>

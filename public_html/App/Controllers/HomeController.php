@@ -11,13 +11,19 @@ class HomeController extends Action
     {
         $this->validaAutenticacao();
 
+        $this->view->active_page = 'home';
+
         $contract = Container::getModel('Contract');
         $this->view->latestContracts = $contract->getLatestByUserId($_SESSION['id']);
-        $this->view->dashboardStats = $contract->getDashboardStats($_SESSION['id']);
+        
+        $dashboardStats = $contract->getDashboardStats($_SESSION['id']);
+        $this->view->dashboardStats = $dashboardStats;
+        $this->view->upload_status = $_GET['upload'] ?? null;
 
-        $this->view->upload_status = $_GET['upload'] ?? '';
+        $this->view->breadcrumb = [
+            ['label' => 'Dashboard', 'active' => true]
+        ];
 
-        $this->view->active_page = 'home';
         $this->render('index', 'base');
     }
 

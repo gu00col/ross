@@ -37,7 +37,13 @@ class ContratosController extends Action
         // 4. Passar dados da paginação para a view
         $this->view->current_page = $page;
         $this->view->total_pages = $total_pages;
+        $this->view->filters = $filters;
         $this->view->filter_query_string = $filter_query_string;
+
+        $this->view->breadcrumb = [
+            ['label' => 'Dashboard', 'link' => '/home'],
+            ['label' => 'Meus Contratos', 'active' => true]
+        ];
 
         // Passa o status do upload para a view (se houver)
         $this->view->upload_status = $_GET['upload'] ?? '';

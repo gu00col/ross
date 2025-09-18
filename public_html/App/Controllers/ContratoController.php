@@ -44,14 +44,22 @@ class ContratoController extends Action
         $attentionPoints = array_slice($groupedAnalysis[2] ?? [], 0, 3);
         $executiveSummary['key_points'] = $attentionPoints;
         
-        // Calcular o nível de risco
-        $risk_level = 'Baixo';
-        if (count($groupedAnalysis[2] ?? []) > 10) {
-            $risk_level = 'Alto';
-        } elseif (count($groupedAnalysis[2] ?? []) > 5) {
-            $risk_level = 'Médio';
-        }
-        $executiveSummary['risk_level'] = $risk_level;
+        // Calcular o Nível de Risco com base na pontuação ponderada
+        $highRiskCount = count($groupedAnalysis[2] ?? []);
+        $mediumRiskCount = count($groupedAnalysis[3] ?? []);
+
+        $totalRiskItems = $highRiskCount + $mediumRiskCount;
+
+        // Pontuação atual: Alto = 3 pts, Médio = 2 pts
+        $currentScore = ($highRiskCount * 3) + ($mediumRiskCount * 2);
+
+        // Pontuação máxima possível (se todos os itens fossem de risco alto)
+        $maxScore = $totalRiskItems > 0 ? $totalRiskItems * 3 : 0;
+        
+        // Porcentagem de risco para o gráfico
+        $riskPercentage = $maxScore > 0 ? round(($currentScore / $maxScore) * 100) : 0;
+        
+        $this->view->riskPercentage = $riskPercentage;
 
         $this->view->executiveSummary = $executiveSummary;
         $this->view->generalInfo = $groupedAnalysis[1] ?? [];
@@ -61,6 +69,12 @@ class ContratoController extends Action
             $parsedown = new Parsedown();
             $this->view->finalReportHtml = $parsedown->text($groupedAnalysis[4][0]['content']);
         }
+
+        $this->view->breadcrumb = [
+            ['label' => 'Dashboard', 'link' => '/home'],
+            ['label' => 'Meus Contratos', 'link' => '/contratos'],
+            ['label' => 'Detalhe da Análise', 'active' => true]
+        ];
 
 
         $this->view->sectionTitles = [

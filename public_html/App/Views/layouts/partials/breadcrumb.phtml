@@ -1,0 +1,17 @@
+<?php if (!empty($this->view->breadcrumb)) { ?>
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb bg-transparent p-0 m-0" style="--bs-breadcrumb-divider-color: var(--text-secondary, #64748b); --bs-breadcrumb-item-active-color: var(--text-secondary, #64748b);">
+        <?php foreach ($this->view->breadcrumb as $item) { ?>
+            <?php if (isset($item['active']) && $item['active']) { ?>
+                <li class="breadcrumb-item active" aria-current="page">
+                    <?= htmlspecialchars($item['label']) ?>
+                </li>
+            <?php } else { ?>
+                <li class="breadcrumb-item">
+                    <a href="<?= $item['link'] ?? '#' ?>"><?= htmlspecialchars($item['label']) ?></a>
+                </li>
+            <?php } ?>
+        <?php } ?>
+    </ol>
+</nav>
+<?php } ?>

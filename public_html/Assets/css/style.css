@@ -269,6 +269,26 @@ body {
     text-decoration: underline;
 }
 
+/* Breadcrumb Styles */
+.breadcrumb {
+    font-size: 0.85rem;
+    margin-bottom: 0;
+}
+.breadcrumb-item a {
+    color: var(--primary-dark-blue);
+    text-decoration: none;
+    font-weight: 500;
+}
+.breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .section-title {
+        font-size: 1.8rem;
+    }
+}
+
 .info-card {
     border: 1px solid var(--border-color, #e2e8f0);
     box-shadow: none;
@@ -316,14 +336,18 @@ body {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
     transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
     opacity: 0.8;
+    background-color: #1A2D4F;
 
     /* Centralização do ícone com Flexbox */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+
+}
+
+#back-to-top i {
+    color: var(--text-light);
 }
 
 #back-to-top:hover {
     opacity: 1;
     transform: translateY(-3px);
+    background: #64748b;
 }

@@ -51,8 +51,6 @@ Thumbs.db
 
 # Dependências
 node_modules/
-vendor/
-composer.lock
 
 # Arquivos de build
 dist/

@@ -109,6 +109,19 @@ body {
     font-weight: 600;
 }
 
+/* Estilo para o link de Sair */
+.logout-link {
+    padding: 0.75rem 0.5rem;
+    border-radius: 8px;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out;
+    color: var(--text-muted-light);
+}
+
+.logout-link:hover {
+    background-color: rgba(220, 53, 69, 0.2); /* Vermelho claro translúcido */
+    color: #f8d7da; /* Vermelho mais claro para o texto */
+}
+
 .mobile-offcanvas .offcanvas-header {
     padding: 1.5rem;
 }

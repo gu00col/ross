@@ -27,24 +27,31 @@ require_once('./logs.php');
                 </div>
             </div>
             <!-- Navegação -->
-            <nav class="nav flex-column sidebar-nav">
-                <a class="nav-link <?= ($this->view->active_page ?? '') == 'home' ? 'active' : '' ?>" href="/home">
-                    <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
-                    Dashboard
-                </a>
-                <a class="nav-link <?= ($this->view->active_page ?? '') == 'contratos' ? 'active' : '' ?>" href="/contratos">
-                    <i class="bi bi-file-earmark-text me-2"></i>
-                    Contratos
-                </a>
-                <!-- <a class="nav-link" href="#">
-                    <i class="bi bi-gear me-2"></i>
-                    Configurações
-                </a> -->
-                <a class="nav-link <?= ($this->view->active_page ?? '') == 'minha_conta' ? 'active' : '' ?>" href="/minha_conta">
-                    <i class="bi bi-person me-2"></i>
-                    Minha Conta
-                </a>
-            </nav>
+            <div class="sidebar-nav-container">
+                <!-- Navegação Principal -->
+                <nav class="sidebar-nav nav flex-column">
+                    <a class="nav-link <?= ($this->view->active_page ?? '') == 'home' ? 'active' : '' ?>" href="/home">
+                        <i class="bi bi-layout-text-sidebar-reverse me-2"></i> Dashboard
+                    </a>
+                    <a class="nav-link <?= ($this->view->active_page ?? '') == 'contratos' ? 'active' : '' ?>" href="/contratos">
+                        <i class="bi bi-file-earmark-text me-2"></i> Contratos
+                    </a>
+                    <!-- <a class="nav-link" href="#">
+                        <i class="bi bi-gear me-2"></i> Configurações
+                    </a> -->
+                    <a class="nav-link <?= ($this->view->active_page ?? '') == 'minha_conta' ? 'active' : '' ?>" href="/minha_conta">
+                        <i class="bi bi-person me-2"></i> Minha Conta
+                    </a>
+                </nav>
+
+                <!-- Botão de Sair -->
+                <div class="mt-auto">
+                    <a class="nav-link logout-link" href="/sair">
+                        <i class="bi bi-box-arrow-left me-2"></i> Sair
+                    </a>
+                </div>
+
+            </div>
         </aside>
 
         <?php print_r($this->content()); ?>
@@ -67,9 +74,9 @@ require_once('./logs.php');
         </div>
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
-      <div class="offcanvas-body">
+      <div class="offcanvas-body d-flex flex-column p-4">
         <!-- Navegação Mobile -->
-        <nav class="nav flex-column sidebar-nav mt-4">
+        <nav class="nav flex-column sidebar-nav">
             <a class="nav-link <?= ($this->view->active_page ?? '') == 'home' ? 'active' : '' ?>" href="/home">
                 <i class="bi bi-layout-text-sidebar-reverse me-2"></i>
                 Dashboard
@@ -87,7 +94,13 @@ require_once('./logs.php');
                 Minha Conta
             </a>
         </nav>
-      </div>
+
+         <!-- Botão de Sair no final do offcanvas -->
+         <div class="mt-auto">
+            <a class="nav-link logout-link" href="/sair">
+                <i class="bi bi-box-arrow-left me-2"></i> Sair
+            </a>
+        </div>
     </div>
 
 

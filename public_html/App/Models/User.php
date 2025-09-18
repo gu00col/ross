@@ -34,6 +34,7 @@ class User extends Model
      * @return User|null Retorna uma instância de User ou null se não encontrado.
      */
     public function getUserByEmail() {
+        logMessage("Buscando usuário por e-mail no Model: '" . $this->__get('email') . "'", "INFO");
         $query = "SELECT id, nome, email, password, active, is_superuser FROM users WHERE email = :email";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':email', $this->__get('email'));
@@ -42,6 +43,7 @@ class User extends Model
         $user_data = $stmt->fetch(\PDO::FETCH_ASSOC);
 
         if ($user_data) {
+            logMessage("Dados do usuário encontrados no DB: " . json_encode($user_data), "INFO");
             $user = new User($this->db);
             $user->__set('id', $user_data['id']);
             $user->__set('nome', $user_data['nome']);
@@ -52,6 +54,7 @@ class User extends Model
             return $user;
         }
 
+        logMessage("Nenhum usuário encontrado no DB para o e-mail: '" . $this->__get('email') . "'", "WARNING");
         return null;
     }
 

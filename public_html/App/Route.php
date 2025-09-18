@@ -18,9 +18,15 @@ class Route extends Bootstrap
     protected function initRoutes()
     {
         //echo 'Iniciando initRoute <br>';
-        $routes['home'] = array(
-            'route' => '/home',
-            'controller' => 'HomeController',
+        $routes['index'] = array(
+			'route' => '/',
+			'controller' => 'IndexController',
+			'action' => 'index'
+		);
+
+		$routes['home'] = array(
+			'route' => '/home',
+			'controller' => 'HomeController',
             'action' => 'index'
         );
         $routes['login'] = array(

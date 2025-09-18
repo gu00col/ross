@@ -50,7 +50,10 @@
                     <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
                 </button>
             </div>
-
+                                         <!-- Breadcrumb -->
+                    <div class="w-100 pt-2">
+                        <?php include __DIR__ . '/../layouts/partials/breadcrumb.phtml'; ?>
+                    </div>
         </div>
 
         <?php if (empty($this->view->groupedAnalysis)) { ?>

@@ -39,9 +39,95 @@
         <div class="mb-4">
             <?php include __DIR__ . '/../layouts/partials/breadcrumb.phtml'; ?>
         </div>
+        
+        <div id="statsCarouselMobile" class="carousel slide d-md-none" data-bs-ride="carousel">
+  <!-- Itens -->
+  <div class="carousel-inner">
+    <!-- Enviados Hoje -->
+    <div class="carousel-item active">
+      <div class="px-2">
+        <div class="card stat-card text-center h-100">
+          <div class="card-body p-3 d-flex flex-column justify-content-center">
+            <h5 class="card-title text-info-emphasis">Enviados Hoje</h5>
+            <p class="display-5"><?= $this->view->dashboardStats['sent_today'] ?? 0 ?></p>
+            <div class="text-muted">
+              <i class="bi bi-calendar-day me-1"></i>Últimas 24h
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
+    <!-- Pendentes -->
+    <div class="carousel-item">
+      <div class="px-2">
+        <div class="card stat-card text-center h-100">
+          <div class="card-body p-3 d-flex flex-column justify-content-center">
+            <h5 class="card-title text-warning-emphasis">Pendentes</h5>
+            <p class="display-5"><?= $this->view->dashboardStats['pending'] ?? 0 ?></p>
+            <div class="text-muted">
+              <i class="bi bi-clock-history me-1"></i>Aguardando análise
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Processados -->
+    <div class="carousel-item">
+      <div class="px-2">
+        <div class="card stat-card text-center h-100">
+          <div class="card-body p-3 d-flex flex-column justify-content-center">
+            <h5 class="card-title text-success-emphasis">Processados</h5>
+            <p class="display-5"><?= $this->view->dashboardStats['processed'] ?? 0 ?></p>
+            <div class="text-muted">
+              <i class="bi bi-check-circle me-1"></i>Análise concluída
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Com Erro -->
+    <div class="carousel-item">
+      <div class="px-2">
+        <div class="card stat-card text-center h-100">
+          <div class="card-body p-3 d-flex flex-column justify-content-center">
+            <h5 class="card-title text-danger-emphasis">Com Erro</h5>
+            <p class="display-5"><?= $this->view->dashboardStats['with_error'] ?? 0 ?></p>
+            <div class="text-muted">
+              <i class="bi bi-exclamation-triangle me-1"></i>Requerem atenção
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Indicadores abaixo -->
+  <div class="carousel-indicators position-static mt-3">
+    <button type="button" data-bs-target="#statsCarouselMobile" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+    <button type="button" data-bs-target="#statsCarouselMobile" data-bs-slide-to="1" aria-label="Slide 2"></button>
+    <button type="button" data-bs-target="#statsCarouselMobile" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    <button type="button" data-bs-target="#statsCarouselMobile" data-bs-slide-to="3" aria-label="Slide 4"></button>
+  </div>
+
+  <!-- Controles -->
+  <button class="carousel-control-prev" type="button" data-bs-target="#statsCarouselMobile" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+
+  <button class="carousel-control-next" type="button" data-bs-target="#statsCarouselMobile" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+
+        
         <!-- Linha de Cards com Estatísticas -->
-        <div class="row g-4 mb-4">
+        <div class="row d-none d-md-flex g-4 mb-4">
             <div class="col-lg-3 col-md-6">
                 <div class="card stat-card text-center h-100">
                     <div class="card-body p-3 d-flex flex-column justify-content-center">

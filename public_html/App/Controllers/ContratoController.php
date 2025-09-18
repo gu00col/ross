@@ -85,7 +85,7 @@ class ContratoController extends Action
                 'icon' => 'bi-clipboard-data'
             ],
             2 => [
-                'title' => 'Pontos de Atenção (Cláusulas Leoninas)',
+                'title' => 'Cláusulas Leoninas',
                 'description' => 'Cláusulas desequilibradas que podem favorecer excessivamente uma das partes.',
                 'class' => 'text-danger',
                 'icon' => 'bi-exclamation-triangle'
@@ -97,7 +97,7 @@ class ContratoController extends Action
                 'icon' => 'bi-exclamation-circle'
             ],
             4 => [
-                'title' => 'Parecer Final e Recomendações',
+                'title' => 'Parecer Final',
                 'description' => 'Conclusão da análise e sugestões para mitigação de riscos.',
                 'class' => 'text-primary',
                 'icon' => 'bi-lightbulb'

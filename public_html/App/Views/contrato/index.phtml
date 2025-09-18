@@ -1,48 +1,56 @@
 
 <div id="page-contrato-detalhe">
     <div class="container-fluid">
+        <!-- Cabeçalho Fixo Unificado Desktop -->
+        <div class="row d-none d-md-flex sticky-top bg-light  pt-4 pb-3 mb-3 flex-wrap border-bottom sticky-top bg-light page-header">
+                <div class="col-md-3">
+                    <h2 class="h5 mb-0">Análise de Contrato</h2>
+                    <p class="text-muted mb-0 d-none d-md-block">Relatório detalhado dos pontos analisados.</p>
+                </div>
+                <div class="col-md-9">
+                        <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-lg-block">
+                        <div class="container-fluid">
+                            <div class="collapse navbar-collapse" id="navbarNav">
+                                <ul class="navbar-nav nav-pills">
+                                    <?php foreach ($this->view->sectionTitles as $id => $details) {
+                                        // A seção 0 (Resumo) sempre aparece. As outras, só se tiverem itens.
+                                        if ($id != 0 && empty($this->view->groupedAnalysis[$id])) continue;
+                                    ?>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="#section-<?= $id ?>">
+                                                <i class="bi <?= $details['icon'] ?> me-1"></i><?= $details['title'] ?>
+                                            </a>
+                                        </li>
+                                    <?php } ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </nav>
+                </div>
+                <div class="col-md-12">
+                    <!-- Breadcrumb -->
+                    <div class="w-100 pt-2">
+                        <?php include __DIR__ . '/../layouts/partials/breadcrumb.phtml'; ?>
+                    </div>
+                </div>
+            </div>
 
-        <!-- Cabeçalho Fixo Unificado -->
-        <div class="d-flex align-items-center pt-4 pb-3 mb-3 flex-wrap gap-3 border-bottom sticky-top bg-light page-header">
+        <!-- Cabeçalho Fixo Unificado Mobile -->
+        <div class="d-flex d-md-none align-items-center pt-4 pb-3 justify-content-between mb-3 flex-wrap gap-3 border-bottom sticky-top bg-light page-header">        
             
             <!-- Título à Esquerda -->
-            <div>
-                <h2 class="display-6 mb-0">Análise de Contrato</h2>
+            <div class="d-block d-md-none">
+                <h2 class="h4 mb-0">Análise de Contrato</h2>
                 <p class="text-muted mb-0 d-none d-md-block">Relatório detalhado dos pontos analisados.</p>
             </div>
              <!-- Header Mobile com botão para abrir o Offcanvas -->
-            <div class="d-md-none d-flex justify-content-between align-items-center mobile-header">
+            <div class="d-md-none d-flex justify-content-end align-items-end mobile-header">
                 
                 <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#mobileMenu" aria-controls="mobileMenu">
                     <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
                 </button>
             </div>
 
-
-            <!-- Menu de Navegação à Direita (Desktop) -->
-            <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-lg-block">
-                <div class="container-fluid">
-                    <div class="collapse navbar-collapse" id="navbarNav">
-                        <ul class="navbar-nav nav-pills">
-                            <?php foreach ($this->view->sectionTitles as $id => $details) {
-                                // A seção 0 (Resumo) sempre aparece. As outras, só se tiverem itens.
-                                if ($id != 0 && empty($this->view->groupedAnalysis[$id])) continue;
-                            ?>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#section-<?= $id ?>">
-                                        <i class="bi <?= $details['icon'] ?> me-1"></i><?= $details['title'] ?>
-                                    </a>
-                                </li>
-                            <?php } ?>
-                        </ul>
-                    </div>
-                </div>
-            </nav>
-
-            <!-- Breadcrumb -->
-            <div class="w-100 pt-2">
-                <?php include __DIR__ . '/../layouts/partials/breadcrumb.phtml'; ?>
-            </div>
         </div>
 
         <?php if (empty($this->view->groupedAnalysis)) { ?>

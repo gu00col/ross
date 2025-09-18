@@ -1,0 +1,164 @@
+<div id="page-contrato-detalhe">
+    <div class="container-fluid">
+        <!-- Cabeçalho Fixo Unificado -->
+        <div class="d-flex align-items-center pt-4 pb-3 mb-3 flex-wrap gap-3 border-bottom sticky-top bg-light page-header">
+            <!-- Título à Esquerda -->
+            <div>
+                <h2 class="display-6 mb-0">Análise de Contrato</h2>
+                <p class="text-muted mb-0 d-none d-md-block">Relatório detalhado dos pontos analisados.</p>
+            </div>
+
+            <!-- Menu de Navegação à Direita (Desktop) -->
+            <nav id="analysis-nav" class="navbar navbar-expand-lg navbar-light ms-auto d-none d-lg-block">
+                <div class="container-fluid">
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav nav-pills">
+                            <?php foreach ($this->view->sectionTitles as $id => $details) {
+                                if ($id != 0 && empty($this->view->groupedAnalysis[$id])) continue;
+                            ?>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#section-<?= $id ?>">
+                                        <i class="bi <?= $details['icon'] ?> me-1"></i><?= $details['title'] ?>
+                                    </a>
+                                </li>
+                            <?php } ?>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <?php if (empty($this->view->groupedAnalysis)) { ?>
+            <div class="alert alert-warning" role="alert">
+                Nenhum dado de análise encontrado para este contrato ou você não tem permissão para visualizá-lo.
+            </div>
+        <?php } else { ?>
+
+            <!-- Conteúdo da Análise -->
+            <div class="analysis-content">
+                <!-- Seção 0: Resumo Executivo Consolidado -->
+                <div id="section-0" class="mb-5 mt-5 text-primary">
+                    <div class="section-header">
+                        <h2 class="section-title">
+                            <i class="bi <?= $this->view->sectionTitles[0]['icon'] ?> me-3"></i>
+                            <?= $this->view->sectionTitles[0]['title'] ?>
+                        </h2>
+                        <p class="section-subtitle"><?= $this->view->sectionTitles[0]['description'] ?></p>
+                    </div>
+                    <!-- Cards de Resumo -->
+                    <div class="row">
+                        <div class="col-lg-4 mb-4">
+                            <div class="card h-100 text-center">
+                                <div class="card-body d-flex flex-column justify-content-center">
+                                    <h5 class="card-title">Nível de Risco Geral</h5>
+                                    <p class="display-4 fw-bold text-<?= $this->view->executiveSummary['risk_level'] == 'Alto' ? 'danger' : ($this->view->executiveSummary['risk_level'] == 'Médio' ? 'warning' : 'success') ?>">
+                                        <?= $this->view->executiveSummary['risk_level'] ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-8 mb-4">
+                             <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="card-title">Principais Pontos de Atenção</h5>
+                                    <?php if (empty($this->view->executiveSummary['key_points'])) { ?>
+                                        <p class="text-muted">Nenhum ponto de atenção crítico encontrado.</p>
+                                    <?php } else { ?>
+                                        <ul class="list-group list-group-flush">
+                                            <?php foreach($this->view->executiveSummary['key_points'] as $point) { ?>
+                                                <li class="list-group-item"><?= htmlspecialchars($point['label']) ?></li>
+                                            <?php } ?>
+                                        </ul>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Sub-seção de Informações Gerais -->
+                    <h4 class="mb-5 mt-5 text-center text-primary">Informações Gerais do Contrato</h4>
+                    <div class="row">
+                        <?php foreach ($this->view->generalInfo as $item) { ?>
+                            <div class="col-md-6 col-lg-4 mb-4">
+                                <div class="card h-100 info-card">
+                                    <div class="card-body">
+                                        <h6 class="card-title text-primary text-uppercase small"><?= htmlspecialchars($item['label']) ?></h6>
+                                        <p class="card-text"><?= nl2br(htmlspecialchars($item['content'])) ?></p>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                </div>
+
+
+                <?php 
+                // Remove a seção 1 (agora parte do resumo) do loop principal
+                unset($this->view->groupedAnalysis[1]);
+
+                foreach ($this->view->groupedAnalysis as $sectionId => $items) { 
+                ?>
+                    <div id="section-<?= $sectionId ?>" class="mb-5">
+                        
+                        <div class="section-header">
+                            <h2 class="section-title <?= $this->view->sectionTitles[$sectionId]['class'] ?? '' ?>">
+                                <i class="bi <?= $this->view->sectionTitles[$sectionId]['icon'] ?? '' ?> me-3"></i>
+                                <?= $this->view->sectionTitles[$sectionId]['title'] ?? '' ?>
+                            </h2>
+                            <p class="section-subtitle"><?= $this->view->sectionTitles[$sectionId]['description'] ?? '' ?></p>
+                        </div>
+
+                        <?php if ($sectionId == 1) { // Seção 1: Informações Gerais ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <dl class="row mb-0">
+                                        <?php foreach ($items as $item) { ?>
+                                            <dt class="col-sm-4"><?= htmlspecialchars($item['label']) ?></dt>
+                                            <dd class="col-sm-8"><?= nl2br(htmlspecialchars($item['content'])) ?></dd>
+                                        <?php } ?>
+                                    </dl>
+                                </div>
+                            </div>
+                        <?php } elseif (in_array($sectionId, [2, 3])) { // Seções 2 e 3 com cards diretos ?>
+                            <?php foreach ($items as $index => $item) { ?>
+                                <div class="card mb-3">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><?= htmlspecialchars($item['label']) ?></h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text"><?= nl2br(htmlspecialchars($item['content'])) ?></p>
+                                        <?php if (!empty($item['details'])) { ?>
+                                            <a class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#details-<?= $sectionId ?>-<?= $index ?>" role="button" aria-expanded="false" aria-controls="details-<?= $sectionId ?>-<?= $index ?>">
+                                                <i class="bi bi-info-circle me-1"></i> Ver Detalhes da Análise
+                                            </a>
+                                            <div class="collapse mt-3" id="details-<?= $sectionId ?>-<?= $index ?>">
+                                                <div class="card card-body bg-light">
+                                                    <?php foreach ($item['details'] as $detailLabel => $detailContent) { ?>
+                                                        <div class="mb-3">
+                                                            <strong><?= htmlspecialchars($detailLabel) ?>:</strong>
+                                                            <p class="mb-0 mt-1 fst-italic text-muted">"<?= nl2br(htmlspecialchars($detailContent)) ?>"</p>
+                                                        </div>
+                                                    <?php } ?>
+                                                </div>
+                                            </div>
+                                        <?php } ?>
+                                    </div>
+                                </div>
+                            <?php } ?>
+                        <?php } elseif ($sectionId == 4) { // Seção 4: Parecer Final ?>
+                            <div class="card">
+                                <div class="card-body">
+                                    <p><?= nl2br(htmlspecialchars($items[0]['content'])) ?></p>
+                                </div>
+                            </div>
+                        <?php } ?>
+                    </div>
+                <?php } ?>
+            </div>
+        <?php } ?>
+    </div>
+</div>
+
+<!-- Botão Voltar ao Topo -->
+<a href="#" id="back-to-top" class="btn btn-primary rounded-circle position-fixed" title="Voltar ao topo">
+    <i class="bi bi-arrow-up"></i>
+</a>

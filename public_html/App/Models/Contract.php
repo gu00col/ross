@@ -141,6 +141,47 @@ class Contract extends Model
     }
 
     /**
+     * Busca o JSON da análise de um contrato específico.
+     *
+     * @param string $contractId O UUID do contrato.
+     * @param string $userId O UUID do usuário.
+     * @return string|null O resultado da análise em formato JSON ou null se não encontrado.
+     */
+    public function getContractAnalysisJson(string $contractId, string $userId): ?string
+    {
+        $sql = "
+            SELECT
+                jsonb_agg(
+                    jsonb_build_object(
+                        'section_id', s.id,
+                        'display_order', adp.display_order,
+                        'label', adp.label,
+                        'content', adp.content,
+                        'details', adp.details
+                    )
+                    ORDER BY s.display_order, adp.display_order
+                ) AS analysis_json
+            FROM
+                public.contracts c
+            JOIN
+                public.analysis_data_points adp ON c.id = adp.contract_id
+            JOIN
+                public.analysis_sections s ON adp.section_id = s.id
+            WHERE
+                c.id = :contract_id AND c.user_id = :user_id
+        ";
+
+        $stmt = $this->db->prepare($sql);
+        $stmt->bindParam(':contract_id', $contractId, \PDO::PARAM_STR);
+        $stmt->bindParam(':user_id', $userId, \PDO::PARAM_STR);
+        $stmt->execute();
+
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+
+        return $result['analysis_json'] ?? null;
+    }
+
+    /**
      * Obtém um contrato por ID
      * 
      * @param string $id ID do contrato

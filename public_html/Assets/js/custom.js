@@ -52,4 +52,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // Lógica para a página de detalhes da análise
+    const analysisNav = document.getElementById('analysis-nav');
+    if (analysisNav) {
+        // Ativa o scrollspy
+        const scrollSpy = new bootstrap.ScrollSpy(document.body, {
+            target: '#analysis-nav',
+            offset: 120 // Ajustado para o novo layout com uma única barra no topo
+        });
+
+        // Rolagem suave para os links de navegação
+        const navLinks = analysisNav.querySelectorAll('.nav-link');
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(event) {
+                event.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    window.scrollTo({
+                        top: targetElement.offsetTop - 110, // Ajuste de offset
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    }
+
+    // Lógica para o botão "Voltar ao Topo"
+    const backToTopButton = document.getElementById('back-to-top');
+    if (backToTopButton) {
+        window.addEventListener('scroll', () => {
+            if (window.pageYOffset > 300) {
+                backToTopButton.style.display = 'block';
+            } else {
+                backToTopButton.style.display = 'none';
+            }
+        });
+
+        backToTopButton.addEventListener('click', (event) => {
+            event.preventDefault();
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
 });

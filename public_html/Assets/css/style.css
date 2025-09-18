@@ -14,6 +14,16 @@
     --font-family: 'Poppins', sans-serif; /* Fonte principal */
 }
 
+.text-primary {
+    color: var(--primary-dark-blue) !important;
+}
+.bg-primary {
+    background-color: var(--primary-dark-blue) !important;
+}
+.bg-secondary {
+    background-color: var(--secondary-light-bg) !important;
+}
+
 /* =============================================== */
 /* Estilos Globais */
 /* =============================================== */
@@ -166,4 +176,129 @@ body {
 
 #page-contratos .dropdown-toggle::after {
     display: none;
+}
+
+/* Estilos para a página de detalhes do contrato */
+#page-contrato-detalhe .page-header {
+    top: 0;
+    z-index: 1020;
+    background-color: var(--secondary-light-bg) !important;
+}
+
+#page-contrato-detalhe #analysis-nav {
+    background-color: #ffffff !important;
+    border-radius: 15px;
+}
+
+#analysis-nav .nav-link {
+    color: var(--text-secondary, #64748b);
+    font-weight: 500;
+    padding: 0.5rem 1rem !important; /* Padding ajustado para o novo layout */
+    border-radius: var(--radius-md, 0.5rem);
+    transition: all 0.3s ease;
+    position: relative;
+    white-space: nowrap; /* Previne quebra de linha nos links */
+    background-color: transparent !important;
+}
+
+#analysis-nav .nav-link:hover {
+    color: #333333 !important;
+}
+
+#analysis-nav .nav-link.active {
+    color: var(--primary-dark-blue) !important;
+    background-color: rgba(26, 45, 79, 0.1) !important; /* Azul claro translúcido */
+    font-weight: 600;
+}
+
+/* Estilos do Modelo Anterior */
+.section-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.section-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 1rem;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 4px;
+    background: var(--primary-dark-blue);
+    border-radius: 2px;
+}
+
+.section-subtitle {
+    font-size: 1.1rem;
+    color: var(--text-secondary, #64748b);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.info-card {
+    border: 1px solid var(--border-color, #e2e8f0);
+    box-shadow: none;
+    transition: all 0.3s ease;
+}
+
+.info-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
+}
+
+.info-card .card-body {
+    padding: 1.5rem; /* Aumenta o padding interno */
+}
+
+.info-card .card-title {
+    font-size: 0.95rem; /* Aumenta o tamanho da fonte */
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--primary-dark-blue); /* Aplica a cor principal */
+    text-transform: none; /* Remove o uppercase */
+}
+
+.info-card .card-text {
+    font-size: 0.95rem;
+}
+
+#page-contrato-detalhe .card-header h5 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-dark-blue);
+}
+
+/* Botão Voltar ao Topo */
+#back-to-top {
+    bottom: 20px;
+    right: 20px;
+    display: none;
+    z-index: 1030;
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    border-radius: 50%; /* Garante que seja um círculo perfeito */
+    border: none;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+    opacity: 0.8;
+
+    /* Centralização do ícone com Flexbox */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#back-to-top:hover {
+    opacity: 1;
+    transform: translateY(-3px);
 }

@@ -18,6 +18,8 @@ class User extends Model
     private $password;
     private $active;
     private $is_superuser;
+    private $created_at;
+    private $updated_at;
 
     public function __get($atributo) {
         return $this->$atributo;
@@ -99,7 +101,7 @@ class User extends Model
      * @return User|null Retorna uma instância de User ou null se não encontrado.
      */
     public function getUserById() {
-        $query = "SELECT id, nome, email, password FROM users WHERE id = :id";
+        $query = "SELECT id, nome, email, password, active, is_superuser, created_at, updated_at FROM users WHERE id = :id";
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $this->__get('id'));
         $stmt->execute();
@@ -112,6 +114,10 @@ class User extends Model
             $user->__set('nome', $user_data['nome']);
             $user->__set('email', $user_data['email']);
             $user->__set('password', $user_data['password']);
+            $user->__set('active', $user_data['active']);
+            $user->__set('is_superuser', $user_data['is_superuser']);
+            $user->__set('created_at', $user_data['created_at']);
+            $user->__set('updated_at', $user_data['updated_at']);
             return $user;
         }
 

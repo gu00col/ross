@@ -11,12 +11,28 @@ class MinhaContaController extends Action
     {
         $this->validaAutenticacao();
 
+        // Buscar dados completos do usuário no banco de dados
+        $user = Container::getModel('User');
+        $user->__set('id', $_SESSION['id']);
+        $userData = $user->getUserById();
+
+        if (!$userData) {
+            // Se não conseguir buscar o usuário, redireciona para login
+            header('Location: /?login=user_not_found');
+            exit;
+        }
+
         $this->view->active_page = 'minha_conta';
-        $this->view->user_nome = $_SESSION['nome'];
-        $this->view->user_email = $_SESSION['email'];
-        // A data de criação precisaria ser buscada do banco ou armazenada na sessão no login.
-        // Por enquanto, vamos deixar um placeholder.
-        $this->view->user_created_at = '25/08/2025'; // Placeholder
+        $this->view->user_nome = $userData->__get('nome');
+        $this->view->user_email = $userData->__get('email');
+        
+        // Formatar data de criação para exibição
+        $createdAt = $userData->__get('created_at');
+        if ($createdAt) {
+            $this->view->user_created_at = date('d/m/Y', strtotime($createdAt));
+        } else {
+            $this->view->user_created_at = 'Data não disponível';
+        }
 
         // Passa mensagens de status para a view
         $this->view->status = isset($_GET['status']) ? $_GET['status'] : '';

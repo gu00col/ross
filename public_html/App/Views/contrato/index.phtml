@@ -1,5 +1,15 @@
 <div id="page-contrato-detalhe">
     <div class="container-fluid">
+        <!-- Header Mobile -->
+        <div class="d-md-none d-flex justify-content-between align-items-center mb-4 mobile-header">
+            <a href="/home" class="logo-link">
+                <img src="/Assets/images/logo-ross.svg" alt="Ross Logo" style="height: 30px;">
+            </a>
+            <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu">
+                <i class="bi bi-list fs-3" style="color: var(--primary-dark-blue);"></i>
+            </button>
+        </div>
+
         <!-- Cabeçalho Fixo Unificado -->
         <div class="d-flex align-items-center pt-4 pb-3 mb-3 flex-wrap gap-3 border-bottom sticky-top bg-light page-header">
             <!-- Título à Esquerda -->
@@ -166,10 +176,11 @@
 </div>
 
 <!-- Botão Voltar ao Topo -->
-<a href="#" id="back-to-top" class="btn rounded-circle position-fixed" title="Voltar ao topo">
+<a href="#" id="back-to-top" class="btn btn-primary rounded-circle position-fixed" title="Voltar ao topo">
     <i class="bi bi-arrow-up"></i>
 </a>
 
+<?php $this->beginSection('scripts'); ?>
 <!-- ApexCharts CDN -->
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 
@@ -226,3 +237,4 @@
         chart.render();
     });
 </script>
+<?php $this->endSection(); ?>

@@ -93,5 +93,9 @@ require_once('./logs.php');
 
     <!-- JS -->
     <?php require_once './App/Views/layouts/footer-js.phtml'; ?>
+
+    <!-- Page Specific JS -->
+    <?php $this->renderSection('scripts'); ?>
+
 </body>
 </html>

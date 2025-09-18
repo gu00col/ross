@@ -11,48 +11,52 @@ error_reporting(E_ALL);
 class Route extends Bootstrap
 {
 
-    protected function initRoute()
+    public function __construct($projectName) {
+        parent::__construct($projectName);
+    }
+
+    protected function initRoutes()
     {
         //echo 'Iniciando initRoute <br>';
-        $routes['index'] = array(
-            'route' => '/',
-            'controller' => 'IndexController',
-            'action' => 'index'
-        );
         $routes['home'] = array(
-            'route' => 'home',
+            'route' => '/home',
             'controller' => 'HomeController',
             'action' => 'index'
         );
         $routes['login'] = array(
-            'route' => 'login',
+            'route' => '/login',
             'controller' => 'IndexController',
             'action' => 'autenticar'
         );
+        $routes['sair'] = array(
+            'route' => '/sair',
+            'controller' => 'IndexController',
+            'action' => 'sair'
+        );
         $routes['contratos'] = array(
-            'route' => 'contratos',
+            'route' => '/contratos',
             'controller' => 'ContratosController',
             'action' => 'index'
         );
+        $routes['contrato'] = array(
+            'route' => '/contrato',
+            'controller' => 'ContratoController',
+            'action' => 'index'
+        );
         $routes['minha_conta'] = array(
-            'route' => 'minha_conta',
+            'route' => '/minha_conta',
             'controller' => 'MinhaContaController',
             'action' => 'index'
         );
         $routes['change_password'] = array(
-            'route' => 'change_password',
+            'route' => '/change_password',
             'controller' => 'MinhaContaController',
             'action' => 'changePassword'
         );
         $routes['upload_contract'] = array(
-            'route' => 'upload_contract',
+            'route' => '/upload_contract',
             'controller' => 'UploadController',
             'action' => 'process'
-        );
-        $routes['contrato'] = array(
-            'route' => 'contrato',
-            'controller' => 'ContratoController',
-            'action' => 'index'
         );
         $routes['notFound'] = array(
             'route' => '404',

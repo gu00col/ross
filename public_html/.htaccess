@@ -1,9 +1,10 @@
 RewriteEngine On
+RewriteBase /
 
-# Redirecionar todas as rotas para index.php (exceto arquivos existentes)
+# Redirecionar todas as rotas para index.php (exceto arquivos e diretórios existentes)
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [QSA,L]
+RewriteRule . index.php [L]
 
 # Bloquear acesso a arquivos sensíveis
 <Files "*.env">

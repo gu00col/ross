@@ -1,5 +1,5 @@
 <?php
-function logMessage($message) {
+function logMessage($message, $level = 'INFO') {
     // Obter a data e hora atual
     $dateTime = date('Y-m-d H:i:s');
     
@@ -8,21 +8,25 @@ function logMessage($message) {
     $callingFile = isset($backtrace[0]['file']) ? basename($backtrace[0]['file']) : 'unknown';
     
     // Montar a mensagem de log
-    $logMessage = "{$dateTime} - {$callingFile}: {$message}\n";
+    $logMessage = "[{$dateTime}] [{$level}] [{$callingFile}] - {$message}" . PHP_EOL;
     
-    // Nome do arquivo de log
-    $logFile = __DIR__ . '/log-' . date('Y-m-d') . '.txt';
-
-    // Verificar se o diretório de logs existe, se não, criar
+    // Caminho para o diretório de logs
     $logDir = __DIR__ . '/logs';
+    
+    // Tenta criar o diretório se ele não existir
     if (!is_dir($logDir)) {
-        mkdir($logDir, 0777, true);
+        // @ suprime o erro se a criação falhar (ex: permissão)
+        @mkdir($logDir, 0775, true);
     }
     
-    // Caminho completo do arquivo de log
-    $logFile = $logDir . '/log-' . date('Y-m-d') . '.txt';
-
-    // Verificar se o arquivo de log existe e escrever a mensagem no final do arquivo
-    file_put_contents($logFile, $logMessage, FILE_APPEND);
+    // Verifica se o diretório é gravável
+    if (is_dir($logDir) && is_writable($logDir)) {
+        $logFile = $logDir . '/log-' . date('Y-m-d') . '.txt';
+        // Escreve no arquivo
+        file_put_contents($logFile, $logMessage, FILE_APPEND);
+    } else {
+        // Fallback: se não conseguir escrever no arquivo, envia para o log de erros do PHP/Apache
+        error_log("Falha ao escrever no arquivo de log. Mensagem: " . $logMessage);
+    }
 }
 

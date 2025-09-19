@@ -11,7 +11,7 @@
     --text-light: #FFFFFF;         /* Cor do texto na sidebar */
     --text-dark: #333333;          /* Cor do texto principal */
     --text-muted-light: #d1d1d1;   /* Cor do texto secundário na sidebar */
-    --font-family: 'Poppins', sans-serif; /* Fonte principal */
+    --font-family: 'Roboto Condensed', sans-serif; /* Fonte principal */
 }
 
 .text-primary {

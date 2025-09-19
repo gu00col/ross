@@ -51,6 +51,7 @@ class ComposerStaticInit752f3be75831bad010b2f525dbcce7c6
         'App\\Controllers\\DeleteController' => __DIR__ . '/../..' . '/App/Controllers/DeleteController.php',
         'App\\Controllers\\HomeController' => __DIR__ . '/../..' . '/App/Controllers/HomeController.php',
         'App\\Controllers\\IndexController' => __DIR__ . '/../..' . '/App/Controllers/IndexController.php',
+        'App\\Controllers\\LandingController' => __DIR__ . '/../..' . '/App/Controllers/LandingController.php',
         'App\\Controllers\\MinhaContaController' => __DIR__ . '/../..' . '/App/Controllers/MinhaContaController.php',
         'App\\Controllers\\NotFoundController' => __DIR__ . '/../..' . '/App/Controllers/NotFoundController.php',
         'App\\Controllers\\UploadController' => __DIR__ . '/../..' . '/App/Controllers/UploadController.php',

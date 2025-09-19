@@ -12,6 +12,7 @@ return array(
     'App\\Controllers\\DeleteController' => $baseDir . '/App/Controllers/DeleteController.php',
     'App\\Controllers\\HomeController' => $baseDir . '/App/Controllers/HomeController.php',
     'App\\Controllers\\IndexController' => $baseDir . '/App/Controllers/IndexController.php',
+    'App\\Controllers\\LandingController' => $baseDir . '/App/Controllers/LandingController.php',
     'App\\Controllers\\MinhaContaController' => $baseDir . '/App/Controllers/MinhaContaController.php',
     'App\\Controllers\\NotFoundController' => $baseDir . '/App/Controllers/NotFoundController.php',
     'App\\Controllers\\UploadController' => $baseDir . '/App/Controllers/UploadController.php',

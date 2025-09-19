@@ -18,7 +18,7 @@ class MinhaContaController extends Action
 
         if (!$userData) {
             // Se não conseguir buscar o usuário, redireciona para login
-            header('Location: /?login=user_not_found');
+            header('Location: /login?login=user_not_found');
             exit;
         }
 
@@ -68,7 +68,7 @@ class MinhaContaController extends Action
         if ($user->updatePassword()) {
             // Destruir a sessão após a alteração da senha
             session_destroy();
-            header('Location: /?login=password_changed');
+            header('Location: /login?login=password_changed');
         } else {
             header('Location: /minha_conta?status=error_update');
         }
@@ -77,7 +77,7 @@ class MinhaContaController extends Action
 
     public function validaAutenticacao() {
         if (!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == '') {
-            header('Location: /?login=unauthorized');
+            header('Location: /login?login=unauthorized');
             exit;
         }
     }

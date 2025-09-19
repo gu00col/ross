@@ -109,7 +109,11 @@
                                 <div class="card h-100 info-card">
                                     <div class="card-body">
                                         <h6 class="card-title text-primary text-uppercase small"><?= htmlspecialchars($item['label']) ?></h6>
-                                        <p class="card-text"><?= nl2br(htmlspecialchars($item['content'])) ?></p>
+                                        <?php if (!empty($item['contentHtml'])) { ?>
+                                            <div class="markdown-content"><?= $item['contentHtml'] ?></div>
+                                        <?php } else { ?>
+                                            <p class="card-text"><?= nl2br(htmlspecialchars($item['content'] ?? '')) ?></p>
+                                        <?php } ?>
                                     </div>
                                 </div>
                             </div>
@@ -134,25 +138,35 @@
                             <p class="section-subtitle"><?= $this->view->sectionTitles[$sectionId]['description'] ?? '' ?></p>
                         </div>
 
-                        <?php if ($sectionId == 1) { // Seção 1: Informações Gerais ?>
+                        <?php if ($sectionId == 1) { // Seção 1: Informações Gerais (Markdown suportado) ?>
                             <div class="card">
                                 <div class="card-body">
                                     <dl class="row mb-0">
                                         <?php foreach ($items as $item) { ?>
                                             <dt class="col-sm-4"><?= htmlspecialchars($item['label']) ?></dt>
-                                            <dd class="col-sm-8"><?= nl2br(htmlspecialchars($item['content'])) ?></dd>
+                                            <dd class="col-sm-8">
+                                                <?php if (!empty($item['contentHtml'])) { ?>
+                                                    <div class="markdown-content"><?= $item['contentHtml'] ?></div>
+                                                <?php } else { ?>
+                                                    <?= nl2br(htmlspecialchars($item['content'] ?? '')) ?>
+                                                <?php } ?>
+                                            </dd>
                                         <?php } ?>
                                     </dl>
                                 </div>
                             </div>
-                        <?php } elseif (in_array($sectionId, [2, 3])) { // Seções 2 e 3 com cards diretos ?>
+                        <?php } elseif (in_array($sectionId, [2, 3])) { // Seções 2 e 3 com cards diretos (Markdown suportado) ?>
                             <?php foreach ($items as $index => $item) { ?>
                                 <div class="card mb-3">
                                     <div class="card-header">
                                         <h5 class="mb-0"><?= htmlspecialchars($item['label']) ?></h5>
                                     </div>
                                     <div class="card-body">
-                                        <p class="card-text"><?= nl2br(htmlspecialchars($item['content'])) ?></p>
+                                        <?php if (!empty($item['contentHtml'])) { ?>
+                                            <div class="markdown-content"><?= $item['contentHtml'] ?></div>
+                                        <?php } else { ?>
+                                            <p class="card-text"><?= nl2br(htmlspecialchars($item['content'] ?? '')) ?></p>
+                                        <?php } ?>
                                         <?php if (!empty($item['details'])) { ?>
                                             <a class="btn btn-outline-primary btn-sm" data-bs-toggle="collapse" href="#details-<?= $sectionId ?>-<?= $index ?>" role="button" aria-expanded="false" aria-controls="details-<?= $sectionId ?>-<?= $index ?>">
                                                 <i class="bi bi-info-circle me-1"></i> Ver Detalhes da Análise

@@ -62,6 +62,21 @@ class ContratoController extends Action
         $this->view->riskPercentage = $riskPercentage;
 
         $this->view->executiveSummary = $executiveSummary;
+
+        // Converter conteúdos de Markdown para HTML nas seções 2 e 3 (quando aplicável)
+        $sectionsToMarkdown = [1, 2, 3];
+        foreach ($sectionsToMarkdown as $sectionId) {
+            if (!empty($groupedAnalysis[$sectionId])) {
+                $parsedown = new Parsedown();
+                $parsedown->setSafeMode(true);
+                foreach ($groupedAnalysis[$sectionId] as $index => $item) {
+                    $content = (string)($item['content'] ?? '');
+                    $groupedAnalysis[$sectionId][$index]['contentHtml'] = $content !== '' ? $parsedown->text($content) : '';
+                }
+            }
+        }
+        $this->view->groupedAnalysis = $groupedAnalysis;
+        // Atualiza a seção de informações gerais já com Markdown convertido
         $this->view->generalInfo = $groupedAnalysis[1] ?? [];
 
         // Converter o conteúdo da Seção 4 (Parecer Final) de Markdown para HTML

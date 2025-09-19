@@ -172,6 +172,10 @@
             padding: 30px;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             margin-bottom: 20px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
         
         .stars {
@@ -648,11 +652,18 @@
     <section id="depoimentos" class="py-5" style="background-color: var(--light-bg);">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Depoimentos</h2>
-                <p class="lead text-muted">Veja o que profissionais estão falando sobre Ross</p>
+                <h2 class="display-5 fw-bold mb-3">
+                    Depoimentos 
+                    <span class="badge bg-warning text-dark ms-2">BETA</span>
+                </h2>
+                <p class="lead text-muted">Feedback dos nossos usuários beta sobre o Ross</p>
+                <small class="text-muted">
+                    <i class="bi bi-info-circle me-1"></i>
+                    Sistema em desenvolvimento • Chat com IA chegando em breve
+                </small>
             </div>
             
-            <div class="row g-4">
+            <div class="row g-4 align-items-stretch">
                 <div class="col-lg-4">
                     <div class="testimonial-card">
                         <div class="stars mb-3">
@@ -663,16 +674,13 @@
                             <i class="bi bi-star-fill"></i>
                         </div>
                         <p class="mb-3">
-                            "Ross revolucionou nossa análise de contratos. O que antes levava horas, 
-                            agora fazemos em minutos com muito mais precisão."
+                            "Estou testando o Ross nos meus estudos e já vejo o potencial. Os relatórios 
+                            me ajudam a entender contratos complexos. Mal posso esperar pelo chat com IA 
+                            que vai permitir tirar dúvidas específicas!"
                         </p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://picsum.photos/60/60?random=10" alt="Ana Silva" 
-                                 class="rounded-circle me-3" width="60" height="60" loading="lazy">
-                            <div>
-                                <h6 class="mb-0">Ana Silva</h6>
-                                <small class="text-muted">Advogada Corporativa</small>
-                            </div>
+                        <div class="text-end">
+                            <h6 class="mb-0">Julia Mendes</h6>
+                            <small class="text-muted">Estudante de Direito - UFMG</small>
                         </div>
                     </div>
                 </div>
@@ -687,16 +695,13 @@
                             <i class="bi bi-star-fill"></i>
                         </div>
                         <p class="mb-3">
-                            "A versão open-source permite total customização para nossas necessidades específicas. 
-                            Excelente trabalho da equipe!"
+                            "Como freelancer, testo o Ross para revisar contratos de clientes. Mesmo sendo beta, 
+                            os relatórios já me dão mais segurança. Imagino como será incrível quando o chat 
+                            estiver pronto para negociar cláusulas diretamente!"
                         </p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://picsum.photos/60/60?random=11" alt="Carlos Santos" 
-                                 class="rounded-circle me-3" width="60" height="60" loading="lazy">
-                            <div>
-                                <h6 class="mb-0">Carlos Santos</h6>
-                                <small class="text-muted">CTO, TechLaw</small>
-                            </div>
+                        <div class="text-end">
+                            <h6 class="mb-0">Fernanda Lima</h6>
+                            <small class="text-muted">Designer Freelancer</small>
                         </div>
                     </div>
                 </div>
@@ -711,16 +716,13 @@
                             <i class="bi bi-star-fill"></i>
                         </div>
                         <p class="mb-3">
-                            "Interface intuitiva e relatórios muito bem estruturados. 
-                            Nossos clientes ficaram impressionados com a qualidade das análises."
+                            "Participamos dos testes do Ross e vemos grande potencial para escritórios como o nosso. 
+                            Os relatórios atuais já ajudam nas análises preliminares. O que mais nos empolga 
+                            é saber que em breve teremos um assistente de IA para conversar sobre contratos!"
                         </p>
-                        <div class="d-flex align-items-center">
-                            <img src="https://picsum.photos/60/60?random=12" alt="Maria Costa" 
-                                 class="rounded-circle me-3" width="60" height="60" loading="lazy">
-                            <div>
-                                <h6 class="mb-0">Maria Costa</h6>
-                                <small class="text-muted">Sócia, Costa & Associados</small>
-                            </div>
+                        <div class="text-end">
+                            <h6 class="mb-0">Dr. Roberto Silva</h6>
+                            <small class="text-muted">Advogado, Silva & Santos</small>
                         </div>
                     </div>
                 </div>

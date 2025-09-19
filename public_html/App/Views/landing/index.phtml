@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="/Assets/images/favicon.ico" type="image/x-icon">
     
     <!-- SEO Meta Tags -->
     <title>Ross - Analista Jurídico de Contratos com IA | Open Source</title>
@@ -50,6 +49,7 @@
             font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
             color: var(--bs-body-color);
             background-color: var(--bs-body-bg);
+            overflow-x: hidden; /* Prevent horizontal scroll issue */
         }
 
         h1, h2, h3, h4, h5, h6 {
@@ -253,7 +253,9 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#como-funciona">Como Funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#instalacao">Instalação</a></li>
                     <li class="nav-item"><a class="nav-link" href="#open-source">Self-hosted</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#precos">Preços</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
                 </ul>
@@ -312,13 +314,9 @@
                 <div class="col-md-6 col-lg-4 px-3">
                     <div class="card glass-card">
                         <div class="card-body text-center p-4 p-lg-5">
-                            <div class="feature-icon">
-                                <i class="bi bi-file-earmark-text"></i>
-                            </div>
+                            <div class="feature-icon"><i class="bi bi-file-earmark-text"></i></div>
                             <h5 class="card-title h5 text-white">Análise Automática</h5>
-                            <p class="card-text">
-                                IA avançada examina contratos em segundos, identificando cláusulas importantes, riscos e oportunidades de melhoria.
-                            </p>
+                            <p class="card-text">IA avançada examina contratos em segundos, identificando cláusulas importantes, riscos e oportunidades.</p>
                         </div>
                     </div>
                 </div>
@@ -326,27 +324,20 @@
                 <div class="col-md-6 col-lg-4 px-3">
                     <div class="card glass-card">
                         <div class="card-body text-center p-4 p-lg-5">
-                            <div class="feature-icon">
-                                <i class="bi bi-graph-up"></i>
-                            </div>
+                            <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
                             <h5 class="card-title h5 text-white">Geração de Relatórios</h5>
-                            <p class="card-text">
-                                Relatórios detalhados e profissionais com resumos executivos, gráficos e recomendações práticas gerados localmente.
-                            </p>
+                            <p class="card-text">Relatórios detalhados com resumos executivos, gráficos e recomendações práticas gerados localmente.</p>
                         </div>
                     </div>
                 </div>
                 
                 <div class="col-md-6 col-lg-4 px-3">
-                    <div class="card glass-card border-primary">
+                    <div class="card glass-card border-primary position-relative">
+                        <div class="position-absolute top-0 end-0 p-2"><span class="badge bg-primary">Próxima Feature</span></div>
                         <div class="card-body text-center p-4 p-lg-5">
-                            <div class="feature-icon">
-                                <i class="bi bi-chat-dots"></i>
-                            </div>
+                            <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
                             <h5 class="card-title h5 text-white">Chat Inteligente com IA</h5>
-                            <p class="card-text">
-                                <strong>Em desenvolvimento:</strong> Converse diretamente com seus contratos! Tire dúvidas e peça esclarecimentos.
-                            </p>
+                            <p class="card-text"><strong>Em desenvolvimento:</strong> Converse diretamente com seus contratos! Tire dúvidas e peça esclarecimentos.</p>
                         </div>
                     </div>
                 </div>
@@ -393,8 +384,32 @@
         </div>
     </section>
 
+    <!-- Installation Video Section -->
+    <section id="instalacao" class="py-5 section-bg">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Como Instalar Ross</h2>
+                <p class="lead text-white-50">Tutorial completo de instalação em seus próprios servidores.</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="ratio ratio-16x9 rounded-4 overflow-hidden">
+                        <div class="d-flex align-items-center justify-content-center glass-card">
+                            <div class="text-center">
+                                <i class="bi bi-play-circle text-primary" style="font-size: 5rem;"></i>
+                                <h4 class="mt-3 text-white">Vídeo Tutorial - Instalação Ross</h4>
+                                <p class="text-white-50">Tutorial passo a passo será disponibilizado em breve.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Open Source Section -->
-    <section id="open-source" class="py-5 section-bg">
+    <section id="open-source" class="py-5">
         <div class="container py-5">
             <div class="row justify-content-center align-items-center gy-5">
                 <div class="col-lg-6 px-lg-4">
@@ -415,6 +430,54 @@
                         <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-primary btn-lg mt-3">
                             <i class="bi bi-github me-2"></i>Acessar Repositório
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="depoimentos" class="py-5 section-bg">
+        <div class="container py-5">
+             <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">O que dizem sobre o Ross</h2>
+                <p class="lead text-white-50">Feedback dos nossos usuários beta.</p>
+            </div>
+            <div class="row gy-4 justify-content-center">
+                <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Estou testando o Ross e já vejo o potencial. Os relatórios me ajudam a entender contratos complexos. Mal posso esperar pelo chat com IA!"</p>
+                            <div class="mt-4">
+                                <h6 class="text-white mb-0">Julia Mendes</h6>
+                                <small>Estudante de Direito - UFMG</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Como freelancer, o Ross já me dá mais segurança para revisar contratos. Imagino como será incrível quando o chat estiver pronto para negociar cláusulas!"</p>
+                             <div class="mt-4">
+                                <h6 class="text-white mb-0">Fernanda Lima</h6>
+                                <small>Designer Freelancer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Vemos grande potencial para escritórios. O que mais nos empolga é saber que em breve teremos um assistente de IA para conversar sobre contratos!"</p>
+                             <div class="mt-4">
+                                <h6 class="text-white mb-0">Dr. Roberto Silva</h6>
+                                <small>Advogado, Silva & Santos</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

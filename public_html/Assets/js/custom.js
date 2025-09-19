@@ -38,6 +38,22 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Modal de Exclusão de Contrato: preencher nome dinamicamente
+    const deleteContractModalEl = document.getElementById('deleteContractModal');
+    if (deleteContractModalEl) {
+        deleteContractModalEl.addEventListener('show.bs.modal', function (event) {
+            const trigger = event.relatedTarget; // botão/link que abriu o modal
+            if (!trigger) {
+                return;
+            }
+            const contractName = trigger.getAttribute('data-contract-name') || '';
+            const nameTarget = deleteContractModalEl.querySelector('#deleteContractName');
+            if (nameTarget) {
+                nameTarget.textContent = contractName;
+            }
+        });
+    }
+
     // Lógica para limpar filtros na página de contratos
     const clearFiltersBtn = document.getElementById('clear-filters-btn');
     if (clearFiltersBtn) {

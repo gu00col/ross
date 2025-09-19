@@ -97,9 +97,27 @@ document.addEventListener('DOMContentLoaded', function() {
         // Garantir que o botão "Sim" envie o formulário explicitamente
         const confirmDeleteButton = deleteContractModalEl.querySelector('#confirmDeleteButton');
         if (confirmDeleteButton) {
-            confirmDeleteButton.addEventListener('click', function () {
+            confirmDeleteButton.addEventListener('click', function (event) {
+                // Impede o submit automático para permitir ativar o loading primeiro
+                event.preventDefault();
+
+                // Desabilita o botão para evitar cliques duplos
+                confirmDeleteButton.disabled = true;
+
+                // Mostra o spinner e atualiza o texto
+                const spinner = confirmDeleteButton.querySelector('.spinner-border');
+                const buttonText = confirmDeleteButton.querySelector('.button-text');
+
+                if (spinner) {
+                    spinner.classList.remove('d-none');
+                }
+                if (buttonText) {
+                    buttonText.textContent = 'Removendo...';
+                }
+
                 const form = deleteContractModalEl.querySelector('#deleteContractForm');
                 if (form) {
+                    // Envia o formulário após ativar o estado de carregamento
                     form.submit();
                 }
             });

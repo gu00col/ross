@@ -45,7 +45,29 @@ class ComposerStaticInit752f3be75831bad010b2f525dbcce7c6
     );
 
     public static $classMap = array (
+        'App\\Connection' => __DIR__ . '/../..' . '/App/Connection.php',
+        'App\\Controllers\\ContratoController' => __DIR__ . '/../..' . '/App/Controllers/ContratoController.php',
+        'App\\Controllers\\ContratosController' => __DIR__ . '/../..' . '/App/Controllers/ContratosController.php',
+        'App\\Controllers\\DeleteController' => __DIR__ . '/../..' . '/App/Controllers/DeleteController.php',
+        'App\\Controllers\\HomeController' => __DIR__ . '/../..' . '/App/Controllers/HomeController.php',
+        'App\\Controllers\\IndexController' => __DIR__ . '/../..' . '/App/Controllers/IndexController.php',
+        'App\\Controllers\\MinhaContaController' => __DIR__ . '/../..' . '/App/Controllers/MinhaContaController.php',
+        'App\\Controllers\\NotFoundController' => __DIR__ . '/../..' . '/App/Controllers/NotFoundController.php',
+        'App\\Controllers\\UploadController' => __DIR__ . '/../..' . '/App/Controllers/UploadController.php',
+        'App\\EnvLoader' => __DIR__ . '/../..' . '/App/EnvLoader.php',
+        'App\\Helpers\\StatusHelper' => __DIR__ . '/../..' . '/App/Helpers/StatusHelper.php',
+        'App\\Models\\AnalysisDataPoint' => __DIR__ . '/../..' . '/App/Models/AnalysisDataPoint.php',
+        'App\\Models\\AnalysisSection' => __DIR__ . '/../..' . '/App/Models/AnalysisSection.php',
+        'App\\Models\\Contract' => __DIR__ . '/../..' . '/App/Models/Contract.php',
+        'App\\Models\\User' => __DIR__ . '/../..' . '/App/Models/User.php',
+        'App\\Route' => __DIR__ . '/../..' . '/App/Route.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
+        'MF\\Controller\\Action' => __DIR__ . '/..' . '/MF/Controller/Action.php',
+        'MF\\Init\\Bootstrap' => __DIR__ . '/..' . '/MF/Init/Bootstrap.php',
+        'MF\\Init\\Config' => __DIR__ . '/..' . '/MF/Init/Config.php',
+        'MF\\Model\\Container' => __DIR__ . '/..' . '/MF/Model/Container.php',
+        'MF\\Model\\Model' => __DIR__ . '/..' . '/MF/Model/Model.php',
+        'Parsedown' => __DIR__ . '/..' . '/erusev/parsedown/Parsedown.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

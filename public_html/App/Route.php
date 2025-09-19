@@ -64,6 +64,11 @@ class Route extends Bootstrap
             'controller' => 'UploadController',
             'action' => 'process'
         );
+        $routes['delete_contract'] = array(
+            'route' => '/delete_contract',
+            'controller' => 'DeleteController',
+            'action' => 'process'
+        );
         $routes['notFound'] = array(
             'route' => '404',
             'controller' => 'NotFoundController',

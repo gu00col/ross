@@ -6,5 +6,27 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Connection' => $baseDir . '/App/Connection.php',
+    'App\\Controllers\\ContratoController' => $baseDir . '/App/Controllers/ContratoController.php',
+    'App\\Controllers\\ContratosController' => $baseDir . '/App/Controllers/ContratosController.php',
+    'App\\Controllers\\DeleteController' => $baseDir . '/App/Controllers/DeleteController.php',
+    'App\\Controllers\\HomeController' => $baseDir . '/App/Controllers/HomeController.php',
+    'App\\Controllers\\IndexController' => $baseDir . '/App/Controllers/IndexController.php',
+    'App\\Controllers\\MinhaContaController' => $baseDir . '/App/Controllers/MinhaContaController.php',
+    'App\\Controllers\\NotFoundController' => $baseDir . '/App/Controllers/NotFoundController.php',
+    'App\\Controllers\\UploadController' => $baseDir . '/App/Controllers/UploadController.php',
+    'App\\EnvLoader' => $baseDir . '/App/EnvLoader.php',
+    'App\\Helpers\\StatusHelper' => $baseDir . '/App/Helpers/StatusHelper.php',
+    'App\\Models\\AnalysisDataPoint' => $baseDir . '/App/Models/AnalysisDataPoint.php',
+    'App\\Models\\AnalysisSection' => $baseDir . '/App/Models/AnalysisSection.php',
+    'App\\Models\\Contract' => $baseDir . '/App/Models/Contract.php',
+    'App\\Models\\User' => $baseDir . '/App/Models/User.php',
+    'App\\Route' => $baseDir . '/App/Route.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
+    'MF\\Controller\\Action' => $vendorDir . '/MF/Controller/Action.php',
+    'MF\\Init\\Bootstrap' => $vendorDir . '/MF/Init/Bootstrap.php',
+    'MF\\Init\\Config' => $vendorDir . '/MF/Init/Config.php',
+    'MF\\Model\\Container' => $vendorDir . '/MF/Model/Container.php',
+    'MF\\Model\\Model' => $vendorDir . '/MF/Model/Model.php',
+    'Parsedown' => $vendorDir . '/erusev/parsedown/Parsedown.php',
 );

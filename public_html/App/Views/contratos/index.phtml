@@ -127,7 +127,7 @@
                                             <div class="d-none d-md-inline-flex">
                                                 <a href="/contrato?contrato_id=<?= htmlspecialchars($contract['id']) ?>" class="btn <?= ($status['text'] === 'Pendente') ? 'disabled' : '' ?> <?= ($status['text'] === 'Erro') ? 'disabled' : '' ?> btn-sm btn-outline-secondary me-1" title="Visualizar"><i class="bi bi-eye"></i></a>
                                                 <a href="<?= htmlspecialchars($contract['storage_path']) ?>" target="_blank" class="btn btn-sm btn-outline-primary me-1" title="Download"><i class="bi bi-download"></i></a>
-                                                <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir" data-bs-toggle="modal" data-bs-target="#deleteContractModal" data-contract-name="<?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?>">
+                                                <a href="#" class="btn btn-sm btn-outline-danger" title="Excluir" data-bs-toggle="modal" data-bs-target="#deleteContractModal" data-contract-name="<?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?>" data-contract-id="<?= htmlspecialchars($contract['id']) ?>" data-user-id="<?= htmlspecialchars($_SESSION['id']) ?>">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
                                             </div>
@@ -142,7 +142,7 @@
                                                     <li>
                                                         <hr class="dropdown-divider">
                                                     </li>
-                                                    <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteContractModal" data-contract-name="<?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?>"><i class="bi bi-trash me-2"></i>Excluir</a></li>
+                                                    <li><a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#deleteContractModal" data-contract-name="<?= htmlspecialchars(str_replace('.pdf', '', $contract['original_filename'])) ?>" data-contract-id="<?= htmlspecialchars($contract['id']) ?>" data-user-id="<?= htmlspecialchars($_SESSION['id']) ?>"><i class="bi bi-trash me-2"></i>Excluir</a></li>
                                                 </ul>
                                             </div>
                                         </td>

@@ -47,11 +47,32 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             const contractName = trigger.getAttribute('data-contract-name') || '';
+            const contractId = trigger.getAttribute('data-contract-id') || '';
+            const userId = trigger.getAttribute('data-user-id') || '';
             const nameTarget = deleteContractModalEl.querySelector('#deleteContractName');
+            const inputContractId = deleteContractModalEl.querySelector('#deleteContratoId');
+            const inputUserId = deleteContractModalEl.querySelector('#deleteUserId');
             if (nameTarget) {
                 nameTarget.textContent = contractName;
             }
+            if (inputContractId) {
+                inputContractId.value = contractId;
+            }
+            if (inputUserId) {
+                inputUserId.value = userId;
+            }
         });
+
+        // Garantir que o botão "Sim" envie o formulário explicitamente
+        const confirmDeleteButton = deleteContractModalEl.querySelector('#confirmDeleteButton');
+        if (confirmDeleteButton) {
+            confirmDeleteButton.addEventListener('click', function () {
+                const form = deleteContractModalEl.querySelector('#deleteContractForm');
+                if (form) {
+                    form.submit();
+                }
+            });
+        }
     }
 
     // Lógica para limpar filtros na página de contratos

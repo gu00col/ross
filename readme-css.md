@@ -129,7 +129,7 @@ O `layout.css` define variáveis CSS globais que podem ser utilizadas em qualque
 
 ```css
 :root {
-    --ross-blue: #0D2149;
+    --ross-blue: #1A2D4F ;
     --ross-light-blue: #1a3a7a;
     --ross-beige: #F9EBE0;
     --ross-dark-beige: #f2e0c7;

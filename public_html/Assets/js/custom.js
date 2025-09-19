@@ -147,6 +147,28 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
+    // Recarregar automaticamente a página de contratos a cada 30s
+    const contratosPageRoot = document.getElementById('page-contratos');
+    if (contratosPageRoot) {
+        setInterval(() => {
+            // Evita recarregar se houver um modal aberto para não interromper ações do usuário
+            const openedModal = document.querySelector('.modal.show');
+            if (!openedModal) {
+                try {
+                    const url = new URL(window.location.href);
+                    // Remover parâmetros de alerta
+                    url.searchParams.delete('upload');
+                    url.searchParams.delete('delete');
+                    const newSearch = url.searchParams.toString();
+                    const target = newSearch ? `${url.pathname}?${newSearch}` : url.pathname;
+                    window.location.href = target;
+                } catch (e) {
+                    // Fallback simples: recarrega sem querystring
+                    window.location.href = window.location.pathname;
+                }
+            }
+        }, 30000);
+    }
     // Lógica para o botão "Voltar ao Topo"
     const backToTopButton = document.getElementById('back-to-top');
     if (backToTopButton) {

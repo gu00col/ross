@@ -39,6 +39,18 @@
         </div>
     <?php } ?>
 
+    <?php if (($this->view->delete_status ?? '') === 'success') { ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <strong>Sucesso!</strong> Sua solicitação de remoção foi enviada.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } else if (!empty($this->view->delete_status)) { ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <strong>Erro!</strong> Não foi possível processar a remoção. Por favor, tente novamente.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    <?php } ?>
+
     <div class="container-fluid px-0">
         <!-- Filtros de Busca -->
         <div class="card mb-4">

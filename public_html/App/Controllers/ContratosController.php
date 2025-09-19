@@ -47,6 +47,8 @@ class ContratosController extends Action
 
         // Passa o status do upload para a view (se houver)
         $this->view->upload_status = $_GET['upload'] ?? '';
+        // Passa o status da exclusão para a view (se houver)
+        $this->view->delete_status = $_GET['delete'] ?? '';
 
         $this->view->active_page = 'contratos';
         $this->render('index', 'base');

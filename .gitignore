@@ -106,6 +106,11 @@ access.log
 docker-compose.override.yml
 docker-compose.local.yml
 
+# Dados dos containers Docker
+dockers/postgresql/data/
+dockers/redis/data/
+dockers/n8n/data/
+
 # Arquivos de configuração do servidor
 .htaccess.local
 nginx.conf.local

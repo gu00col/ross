@@ -283,6 +283,19 @@ class User extends Model
         
         return $stmt->fetchColumn() > 0;
     }
+
+    /**
+     * Conta o total de usuários na tabela
+     * 
+     * @return int Número total de usuários
+     */
+    public function countUsers(): int
+    {
+        $stmt = $this->db->prepare("SELECT COUNT(*) FROM users");
+        $stmt->execute();
+        
+        return (int) $stmt->fetchColumn();
+    }
 }
 
 ?>

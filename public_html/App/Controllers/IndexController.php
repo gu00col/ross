@@ -10,6 +10,8 @@ use MF\Controller\Action;
 use MF\Model\Container;
 
 use App\Models\User;
+use App\Connection;
+use App\EnvLoader;
 
 class IndexController extends Action
 {
@@ -22,6 +24,9 @@ class IndexController extends Action
             exit;
         }
 
+        // Verifica se banco está conectado e se há usuários no sistema
+        $this->checkAndCreateAdminUser();
+
         // $user = Container::getModel('User');
         
         // $users = $user->getActiveUsers(); 
@@ -30,9 +35,75 @@ class IndexController extends Action
         $this->view->login_error = isset($_GET['login']) && $_GET['login'] == 'error' ? true : false;
         $this->view->password_changed = isset($_GET['status']) && $_GET['status'] == 'password_changed' ? true : false;
         $this->view->unauthorized_access = isset($_GET['login']) && $_GET['login'] == 'unauthorized' ? true : false;
+        $this->view->db_connection_error = $this->view->db_connection_error ?? false;
 		
 		$this->render('login', ''); // Renderiza a view sem layout
 	}
+
+    /**
+     * Verifica se o banco está conectado e se há usuários no sistema.
+     * Se não há usuários, cria um usuário super admin automaticamente.
+     */
+    private function checkAndCreateAdminUser() {
+        try {
+            // Tenta conectar com o banco
+            $db = Connection::getDb();
+            
+            if ($db === null) {
+                logMessage("Não foi possível conectar ao banco de dados durante verificação de usuário admin.", "WARNING");
+                $this->view->db_connection_error = true;
+                return;
+            }
+
+            // Obtém o model User
+            $user = Container::getModel('User');
+            
+            if (!$user) {
+                logMessage("Não foi possível obter o model User durante verificação de usuário admin.", "WARNING");
+                return;
+            }
+
+            // Conta quantos usuários existem
+            $userCount = $user->countUsers();
+            logMessage("Verificação de usuários no sistema: {$userCount} usuários encontrados.", "INFO");
+
+            // Se não há usuários, cria o usuário super admin
+            if ($userCount === 0) {
+                $this->createDefaultAdminUser($user);
+            }
+
+        } catch (\PDOException $e) {
+            logMessage("Erro de conexão com banco de dados durante verificação de usuário admin: " . $e->getMessage(), "ERROR");
+            $this->view->db_connection_error = true;
+        } catch (\Exception $e) {
+            logMessage("Erro durante verificação e criação de usuário admin: " . $e->getMessage(), "ERROR");
+            // Se for um erro genérico, também considera como erro de conexão para ser seguro
+            $this->view->db_connection_error = true;
+        }
+    }
+
+    /**
+     * Cria o usuário super admin padrão usando as variáveis do .env
+     * 
+     * @param User $userModel Instância do model User
+     */
+    private function createDefaultAdminUser(User $userModel) {
+        try {
+            $adminName = EnvLoader::get('ADMIN_NAME', 'Administrador');
+            $adminEmail = EnvLoader::get('ADMIN_EMAIL', 'admin@ross.com');
+            $adminPassword = EnvLoader::get('ADMIN_PASSWORD', 'admin123');
+            $adminIsSuperuser = filter_var(EnvLoader::get('ADMIN_IS_SUPERUSER', 'true'), FILTER_VALIDATE_BOOLEAN);
+
+            logMessage("Criando usuário super admin automaticamente. Nome: {$adminName}, Email: {$adminEmail}", "INFO");
+
+            $adminId = $userModel->createUser($adminName, $adminEmail, $adminPassword, $adminIsSuperuser);
+            
+            logMessage("Usuário super admin criado com sucesso. ID: {$adminId}", "INFO");
+
+        } catch (\Exception $e) {
+            logMessage("Erro ao criar usuário super admin: " . $e->getMessage(), "ERROR");
+        }
+    }
 
 	public function autenticar() {
 

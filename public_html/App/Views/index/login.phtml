@@ -97,7 +97,11 @@
                         <h2 class="h1 fw-bold login-text-primary">Acessar Conta</h2>
                         <p class="text-muted">Bem-vindo de volta!</p>
                     </header>
-                    <?php if ($this->view->password_changed) { ?>
+                    <?php if ($this->view->db_connection_error) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            <strong>Erro de Conexão:</strong> Não foi possível conectar ao banco de dados. Verifique a configuração do sistema ou tente novamente mais tarde.
+                        </div>
+                    <?php } else if ($this->view->password_changed) { ?>
                         <div class="alert alert-success" role="alert">
                             Senha alterada com sucesso! Por favor, faça o login novamente.
                         </div>

@@ -15,19 +15,24 @@
 -- Habilitar extensão pgvector para embeddings
 CREATE EXTENSION IF NOT EXISTS vector;
 
+-- Habilitar extensão pgcrypto para gen_random_uuid()
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 -- ===========================================
 -- TABELA: users
 -- Armazena informações dos usuários
 -- ===========================================
 CREATE TABLE IF NOT EXISTS users (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    id UUID DEFAULT gen_random_uuid() NOT NULL,
     nome VARCHAR(255) NOT NULL,
-    email VARCHAR(255) UNIQUE NOT NULL,
+    email VARCHAR(255) NOT NULL,
     password VARCHAR(255) NOT NULL,
-    active BOOLEAN DEFAULT true,
-    is_superuser BOOLEAN DEFAULT false,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    active BOOLEAN DEFAULT true NULL,
+    is_superuser BOOLEAN DEFAULT false NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NULL,
+    CONSTRAINT users_email_key UNIQUE (email),
+    CONSTRAINT users_pkey PRIMARY KEY (id)
 );
 
 -- Comentários da tabela users
@@ -47,58 +52,79 @@ CREATE INDEX IF NOT EXISTS idx_users_active ON users(active);
 CREATE INDEX IF NOT EXISTS idx_users_created_at ON users(created_at);
 
 -- ===========================================
+-- TABELA: analysis_sections
+-- Define as seções padronizadas de análise
+-- ===========================================
+CREATE TABLE IF NOT EXISTS analysis_sections (
+    id SERIAL NOT NULL,
+    title VARCHAR(255) NOT NULL,
+    display_order INT2 NOT NULL,
+    CONSTRAINT analysis_sections_pkey PRIMARY KEY (id),
+    CONSTRAINT analysis_sections_title_key UNIQUE (title),
+    CONSTRAINT analysis_sections_display_order_key UNIQUE (display_order)
+);
+
+-- Comentários da tabela analysis_sections
+COMMENT ON TABLE analysis_sections IS 'Define as seções padronizadas de uma análise de contrato para manter a consistência.';
+COMMENT ON COLUMN analysis_sections.id IS 'Identificador único para cada seção (Chave Primária).';
+COMMENT ON COLUMN analysis_sections.title IS 'Título da seção (ex: "Seção 1: Extração de Dados Essenciais").';
+COMMENT ON COLUMN analysis_sections.display_order IS 'Ordem em que a seção deve ser exibida na interface.';
+
+-- ===========================================
 -- TABELA: contracts
 -- Armazena informações dos contratos
 -- ===========================================
 CREATE TABLE IF NOT EXISTS contracts (
-    id VARCHAR(255) PRIMARY KEY,
-    user_id UUID, -- ID do usuário (sem chave estrangeira por enquanto)
-    original_filename VARCHAR(500) NOT NULL,
-    storage_path TEXT,
-    raw_text TEXT,
-    text_embedding vector(1536), -- Embedding do texto para busca semântica
-    status VARCHAR(50) DEFAULT 'pending',
-    analyzed_at TIMESTAMP,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    id VARCHAR(255) NOT NULL,
+    original_filename TEXT NOT NULL,
+    storage_path TEXT NULL,
+    analyzed_at TIMESTAMPTZ NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    status VARCHAR DEFAULT 'pending'::character varying NULL,
+    raw_text TEXT NULL,
+    user_id UUID NULL,
+    text_embedding vector(1536), -- Embedding do texto para busca semântica (extensão específica)
+    CONSTRAINT contracts_pkey PRIMARY KEY (id)
 );
 
 -- Comentários da tabela contracts
-COMMENT ON TABLE contracts IS 'Tabela para armazenar informações dos contratos processados';
-COMMENT ON COLUMN contracts.id IS 'ID único do contrato (UUID)';
-COMMENT ON COLUMN contracts.user_id IS 'ID do usuário proprietário do contrato (opcional)';
-COMMENT ON COLUMN contracts.original_filename IS 'Nome original do arquivo PDF';
-COMMENT ON COLUMN contracts.storage_path IS 'Caminho de armazenamento no Google Drive';
+COMMENT ON TABLE contracts IS 'Armazena metadados dos documentos de contrato que foram analisados.';
+COMMENT ON COLUMN contracts.id IS 'Identificador único para cada contrato, fornecido externamente (Chave Primária).';
+COMMENT ON COLUMN contracts.original_filename IS 'Nome do arquivo original do contrato que foi submetido.';
+COMMENT ON COLUMN contracts.storage_path IS 'Caminho de armazenamento do arquivo original do contrato.';
+COMMENT ON COLUMN contracts.analyzed_at IS 'Data e hora em que a análise foi concluída.';
+COMMENT ON COLUMN contracts.created_at IS 'Data e hora do registro do contrato no sistema.';
 COMMENT ON COLUMN contracts.raw_text IS 'Texto extraído do PDF';
+COMMENT ON COLUMN contracts.user_id IS 'ID do usuário proprietário do contrato (opcional)';
 COMMENT ON COLUMN contracts.text_embedding IS 'Embedding vetorial do texto para busca semântica (1536 dimensões)';
-COMMENT ON COLUMN contracts.status IS 'Status do processamento (pending, processed, error)';
-COMMENT ON COLUMN contracts.analyzed_at IS 'Data/hora da análise pela IA';
-COMMENT ON COLUMN contracts.created_at IS 'Data/hora de criação do registro';
 
 -- ===========================================
 -- TABELA: analysis_data_points
 -- Armazena pontos de análise da IA
 -- ===========================================
 CREATE TABLE IF NOT EXISTS analysis_data_points (
-    id VARCHAR(255) PRIMARY KEY,
+    id VARCHAR(255) NOT NULL,
     contract_id VARCHAR(255) NOT NULL,
-    section_id INTEGER NOT NULL,
-    display_order INTEGER,
-    label VARCHAR(500),
-    content TEXT,
-    details JSONB,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (contract_id) REFERENCES contracts(id) ON DELETE CASCADE
+    section_id INT4 NOT NULL,
+    display_order INT2 DEFAULT 0 NOT NULL,
+    "label" TEXT NULL,
+    "content" TEXT NULL,
+    details JSONB NULL,
+    created_at TIMESTAMPTZ DEFAULT now() NOT NULL,
+    CONSTRAINT analysis_data_points_pkey PRIMARY KEY (id),
+    CONSTRAINT analysis_data_points_contract_id_fkey FOREIGN KEY (contract_id) REFERENCES contracts(id) ON DELETE CASCADE,
+    CONSTRAINT analysis_data_points_section_id_fkey FOREIGN KEY (section_id) REFERENCES analysis_sections(id)
 );
 
 -- Comentários da tabela analysis_data_points
-COMMENT ON TABLE analysis_data_points IS 'Tabela para armazenar pontos de análise da IA';
-COMMENT ON COLUMN analysis_data_points.id IS 'ID único do ponto de análise (UUID)';
-COMMENT ON COLUMN analysis_data_points.contract_id IS 'ID do contrato relacionado';
-COMMENT ON COLUMN analysis_data_points.section_id IS 'ID da seção (1=Dados, 2=Riscos, 3=Brechas, 4=Parecer)';
-COMMENT ON COLUMN analysis_data_points.display_order IS 'Ordem de exibição dentro da seção';
-COMMENT ON COLUMN analysis_data_points.label IS 'Título do ponto de análise';
-COMMENT ON COLUMN analysis_data_points.content IS 'Conteúdo principal da análise';
-COMMENT ON COLUMN analysis_data_points.details IS 'Detalhes adicionais em formato JSON';
+COMMENT ON TABLE analysis_data_points IS 'Armazena cada item/ponto de dado individual da análise de um contrato.';
+COMMENT ON COLUMN analysis_data_points.id IS 'Identificador único para cada ponto de dado da análise, fornecido externamente (Chave Primária).';
+COMMENT ON COLUMN analysis_data_points.contract_id IS 'Referência ao contrato que está sendo analisado (Chave Estrangeira).';
+COMMENT ON COLUMN analysis_data_points.section_id IS 'Referência à seção da análise à qual este ponto pertence (Chave Estrangeira).';
+COMMENT ON COLUMN analysis_data_points.display_order IS 'Ordem de exibição do item dentro de sua seção.';
+COMMENT ON COLUMN analysis_data_points."label" IS 'O rótulo, título ou chave do ponto de dado (ex: "Prazo de Vigência" ou "Risco 1").';
+COMMENT ON COLUMN analysis_data_points."content" IS 'O conteúdo principal, descrição ou valor do ponto de dado.';
+COMMENT ON COLUMN analysis_data_points.details IS 'Campo JSONB flexível para armazenar dados extras e estruturados, como recomendações, impactos ou listas.';
 COMMENT ON COLUMN analysis_data_points.created_at IS 'Data/hora de criação do registro';
 
 -- ===========================================
@@ -106,11 +132,11 @@ COMMENT ON COLUMN analysis_data_points.created_at IS 'Data/hora de criação do 
 -- ===========================================
 
 -- Índice para consultas por contrato
-CREATE INDEX IF NOT EXISTS idx_analysis_contract_id 
+CREATE INDEX IF NOT EXISTS idx_analysis_data_points_contract_id 
 ON analysis_data_points(contract_id);
 
 -- Índice para consultas por seção
-CREATE INDEX IF NOT EXISTS idx_analysis_section_id 
+CREATE INDEX IF NOT EXISTS idx_analysis_data_points_section_id 
 ON analysis_data_points(section_id);
 
 -- Índice para consultas por status
@@ -182,6 +208,14 @@ ORDER BY c.created_at DESC, adp.section_id, adp.display_order;
 -- ===========================================
 -- DADOS DE EXEMPLO (OPCIONAL)
 -- ===========================================
+
+-- Inserir seções padronizadas (obrigatório para o sistema funcionar)
+INSERT INTO analysis_sections (id, title, display_order) VALUES
+    (1, 'Dados Essenciais', 1),
+    (2, 'Riscos e Cláusulas', 2),
+    (3, 'Brechas e Inconsistências', 3),
+    (4, 'Parecer Final', 4)
+ON CONFLICT (id) DO NOTHING;
 
 -- Inserir contrato de exemplo (descomente se necessário)
 /*

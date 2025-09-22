@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- SEO Meta Tags -->
+    <title>Ross - Analista Jurídico de Contratos com IA | Open Source</title>
+    <meta name="description" content="Ross é seu analista jurídico de contratos com IA. Analisa contratos, gera relatórios e recomendações práticas para negociar melhor. Open-source e hospedado.">
+    <meta name="keywords" content="contratos, análise jurídica, IA, inteligência artificial, open source, jurídico, advocacia">
+    <meta name="author" content="Agência Outra Forma - Luis Oliveira">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="Ross - Analista Jurídico de Contratos com IA">
+    <meta property="og:description" content="Analisa contratos, gera relatórios e recomendações práticas. Open-source e hospedado.">
+    <meta property="og:image" content="<!-- REMOVER: substitua pela imagem og:image real -->">
+    <meta property="og:url" content="https://ross.dev.br">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ross - Analista Jurídico de Contratos com IA">
+    <meta name="twitter:description" content="Analisa contratos, gera relatórios e recomendações práticas. Open-source e hospedado.">
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- Google Fonts - Roboto Condensed -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <!-- Fixed Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" id="mainNav">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="#home" aria-label="Ross - Home">
+                <img src="assets/images/logo-ross.svg" alt="Ross Logo" width="32" height="32" class="me-2">
+                <span class="fw-bold fs-5">Ross</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#como-funciona">Como Funciona</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#instalacao">Instalação</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#open-source">Self-hosted</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#precos">Preços</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contato">Contato</a></li>
+                </ul>
+                <div class="d-flex align-items-center gap-2 mt-3 mt-lg-0">
+                    <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-outline-light btn-sm">
+                        <i class="bi bi-github"></i> Ver no GitHub
+                    </a>
+                    <a href="#" class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#demoAccessModal">
+                        <i class="bi bi-play-circle"></i> Solicitar Demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero-section">
+        <div class="container">
+            <div class="row align-items-center gy-5">
+                <div class="col-lg-7 text-center text-lg-start px-lg-4">
+                    <h1 class="display-4 fw-bolder mb-4 text-white">
+                        Ross — seu analista jurídico de contratos com IA
+                    </h1>
+                    <p class="lead mb-4 text-white-50">
+                        Analisa contratos, gera relatórios e recomendações práticas para negociar melhor. 
+                        Projeto <strong>open-source</strong> — gratuito, auditável e sob seu controle.
+                    </p>
+                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                        <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-primary btn-lg px-4">
+                            <i class="bi bi-github me-2"></i>Baixar Ross
+                        </a>
+                        <a href="#" class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#demoAccessModal">
+                            <i class="bi bi-play-circle me-2"></i>Solicitar Acesso à Demo
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-5 px-lg-4">
+                    <div class="text-center">
+                        <img src="assets/images/ross.png" alt="Screenshot do Ross" 
+                             class="img-fluid rounded-4 shadow-lg border border-light border-opacity-10" loading="lazy">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="recursos" class="py-5 section-bg">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Recursos Poderosos</h2>
+                <p class="lead text-white-50">Funcionalidades para análise inteligente e segura de contratos.</p>
+            </div>
+            
+            <div class="row gy-4 justify-content-center">
+                <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card">
+                        <div class="card-body text-center p-4 p-lg-5">
+                            <div class="feature-icon"><i class="bi bi-file-earmark-text"></i></div>
+                            <h5 class="card-title h5 text-white">Análise Automática</h5>
+                            <p class="card-text">IA avançada examina contratos em segundos, identificando cláusulas importantes, riscos e oportunidades.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card">
+                        <div class="card-body text-center p-4 p-lg-5">
+                            <div class="feature-icon"><i class="bi bi-graph-up"></i></div>
+                            <h5 class="card-title h5 text-white">Geração de Relatórios</h5>
+                            <p class="card-text">Relatórios detalhados com resumos executivos, gráficos e recomendações práticas gerados localmente.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card border-primary position-relative">
+                        <div class="position-absolute top-0 end-0 p-2"><span class="badge bg-primary">Próxima Feature</span></div>
+                        <div class="card-body text-center p-4 p-lg-5">
+                            <div class="feature-icon"><i class="bi bi-chat-dots"></i></div>
+                            <h5 class="card-title h5 text-white">Chat Inteligente com IA</h5>
+                            <p class="card-text"><strong>Em desenvolvimento:</strong> Converse diretamente com seus contratos! Tire dúvidas e peça esclarecimentos.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="como-funciona" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Como Funciona</h2>
+                <p class="lead text-white-50">Três passos simples para análises profissionais.</p>
+            </div>
+            
+            <div class="row gy-5">
+                <div class="col-md-4 px-4">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <i class="bi bi-cloud-upload text-primary" style="font-size: 3.5rem;"></i>
+                        <h5 class="mt-3 mb-3 h5 text-white">Upload do Contrato</h5>
+                        <p>Faça upload do seu contrato em PDF, Word ou texto. Sistema seguro e dados não armazenados.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 px-4">
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <i class="bi bi-cpu text-primary" style="font-size: 3.5rem;"></i>
+                        <h5 class="mt-3 mb-3 h5 text-white">Análise Automática</h5>
+                        <p>IA especializada analisa cada cláusula, identifica riscos e mapeia oportunidades de melhoria.</p>
+                    </div>
+                </div>
+                
+                <div class="col-md-4 px-4">
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <i class="bi bi-chat-square-text text-primary" style="font-size: 3.5rem;"></i>
+                        <h5 class="mt-3 mb-3 h5 text-white">Relatório + Chat</h5>
+                        <p>Receba relatório completo e converse com a IA para esclarecer dúvidas e refinar estratégias.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Installation Video Section -->
+    <section id="instalacao" class="py-5 section-bg">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Como Instalar Ross</h2>
+                <p class="lead text-white-50">Tutorial completo de instalação em seus próprios servidores.</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="ratio ratio-16x9 rounded-4 overflow-hidden">
+                        <div class="d-flex align-items-center justify-content-center glass-card">
+                            <div class="text-center">
+                                <i class="bi bi-play-circle text-primary" style="font-size: 5rem;"></i>
+                                <h4 class="mt-3 text-white">Vídeo Tutorial - Instalação Ross</h4>
+                                <p class="text-white-50">Tutorial passo a passo será disponibilizado em breve.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Open Source Section -->
+    <section id="open-source" class="py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center align-items-center gy-5">
+                <div class="col-lg-6 px-lg-4">
+                    <h2 class="display-5 fw-bold mb-3">Vantagens do Self-Hosted</h2>
+                    <p class="lead text-white-50 mb-4">Controle total, segurança máxima e transparência completa.</p>
+                    <ul class="list-unstyled">
+                        <li class="d-flex mb-3"><i class="bi bi-shield-check text-success fs-4 me-3"></i><div><strong class="text-white">Privacidade Total</strong><br>Seus contratos nunca deixam sua infraestrutura.</div></li>
+                        <li class="d-flex mb-3"><i class="bi bi-code-slash text-primary fs-4 me-3"></i><div><strong class="text-white">Código Aberto</strong><br>Transparência total, auditável por especialistas.</div></li>
+                        <li class="d-flex mb-3"><i class="bi bi-wrench text-warning fs-4 me-3"></i><div><strong class="text-white">Customização Total</strong><br>Adapte o Ross às suas necessidades específicas.</div></li>
+                        <li class="d-flex"><i class="bi bi-cash-coin text-success fs-4 me-3"></i><div><strong class="text-white">Custo Zero</strong><br>Sem mensalidades, apenas os custos da sua infraestrutura.</div></li>
+                    </ul>
+                </div>
+                <div class="col-lg-5 text-center px-lg-4">
+                    <div class="card glass-card p-5">
+                        <img src="assets/images/logo-ross.svg" alt="Ross Logo" class="mx-auto mb-4" style="width: 80px;">
+                        <h3 class="text-white">Pronto para Instalar?</h3>
+                        <p class="text-white-50">Acesse o código-fonte completo e as instruções de instalação no GitHub.</p>
+                        <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-primary btn-lg mt-3">
+                            <i class="bi bi-github me-2"></i>Acessar Repositório
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="depoimentos" class="py-5 section-bg">
+        <div class="container py-5">
+             <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">O que dizem sobre o Ross</h2>
+                <p class="lead text-white-50">Feedback dos nossos usuários beta.</p>
+            </div>
+            <div class="row gy-4 justify-content-center">
+                <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Estou testando o Ross e já vejo o potencial. Os relatórios me ajudam a entender contratos complexos. Mal posso esperar pelo chat com IA!"</p>
+                            <div class="mt-4">
+                                <h6 class="text-white mb-0">Julia Mendes</h6>
+                                <small>Estudante de Direito - UFMG</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Como freelancer, o Ross já me dá mais segurança para revisar contratos. Imagino como será incrível quando o chat estiver pronto para negociar cláusulas!"</p>
+                             <div class="mt-4">
+                                <h6 class="text-white mb-0">Fernanda Lima</h6>
+                                <small>Designer Freelancer</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-6 col-lg-4 px-3">
+                    <div class="card glass-card p-4">
+                        <div class="card-body">
+                            <div class="text-warning mb-3"><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i></div>
+                            <p>"Vemos grande potencial para escritórios. O que mais nos empolga é saber que em breve teremos um assistente de IA para conversar sobre contratos!"</p>
+                             <div class="mt-4">
+                                <h6 class="text-white mb-0">Dr. Roberto Silva</h6>
+                                <small>Advogado, Silva & Santos</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section id="precos" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Gratuito. Para Sempre.</h2>
+                <p class="lead text-white-50">Open-source, sem pegadinhas. Uma versão SaaS está em desenvolvimento.</p>
+            </div>
+            
+            <div class="row justify-content-center">
+                <div class="col-lg-6 col-md-8">
+                    <div class="card h-100 border-primary border-2 shadow-lg glass-card">
+                        <div class="card-body text-center p-5">
+                            <h4 class="mb-3 text-white"><i class="bi bi-star-fill me-2 text-warning"></i>Ross Self-Hosted</h4>
+                            <div class="mb-4">
+                                <span class="display-3 fw-bold text-white">Grátis</span>
+                            </div>
+                            <ul class="list-unstyled mb-4 text-start">
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Código-fonte completo</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Instalação em seus servidores</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Privacidade e controle total</li>
+                                <li class="mb-3"><i class="bi bi-check-circle-fill text-success me-3"></i>Customização ilimitada</li>
+                            </ul>
+                            <a href="https://github.com/gu00col/ross" class="btn btn-primary btn-lg w-100">
+                                <i class="bi bi-github me-2"></i>Baixar do GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contato" class="py-5 section-bg">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="display-5 fw-bold mb-3">Entre em Contato</h2>
+                <p class="lead text-white-50">Tem dúvidas, sugestões ou interesse em uma parceria? Vamos conversar!</p>
+            </div>
+            
+            <div class="row justify-content-center gy-4">
+                 <div class="col-md-5 px-3">
+                    <a href="https://wa.me/5534982827251" target="_blank" class="text-decoration-none">
+                        <div class="card glass-card p-4 text-center">
+                            <i class="bi bi-whatsapp text-success display-4 mb-3"></i>
+                            <h5 class="text-white">WhatsApp</h5>
+                            <p class="mb-0 text-primary">Fale Conosco Agora</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-5 px-3">
+                    <a href="mailto:contato@ross.dev.br" class="text-decoration-none">
+                        <div class="card glass-card p-4 text-center">
+                            <i class="bi bi-envelope text-primary display-4 mb-3"></i>
+                            <h5 class="text-white">E-mail</h5>
+                            <p class="mb-0 text-primary">Enviar uma Mensagem</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <div class="d-flex align-items-center mb-3">
+                        <img src="assets/images/logo-ross.svg" alt="Ross Logo" width="32" height="32" class="me-2">
+                        <h5 class="mb-0 text-white">Ross</h5>
+                    </div>
+                    <p>Analista jurídico de contratos com IA. Projeto open-source.</p>
+                    <div class="d-flex gap-3">
+                        <a href="https://github.com/gu00col/ross" aria-label="GitHub" target="_blank"><i class="bi bi-github fs-4"></i></a>
+                        <a href="https://wa.me/5534982827251" aria-label="WhatsApp" target="_blank"><i class="bi bi-whatsapp fs-4"></i></a>
+                        <a href="https://www.linkedin.com/in/luis-g-b-oliveira/" aria-label="LinkedIn" target="_blank"><i class="bi bi-linkedin fs-4"></i></a>
+                    </div>
+                </div>
+                
+                <div class="col-lg-2 col-md-3 col-6 mb-4">
+                    <h6 class="text-uppercase mb-3 text-white">Produto</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#recursos">Recursos</a></li>
+                        <li class="mb-2"><a href="#como-funciona">Como Funciona</a></li>
+                        <li class="mb-2"><a href="#open-source">Self-hosted</a></li>
+                        <li class="mb-2"><a href="#precos">Preços</a></li>
+                    </ul>
+                </div>
+                
+                <div class="col-lg-3 col-md-4 col-6 mb-4">
+                    <h6 class="text-uppercase mb-3 text-white">Legal</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#privacyPolicyModal">Política de Privacidade</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#termsOfUseModal">Termos de Uso</a></li>
+                        <li class="mb-2"><a href="#" data-bs-toggle="modal" data-bs-target="#legalNoticeModal">Aviso Legal</a></li>
+                    </ul>
+                </div>
+
+                 <div class="col-lg-3 col-md-5 mb-4">
+                    <h6 class="text-uppercase mb-3 text-white">Desenvolvido por</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="https://outraforma.com.br" target="_blank">Agência Outra Forma</a></li>
+                        <li class="mb-2"><a href="https://luisoliveira.dev.br" target="_blank">Luis Oliveira</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <hr class="my-4" style="border-color: var(--bs-border-color);">
+            
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <p class="mb-0 small">&copy; 2024 Ross. Todos os direitos reservados.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0 small">
+                        Projeto open-source sob <a href="#" data-bs-toggle="modal" data-bs-target="#mitLicenseModal">MIT License</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float Button -->
+    <a href="https://wa.me/5534982827251" class="whatsapp-float d-none" target="_blank" aria-label="Fale conosco pelo WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Modals -->
+    <!-- Demo Access Request Modal -->
+    <div class="modal fade" id="demoAccessModal" tabindex="-1" aria-labelledby="demoAccessModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title h5 text-white" id="demoAccessModalLabel"><i class="bi bi-play-circle-fill me-2 text-primary"></i>Solicitar Acesso à Demo Ross</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <p>Preencha o formulário abaixo para solicitar acesso à versão demo hospedada. Analisaremos sua solicitação e enviaremos as credenciais de acesso via WhatsApp em até 24 horas.</p>
+                    <form id="demoAccessForm" onsubmit="submitDemoAccess(event)">
+                        <div class="row mb-3">
+                            <div class="col-md-6"><label for="demoName" class="form-label">Nome Completo <span class="text-danger">*</span></label><input type="text" class="form-control" id="demoName" required></div>
+                            <div class="col-md-6"><label for="demoEmail" class="form-label">E-mail <span class="text-danger">*</span></label><input type="email" class="form-control" id="demoEmail" required></div>
+                        </div>
+                        <div class="mb-3"><label for="demoWhatsapp" class="form-label">WhatsApp <span class="text-danger">*</span></label><input type="tel" class="form-control" id="demoWhatsapp" placeholder="+55 11 99999-9999" required></div>
+                        <div class="mb-3"><label for="demoMessage" class="form-label">Mensagem</label><textarea class="form-control" id="demoMessage" rows="4" placeholder="Conte-nos sobre seu caso de uso..."></textarea></div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" form="demoAccessForm" class="btn btn-primary"><i class="bi bi-send me-2"></i>Solicitar Acesso</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyPolicyModal" tabindex="-1" aria-labelledby="privacyPolicyModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header"><h5 class="modal-title h5 text-white" id="privacyPolicyModalLabel"><i class="bi bi-shield-check me-2"></i>Política de Privacidade</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                <div class="modal-body p-4">
+                    <div class="alert alert-success d-flex align-items-center mb-4"><i class="bi bi-shield-fill-check me-2"></i><div><strong>Privacidade Total</strong><br><small>Ross é self-hosted. Seus dados permanecem em sua infraestrutura.</small></div></div>
+                    <h6 class="fw-bold mb-3">1. Sobre o Ross</h6>
+                    <p>O Ross é um software open-source para análise jurídica de contratos com IA, disponibilizado sob licença MIT. O software funciona de duas formas:</p>
+                    <ul><li><strong>Self-hosted:</strong> Instalação em seus próprios servidores</li><li><strong>Demo online:</strong> Versão de teste hospedada em ross.dev.br</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">2. Dados na Versão Self-hosted</h6>
+                    <p>Na versão self-hosted (instalação própria):</p>
+                    <ul><li><strong>Não coletamos dados:</strong> Todos os dados permanecem em sua infraestrutura</li><li><strong>Controle total:</strong> Você possui controle absoluto sobre todos os dados processados</li><li><strong>Sem telemetria:</strong> O software não envia informações para servidores externos</li><li><strong>Responsabilidade:</strong> A proteção dos dados é responsabilidade do administrador da instalação</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">3. Dados na Demo Online (ross.dev.br)</h6>
+                    <p>Na versão demo hospedada:</p>
+                    <ul><li><strong>Armazenamento temporário:</strong> Contratos enviados são armazenados por no máximo 24 horas</li><li><strong>Exclusão automática:</strong> Após 24h, todos os dados são permanentemente removidos</li><li><strong>Finalidade:</strong> Demo destina-se apenas a testes e demonstração das funcionalidades</li><li><strong>Não usar dados reais:</strong> Recomendamos não enviar contratos com dados sensíveis na demo</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">4. Dados de Contato</h6>
+                    <p>Quando você entra em contato conosco:</p>
+                    <ul><li><strong>Formulários:</strong> Nome, e-mail e mensagem são utilizados apenas para responder sua solicitação</li><li><strong>WhatsApp:</strong> Conversas via WhatsApp seguem a política de privacidade do WhatsApp</li><li><strong>Não compartilhamos:</strong> Seus dados de contato não são compartilhados com terceiros</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">5. Cookies e Rastreamento</h6>
+                    <ul><li><strong>Site institucional:</strong> Utilizamos apenas cookies essenciais para funcionamento</li><li><strong>Sem analytics intrusivos:</strong> Não utilizamos Google Analytics ou ferramentas similares</li><li><strong>Self-hosted:</strong> Na sua instalação, você controla completamente cookies e logs</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">6. Seus Direitos</h6>
+                    <p>Você tem direito a:</p>
+                    <ul><li>Solicitar informações sobre dados que possamos ter</li><li>Solicitar correção de dados incorretos</li><li>Solicitar exclusão de dados de contato</li><li>Instalar e usar a versão self-hosted sem qualquer coleta de dados</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">7. Contato</h6>
+                    <p>Para questões sobre privacidade:</p>
+                    <ul><li><strong>E-mail:</strong> <a href="mailto:contato@ross.dev.br">contato@ross.dev.br</a></li><li><strong>WhatsApp:</strong> <a href="https://wa.me/5534982827251" target="_blank">+55 34 9828-2725</a></li></ul>
+                    <div class="alert alert-info mt-4"><i class="bi bi-info-circle me-2"></i><strong>Última atualização:</strong> Dezembro de 2024</div>
+                </div>
+                <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+            </div>
+        </div>
+    </div>
+    <!-- Terms of Use Modal -->
+    <div class="modal fade" id="termsOfUseModal" tabindex="-1" aria-labelledby="termsOfUseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+            <div class="modal-content">
+                 <div class="modal-header"><h5 class="modal-title h5 text-white" id="termsOfUseModalLabel"><i class="bi bi-file-text me-2"></i>Termos de Uso</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                 <div class="modal-body p-4">
+                    <div class="alert alert-info d-flex align-items-center mb-4"><i class="bi bi-info-circle-fill me-2"></i><div><strong>Software Open Source</strong><br><small>Ross é distribuído sob licença MIT - livre para uso comercial e pessoal.</small></div></div>
+                    <h6 class="fw-bold mb-3">1. Aceitação dos Termos</h6><p>Ao utilizar o Ross (software, demo ou site), você concorda com estes termos de uso. Se não concordar, não utilize o software.</p>
+                    <h6 class="fw-bold mb-3 mt-4">2. Sobre o Software</h6><p>O Ross é um software open-source para análise jurídica de contratos com IA:</p><ul><li><strong>Licença:</strong> MIT License - permite uso comercial, modificação e redistribuição</li><li><strong>Código fonte:</strong> Disponível em <a href="https://github.com/gu00col/ross" target="_blank">github.com/gu00col/ross</a></li><li><strong>Desenvolvedores:</strong> Agência Outra Forma e Luis Oliveira</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">3. Modalidades de Uso</h6><h6 class="fw-bold mb-2">3.1 Versão Self-hosted</h6><ul><li><strong>Instalação própria:</strong> Você instala em sua própria infraestrutura</li><li><strong>Responsabilidade total:</strong> Você é responsável pela instalação, configuração e manutenção</li><li><strong>Sem suporte garantido:</strong> Suporte é fornecido pela comunidade via GitHub</li><li><strong>Modificações permitidas:</strong> Você pode modificar o código conforme sua necessidade</li></ul>
+                    <h6 class="fw-bold mb-2 mt-3">3.2 Demo Online (ross.dev.br)</h6><ul><li><strong>Finalidade:</strong> Apenas para demonstração e testes</li><li><strong>Limitações:</strong> Pode ter funcionalidades limitadas ou indisponíveis</li><li><strong>Dados temporários:</strong> Contratos são removidos em até 24 horas</li><li><strong>Sem garantias:</strong> Demo pode ficar indisponível sem aviso prévio</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">4. Responsabilidades do Usuário</h6><p>Ao usar o Ross, você se compromete a:</p><ul><li><strong>Uso legal:</strong> Utilizar apenas para fins legais e legítimos</li><li><strong>Dados próprios:</strong> Processar apenas contratos que você tem direito de analisar</li><li><strong>Segurança:</strong> Manter sua instalação segura e atualizada</li></ul>
+                    <h6 class="fw-bold mb-3 mt-4">5. Limitações e Responsabilidades</h6><p><strong>O software é fornecido "como está", sem garantias:</strong></p><ul><li><strong>Sem garantia de precisão:</strong> Análises de IA podem conter erros</li><li><strong>Não substitui advogado:</strong> Ross é uma ferramenta auxiliar, não substitui consultoria jurídica</li><li><strong>Uso por sua conta e risco:</strong> Você assume total responsabilidade pelo uso</li></ul>
+                    <div class="alert alert-warning mt-4"><i class="bi bi-exclamation-triangle me-2"></i><strong>Importante:</strong> Ross é uma ferramenta auxiliar. Sempre consulte um advogado qualificado para decisões jurídicas importantes.</div>
+                 </div>
+                 <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+            </div>
+        </div>
+    </div>
+    <!-- MIT License Modal -->
+    <div class="modal fade" id="mitLicenseModal" tabindex="-1" aria-labelledby="mitLicenseModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+             <div class="modal-content">
+                 <div class="modal-header"><h5 class="modal-title h5 text-white" id="mitLicenseModalLabel"><i class="bi bi-code-square me-2"></i>MIT License</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                 <div class="modal-body p-4">
+                    <div class="alert alert-success d-flex align-items-center mb-4"><i class="bi bi-check-circle-fill me-2"></i><div><strong>Licença Livre e Open Source</strong><br><small>Use, modifique e distribua Ross livremente, incluindo para fins comerciais.</small></div></div>
+                    <h6 class="fw-bold mb-3">Única obrigação:</h6><div class="alert alert-warning"><i class="bi bi-info-circle me-2"></i><strong>Incluir o aviso de copyright:</strong> Mantenha o aviso de copyright e esta licença em todas as cópias.</div>
+                    <h6 class="fw-bold mb-3">Texto completo da licença:</h6>
+                    <div class="bg-dark p-3 rounded font-monospace small"><p><strong>MIT License</strong></p><p><strong>Copyright (c) 2024 Agência Outra Forma - Luis Oliveira</strong></p><p class="mt-3">Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p><p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p><p><strong>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</strong></p></div>
+                 </div>
+                 <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+             </div>
+        </div>
+    </div>
+    <!-- Legal Notice Modal -->
+    <div class="modal fade" id="legalNoticeModal" tabindex="-1" aria-labelledby="legalNoticeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable modal-dialog-centered">
+             <div class="modal-content">
+                 <div class="modal-header"><h5 class="modal-title h5 text-white" id="legalNoticeModalLabel"><i class="bi bi-exclamation-triangle me-2"></i>Aviso Legal</h5><button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button></div>
+                 <div class="modal-body p-4">
+                    <div class="alert alert-warning d-flex align-items-center mb-4"><i class="bi bi-exclamation-triangle-fill me-2"></i><div><strong>Importante</strong><br><small>Leia atentamente antes de utilizar o Ross.</small></div></div>
+                    <h6 class="fw-bold mb-3">1. Natureza do Software</h6><p>O Ross é uma <strong>ferramenta auxiliar</strong> e NÃO substitui a consultoria de um advogado qualificado, NÃO constitui aconselhamento jurídico e NÃO garante precisão absoluta nas análises.</p>
+                    <h6 class="fw-bold mb-3 mt-4">2. Limitações da IA</h6><div class="alert alert-danger"><i class="bi bi-robot me-2"></i><strong>A Inteligência Artificial pode cometer erros.</strong></div>
+                    <h6 class="fw-bold mb-3 mt-4">3. Isenção de Responsabilidade</h6><p>Os desenvolvedores NÃO se responsabilizam por danos diretos ou indiretos, prejuízos ou perdas financeiras decorrentes do uso do software.</p>
+                 </div>
+                 <div class="modal-footer"><button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button></div>
+             </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="assets/js/scripts.js"></script>
+</body>
+</html>

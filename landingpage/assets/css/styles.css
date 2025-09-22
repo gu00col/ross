@@ -1,0 +1,201 @@
+:root {
+    --bs-dark: #0B1120;
+    --bs-dark-rgb: 11, 17, 32;
+    --bs-body-bg: #0B1120;
+    --bs-body-color: #adb5bd;
+    --bs-primary: #0ea5e9;
+    --bs-primary-rgb: 14, 165, 233;
+    --bs-secondary: #334155;
+    --bs-border-color: rgba(255, 255, 255, 0.1);
+    --bs-light: #f8fafc;
+}
+
+body {
+    font-family: 'Roboto Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    color: var(--bs-body-color);
+    background-color: var(--bs-body-bg);
+    overflow-x: hidden; /* Prevent horizontal scroll issue */
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--bs-light);
+    font-weight: 700;
+}
+
+.navbar {
+    transition: background-color 0.3s ease-in-out;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.2s;
+}
+
+.navbar-dark .navbar-nav .nav-link:hover,
+.navbar-dark .navbar-nav .nav-link.active {
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(var(--bs-primary-rgb), 0.3);
+}
+
+.btn-outline-light {
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.hero-section {
+    background-color: var(--bs-body-bg);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 80px; /* Space for navbar */
+    padding-bottom: 40px;
+    position: relative;
+}
+
+.hero-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image:
+        linear-gradient(to right, rgba(var(--bs-dark-rgb), 0.5) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(var(--bs-dark-rgb), 0.5) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.2;
+    mask-image: radial-gradient(ellipse 80% 50% at 50% 0%, black, transparent);
+    z-index: 1;
+}
+
+.section-bg {
+    background-color: #12192c;
+}
+
+.glass-card {
+    background: rgba(30, 41, 59, 0.5);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.glass-card:hover {
+    transform: translateY(-5px);
+    border-color: rgba(var(--bs-primary-rgb), 0.5);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, var(--bs-primary), #0c84b8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    margin: 0 auto 20px;
+}
+
+.step-card {
+    text-align: center;
+    padding: 30px 20px;
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.step-number {
+    width: 50px;
+    height: 50px;
+    border: 2px solid var(--bs-primary);
+    color: var(--bs-primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 20px;
+    margin: 0 auto 20px;
+    background-color: rgba(var(--bs-primary-rgb), 0.1);
+}
+
+footer {
+    background: #12192c;
+    color: var(--bs-body-color);
+    padding: 60px 0 20px;
+    border-top: 1px solid var(--bs-border-color);
+}
+
+footer a {
+    color: var(--bs-body-color);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+footer a:hover {
+    color: var(--bs-light);
+}
+
+.whatsapp-float {
+    position: fixed;
+    width: 60px;
+    height: 60px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #25D366;
+    color: #FFF;
+    border-radius: 50px;
+    text-align: center;
+    font-size: 30px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.whatsapp-float:hover {
+    background-color: #128C7E;
+    color: white;
+    transform: scale(1.1);
+}
+
+.modal-content {
+    background-color: #1e293b;
+    border: 1px solid var(--bs-border-color);
+}
+.modal-header, .modal-footer {
+    border-bottom-color: var(--bs-border-color);
+    border-top-color: var(--bs-border-color);
+}
+
+/* Mobile Menu Fix */
+@media (max-width: 991.98px) {
+    .navbar-collapse {
+        background-color: #12192c;
+        border-radius: 0.5rem;
+        padding: 1rem;
+        margin-top: 0.5rem;
+        border: 1px solid var(--bs-border-color);
+    }
+}

@@ -11,17 +11,35 @@
     <meta name="keywords" content="contratos, análise jurídica, IA, inteligência artificial, open source, jurídico, advocacia">
     <meta name="author" content="Agência Outra Forma - Luis Oliveira">
     
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="assets/images/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets/images/favicon-16x16.png">
+    <link rel="manifest" href="site.webmanifest">
+    
     <!-- Open Graph Meta Tags -->
     <meta property="og:title" content="Ross - Analista Jurídico de Contratos com IA">
     <meta property="og:description" content="Analisa contratos, gera relatórios e recomendações práticas. Open-source e hospedado.">
-    <meta property="og:image" content="<!-- REMOVER: substitua pela imagem og:image real -->">
+    <meta property="og:image" content="https://ross.dev.br/assets/images/cta-ross.png">
     <meta property="og:url" content="https://ross.dev.br">
     <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Ross">
+    <meta property="og:locale" content="pt_BR">
     
-    <!-- Twitter Card -->
+    <!-- Twitter Card Meta Tags -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Ross - Analista Jurídico de Contratos com IA">
     <meta name="twitter:description" content="Analisa contratos, gera relatórios e recomendações práticas. Open-source e hospedado.">
+    <meta name="twitter:image" content="https://ross.dev.br/assets/images/cta-ross.png">
+    
+    <!-- Additional SEO Meta Tags -->
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="googlebot" content="index, follow">
+    <meta name="bingbot" content="index, follow">
+    <link rel="canonical" href="https://ross.dev.br/">
+    
     
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -34,6 +52,59 @@
     
     <!-- Custom CSS -->
     <link rel="stylesheet" href="assets/css/styles.css">
+    
+    <!-- reCAPTCHA Custom Styles -->
+    <style>
+        /* Estilização customizada do reCAPTCHA */
+        .g-recaptcha {
+            background: transparent !important;
+            border: 1px solid rgba(255, 255, 255, 0.2) !important;
+            border-radius: 8px !important;
+            padding: 8px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1) !important;
+            transition: all 0.3s ease !important;
+        }
+        
+        .g-recaptcha:hover {
+            border-color: rgba(255, 255, 255, 0.4) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+        }
+        
+        /* Força o iframe do reCAPTCHA a ter fundo transparente */
+        .g-recaptcha > div > div {
+            background: transparent !important;
+        }
+        
+        /* Remove fundo cinza do iframe */
+        .g-recaptcha iframe {
+            background: transparent !important;
+        }
+         #cta-ross {
+             width: 100%;
+             overflow: hidden;
+         }
+         
+         #cta-ross img {
+             width: 125%; /* Aumenta a largura para compensar o corte */
+             height: auto;
+             max-width: none; /* Remove limitação de largura */
+             /* Corta 20% da esquerda (0 0 0 20% = top right bottom left) */
+             clip-path: inset(0 0 0 20%);                        
+             -webkit-clip-path: inset(0 0 0 20%);
+             -moz-clip-path: inset(0 0 0 20%);
+             -ms-clip-path: inset(0 0 0 20%);
+             -o-clip-path: inset(0 0 0 20%);
+             /* Posiciona a imagem para compensar o corte */
+             transform: translateX(-20%);
+             -webkit-transform: translateX(-20%);
+             -moz-transform: translateX(-20%);
+             -ms-transform: translateX(-20%);
+             -o-transform: translateX(-20%);
+         }
+    </style>
+    
+    <!-- Google reCAPTCHA v2 -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 <body>
     <!-- Fixed Navigation -->
@@ -52,7 +123,6 @@
                 <ul class="navbar-nav mx-auto">
                     <li class="nav-item"><a class="nav-link" href="#recursos">Recursos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#como-funciona">Como Funciona</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#instalacao">Instalação</a></li>
                     <li class="nav-item"><a class="nav-link" href="#open-source">Self-hosted</a></li>
                     <li class="nav-item"><a class="nav-link" href="#depoimentos">Depoimentos</a></li>
                     <li class="nav-item"><a class="nav-link" href="#precos">Preços</a></li>
@@ -74,27 +144,27 @@
     <section id="home" class="hero-section">
         <div class="container">
             <div class="row align-items-center gy-5">
-                <div class="col-lg-7 text-center text-lg-start px-lg-4">
+                <div class="col-lg-5 text-center text-lg-start px-lg-4 order-2 order-lg-1">
                     <h1 class="display-4 fw-bolder mb-4 text-white">
-                        Ross — seu analista jurídico de contratos com IA
+                        Ross <br>Seu analista jurídico de contratos com IA
                     </h1>
                     <p class="lead mb-4 text-white-50">
                         Analisa contratos, gera relatórios e recomendações práticas para negociar melhor. 
                         Projeto <strong>open-source</strong> — gratuito, auditável e sob seu controle.
                     </p>
-                    <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
-                        <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-primary btn-lg px-4">
+                    <div class="">
+                        <a href="https://github.com/gu00col/ross" target="_blank" class="btn btn-primary btn-lg mb-3 w-100 px-4">
                             <i class="bi bi-github me-2"></i>Baixar Ross
                         </a>
-                        <a href="#" class="btn btn-outline-light btn-lg px-4" data-bs-toggle="modal" data-bs-target="#demoAccessModal">
+                        <a href="#" class="btn btn-outline-light btn-lg w-100 px-4" data-bs-toggle="modal" data-bs-target="#demoAccessModal">
                             <i class="bi bi-play-circle me-2"></i>Solicitar Acesso à Demo
                         </a>
                     </div>
                 </div>
-                <div class="col-lg-5 px-lg-4">
-                    <div class="text-center">
-                        <img src="assets/images/ross.png" alt="Screenshot do Ross" 
-                             class="img-fluid rounded-4 shadow-lg border border-light border-opacity-10" loading="lazy">
+                <div class="col-lg-7 order-1 order-lg-2">
+                    <div class="text-center" id="cta-ross">
+                        <img src="assets/images/cta-ross.png" alt="Screenshot do Ross" 
+                             class="rounded-4 shadow-lg border border-light border-opacity-10" loading="lazy">
                     </div>
                 </div>
             </div>
@@ -183,29 +253,6 @@
         </div>
     </section>
 
-    <!-- Installation Video Section -->
-    <section id="instalacao" class="py-5 section-bg">
-        <div class="container py-5">
-            <div class="text-center mb-5">
-                <h2 class="display-5 fw-bold mb-3">Como Instalar Ross</h2>
-                <p class="lead text-white-50">Tutorial completo de instalação em seus próprios servidores.</p>
-            </div>
-            
-            <div class="row justify-content-center">
-                <div class="col-lg-10">
-                    <div class="ratio ratio-16x9 rounded-4 overflow-hidden">
-                        <div class="d-flex align-items-center justify-content-center glass-card">
-                            <div class="text-center">
-                                <i class="bi bi-play-circle text-primary" style="font-size: 5rem;"></i>
-                                <h4 class="mt-3 text-white">Vídeo Tutorial - Instalação Ross</h4>
-                                <p class="text-white-50">Tutorial passo a passo será disponibilizado em breve.</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
 
     <!-- Open Source Section -->
     <section id="open-source" class="py-5">
@@ -324,21 +371,12 @@
             </div>
             
             <div class="row justify-content-center gy-4">
-                 <div class="col-md-5 px-3">
+                 <div class="col-md-12 px-3">
                     <a href="https://wa.me/5534982827251" target="_blank" class="text-decoration-none">
                         <div class="card glass-card p-4 text-center">
                             <i class="bi bi-whatsapp text-success display-4 mb-3"></i>
                             <h5 class="text-white">WhatsApp</h5>
                             <p class="mb-0 text-primary">Fale Conosco Agora</p>
-                        </div>
-                    </a>
-                </div>
-                <div class="col-md-5 px-3">
-                    <a href="mailto:contato@ross.dev.br" class="text-decoration-none">
-                        <div class="card glass-card p-4 text-center">
-                            <i class="bi bi-envelope text-primary display-4 mb-3"></i>
-                            <h5 class="text-white">E-mail</h5>
-                            <p class="mb-0 text-primary">Enviar uma Mensagem</p>
                         </div>
                     </a>
                 </div>
@@ -421,19 +459,30 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
+                    <!-- Alert de sucesso/erro (inicialmente oculto) -->
+                    <div id="formAlert" class="alert d-none" role="alert"></div>
+                    
                     <p>Preencha o formulário abaixo para solicitar acesso à versão demo hospedada. Analisaremos sua solicitação e enviaremos as credenciais de acesso via WhatsApp em até 24 horas.</p>
-                    <form id="demoAccessForm" onsubmit="submitDemoAccess(event)">
+                    <form id="demoAccessForm">
                         <div class="row mb-3">
                             <div class="col-md-6"><label for="demoName" class="form-label">Nome Completo <span class="text-danger">*</span></label><input type="text" class="form-control" id="demoName" required></div>
                             <div class="col-md-6"><label for="demoEmail" class="form-label">E-mail <span class="text-danger">*</span></label><input type="email" class="form-control" id="demoEmail" required></div>
                         </div>
                         <div class="mb-3"><label for="demoWhatsapp" class="form-label">WhatsApp <span class="text-danger">*</span></label><input type="tel" class="form-control" id="demoWhatsapp" placeholder="+55 11 99999-9999" required></div>
                         <div class="mb-3"><label for="demoMessage" class="form-label">Mensagem</label><textarea class="form-control" id="demoMessage" rows="4" placeholder="Conte-nos sobre seu caso de uso..."></textarea></div>
+                        
+                        <!-- reCAPTCHA -->
+                        <div class="mb-3 d-flex justify-content-center">
+                            <div class="g-recaptcha" data-sitekey="6LeQ0tIrAAAAAGHFYe5mXvN1c__0PK6is-fHwapD"></div>
+                        </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                    <button type="submit" form="demoAccessForm" class="btn btn-primary"><i class="bi bi-send me-2"></i>Solicitar Acesso</button>
+                    <button type="button" id="submitDemoBtn" class="btn btn-primary" onclick="submitDemoWithRecaptcha()">
+                        <span class="spinner-border spinner-border-sm d-none me-2" role="status" aria-hidden="true"></span>
+                        <span class="button-text"><i class="bi bi-send me-2"></i>Solicitar Acesso</span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -524,6 +573,136 @@
 
     <!-- Bootstrap 5 JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- reCAPTCHA v2 Script -->
+    <script>
+        // Função para mostrar alerta Bootstrap
+        function showAlert(type, message) {
+            const alertDiv = document.getElementById('formAlert');
+            const alertClass = type === 'success' ? 'alert-success' : 'alert-danger';
+            const alertIcon = type === 'success' ? 'bi-check-circle-fill' : 'bi-exclamation-triangle-fill';
+            
+            alertDiv.className = `alert ${alertClass} d-flex align-items-center`;
+            alertDiv.innerHTML = `
+                <i class="bi ${alertIcon} me-2"></i>
+                <div>${message}</div>
+            `;
+            
+            // Scroll para o topo do modal para mostrar o alert
+            const modalBody = document.querySelector('#demoAccessModal .modal-body');
+            modalBody.scrollTop = 0;
+        }
+        
+        // Função para ocultar alerta
+        function hideAlert() {
+            const alertDiv = document.getElementById('formAlert');
+            alertDiv.classList.add('d-none');
+        }
+        
+        // Função para enviar formulário com reCAPTCHA v2
+        function submitDemoWithRecaptcha() {
+            const form = document.getElementById('demoAccessForm');
+            const submitBtn = document.getElementById('submitDemoBtn');
+            const spinner = submitBtn.querySelector('.spinner-border');
+            const buttonText = submitBtn.querySelector('.button-text');
+            
+            // Valida formulário primeiro
+            if (!form.checkValidity()) {
+                form.reportValidity();
+                return;
+            }
+            
+            // Verifica se reCAPTCHA foi completado
+            const recaptchaResponse = grecaptcha.getResponse();
+            if (recaptchaResponse.length === 0) {
+                showAlert('error', 'Por favor, complete a verificação reCAPTCHA.');
+                return;
+            }
+            
+            // Oculta alertas anteriores
+            hideAlert();
+            
+            // Mostra loading
+            submitBtn.disabled = true;
+            spinner.classList.remove('d-none');
+            buttonText.innerHTML = 'Enviando...';
+            
+            // Coleta dados do formulário
+            const formData = {
+                name: document.getElementById('demoName').value,
+                email: document.getElementById('demoEmail').value,
+                whatsapp: document.getElementById('demoWhatsapp').value,
+                message: document.getElementById('demoMessage').value,
+                recaptcha_response: recaptchaResponse
+            };
+            
+            // Envia dados para o webhook do n8n
+            fetch('https://n8n.outraforma.com.br/webhook/quero_testar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                console.log('Status da resposta:', response.status);
+                
+                if (response.status === 200) {
+                    // Status 200 - Sucesso
+                    return response.json().catch(() => ({})); // Se não for JSON, retorna objeto vazio
+                } else {
+                    // Outros status codes
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+            })
+            .then(data => {
+                console.log('Sucesso - Status 200:', data);
+                
+                // Mostra alerta Bootstrap de sucesso
+                showAlert('success', '<strong>Mensagem enviada com sucesso!</strong><br>Recebemos sua solicitação e entraremos em contato via WhatsApp em até 24 horas.');
+                
+                // Restaura botão
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                buttonText.innerHTML = '<i class="bi bi-send me-2"></i>Solicitar Acesso';
+                
+                // Limpa formulário e reCAPTCHA
+                form.reset();
+                grecaptcha.reset();
+                
+                // Fecha modal automaticamente após 3 segundos
+                setTimeout(() => {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('demoAccessModal'));
+                    modal.hide();
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Erro:', error);
+                
+                // Mostra alerta Bootstrap de erro
+                showAlert('error', '<strong>Erro ao enviar solicitação!</strong><br>Por favor, tente novamente ou entre em contato via WhatsApp.');
+                
+                // Restaura botão
+                submitBtn.disabled = false;
+                spinner.classList.add('d-none');
+                buttonText.innerHTML = '<i class="bi bi-send me-2"></i>Solicitar Acesso';
+            });
+        }
+        
+        // Reset reCAPTCHA e limpa alertas quando modal é fechado
+        document.getElementById('demoAccessModal').addEventListener('hidden.bs.modal', function() {
+            if (typeof grecaptcha !== 'undefined') {
+                grecaptcha.reset();
+            }
+            hideAlert();
+        });
+        
+        // Limpa alertas quando modal é aberto
+        document.getElementById('demoAccessModal').addEventListener('show.bs.modal', function() {
+            hideAlert();
+        });
+    </script>
+    
     <!-- Custom JavaScript -->
     <script src="assets/js/scripts.js"></script>
 </body>

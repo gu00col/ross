@@ -5,34 +5,37 @@
 document.addEventListener('DOMContentLoaded', function() {
 
     console.log('TESTE')
-    // Auto-fechamento de alerts após 30 segundos
-    const alerts = document.querySelectorAll('.alert');
-    console.log(alerts)
-    if (alerts && alerts.length > 0) {
-        console.log('ALERTS')
-        setTimeout(() => {
-            alerts.forEach(alertEl => {
-                console.log('ALERTA')
-                // Usa o componente Alert do Bootstrap se disponível
-                if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
-                    try {
-                        console.log('BOOTSTRAP')
-                        const alertInstance = bootstrap.Alert.getOrCreateInstance(alertEl);
-                        alertInstance.close();
-                    } catch (e) {
+    // Auto-fechamento de alerts após 10 segundos (exceto na página minha_conta)
+    const currentPage = document.getElementById('page-minha-conta');
+    if (!currentPage) { // Só aplica se NÃO estiver na página minha_conta
+        const alerts = document.querySelectorAll('.alert');
+        console.log(alerts)
+        if (alerts && alerts.length > 0) {
+            console.log('ALERTS')
+            setTimeout(() => {
+                alerts.forEach(alertEl => {
+                    console.log('ALERTA')
+                    // Usa o componente Alert do Bootstrap se disponível
+                    if (typeof bootstrap !== 'undefined' && bootstrap.Alert) {
+                        try {
+                            console.log('BOOTSTRAP')
+                            const alertInstance = bootstrap.Alert.getOrCreateInstance(alertEl);
+                            alertInstance.close();
+                        } catch (e) {
+                            // Fallback: remove o elemento do DOM
+                            if (alertEl && alertEl.parentNode) {
+                                alertEl.parentNode.removeChild(alertEl);
+                            }
+                        }
+                    } else {
                         // Fallback: remove o elemento do DOM
                         if (alertEl && alertEl.parentNode) {
                             alertEl.parentNode.removeChild(alertEl);
                         }
                     }
-                } else {
-                    // Fallback: remove o elemento do DOM
-                    if (alertEl && alertEl.parentNode) {
-                        alertEl.parentNode.removeChild(alertEl);
-                    }
-                }
-            });
-        }, 10000);
+                });
+            }, 10000);
+        }
     }
     console.log('Documento carregado e pronto!');
 

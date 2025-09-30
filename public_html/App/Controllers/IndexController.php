@@ -114,7 +114,7 @@ class IndexController extends Action
 
         if (!$user) {
             logMessage("Não foi possível obter o model User. Verifique a conexão com o banco de dados.", "ERROR");
-            header('Location: /login?login=error');
+            header('Location: /?login=error');
             return;
         }
 
@@ -152,12 +152,12 @@ class IndexController extends Action
                 if (!$isPasswordCorrect) {
                     logMessage("Tentativa de login falhou: Senha incorreta para o usuário {$retorno->email}.", "ERROR");
                 }
-                header('Location: /login?login=error');
+                header('Location: /?login=error');
             }
 
 		} else {
             logMessage("Tentativa de login falhou: a verificação 'retorno && retorno->id && retorno->nome' falhou. Isso pode acontecer se o usuário não for encontrado ou se as propriedades id/nome estiverem vazias.", "ERROR");
-            header('Location: /login?login=error');
+            header('Location: /?login=error');
 		}
 	}
 

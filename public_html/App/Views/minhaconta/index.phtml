@@ -36,51 +36,439 @@
              <div class="alert alert-danger" role="alert">
                 Erro: Ocorreu um problema ao atualizar sua senha. Tente novamente.
             </div>
+        <?php } else if ($this->view->status == 'user_created') { ?>
+            <div class="alert alert-success" role="alert">
+                Usuário criado com sucesso!
+            </div>
+        <?php } else if ($this->view->status == 'user_updated') { ?>
+            <div class="alert alert-success" role="alert">
+                Usuário atualizado com sucesso!
+            </div>
+        <?php } else if ($this->view->status == 'user_deactivated') { ?>
+            <div class="alert alert-success" role="alert">
+                Usuário desativado com sucesso!
+            </div>
+        <?php } else if ($this->view->status == 'error_email_exists') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Este email já está sendo usado por outro usuário.
+            </div>
+        <?php } else if ($this->view->status == 'error_password_mismatch') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: As senhas não correspondem.
+            </div>
+        <?php } else if ($this->view->status == 'error_missing_fields') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Preencha todos os campos obrigatórios.
+            </div>
+        <?php } else if ($this->view->status == 'error_user_creation') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Não foi possível criar o usuário. Tente novamente.
+            </div>
+        <?php } else if ($this->view->status == 'error_user_update') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Não foi possível atualizar o usuário. Tente novamente.
+            </div>
+        <?php } else if ($this->view->status == 'error_user_deactivation') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Não foi possível desativar o usuário. Tente novamente.
+            </div>
+        <?php } else if ($this->view->status == 'user_deleted') { ?>
+            <div class="alert alert-success" role="alert">
+                Usuário excluído permanentemente com sucesso!
+            </div>
+        <?php } else if ($this->view->status == 'error_user_deletion') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Não foi possível excluir o usuário. Tente novamente.
+            </div>
+        <?php } else if ($this->view->status == 'error_cannot_delete_self') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Você não pode excluir sua própria conta.
+            </div>
+        <?php } else if ($this->view->status == 'unauthorized') { ?>
+            <div class="alert alert-danger" role="alert">
+                Erro: Você não tem permissão para realizar esta ação.
+            </div>
         <?php } ?>
 
-        <div class="row g-4">
-            <!-- Card de Informações da Conta -->
-            <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-4">Informações da Conta</h5>
-                        <dl class="row">
-                            <dt class="col-sm-4">Nome</dt>
-                            <dd class="col-sm-8"><?= $this->view->user_nome ?></dd>
+        <!-- Menu de Abas -->
+        <ul class="nav nav-tabs mb-4" id="accountTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <?= (!isset($_GET['tab']) || $_GET['tab'] == 'profile') ? 'active' : '' ?>" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="<?= (!isset($_GET['tab']) || $_GET['tab'] == 'profile') ? 'true' : 'false' ?>">
+                    <i class="bi bi-person me-2"></i>Meu Perfil
+                </button>
+            </li>
+            <?php if ($this->view->is_superuser) { ?>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link <?= (isset($_GET['tab']) && $_GET['tab'] == 'users') ? 'active' : '' ?>" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab" aria-controls="users" aria-selected="<?= (isset($_GET['tab']) && $_GET['tab'] == 'users') ? 'true' : 'false' ?>">
+                    <i class="bi bi-people me-2"></i>Usuários
+                </button>
+            </li>
+            <?php } ?>
+        </ul>
 
-                            <dt class="col-sm-4">Email</dt>
-                            <dd class="col-sm-8"><?= $this->view->user_email ?></dd>
+        <!-- Conteúdo das Abas -->
+        <div class="tab-content" id="accountTabsContent">
+            <!-- Aba Meu Perfil -->
+            <div class="tab-pane fade <?= (!isset($_GET['tab']) || $_GET['tab'] == 'profile') ? 'show active' : '' ?>" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="row g-4">
+                    <!-- Card de Informações da Conta -->
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-4">Informações da Conta</h5>
+                                <dl class="row">
+                                    <dt class="col-sm-4">Nome</dt>
+                                    <dd class="col-sm-8"><?= $this->view->user_nome ?></dd>
 
-                            <dt class="col-sm-4">Data de Criação</dt>
-                            <dd class="col-sm-8"><?= $this->view->user_created_at ?></dd>
-                        </dl>
+                                    <dt class="col-sm-4">Email</dt>
+                                    <dd class="col-sm-8"><?= $this->view->user_email ?></dd>
+
+                                    <dt class="col-sm-4">Data de Criação</dt>
+                                    <dd class="col-sm-8"><?= $this->view->user_created_at ?></dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card para Alterar Senha -->
+                    <div class="col-lg-6">
+                        <div class="card h-100">
+                            <div class="card-body p-4">
+                                <h5 class="card-title mb-4">Alterar Senha</h5>
+                                <form action="/change_password" method="POST">
+                                    <div class="mb-3">
+                                        <label for="currentPassword" class="form-label">Senha Atual</label>
+                                        <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="••••••••" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="newPassword" class="form-label">Nova Senha</label>
+                                        <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="••••••••" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha</label>
+                                        <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" placeholder="••••••••" required>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary mt-2">Salvar Alterações</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Card para Alterar Senha -->
-            <div class="col-lg-6">
-                <div class="card h-100">
-                    <div class="card-body p-4">
-                        <h5 class="card-title mb-4">Alterar Senha</h5>
-                        <form action="/change_password" method="POST">
-                            <div class="mb-3">
-                                <label for="currentPassword" class="form-label">Senha Atual</label>
-                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="••••••••" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="newPassword" class="form-label">Nova Senha</label>
-                                <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="••••••••" required>
-                            </div>
-                            <div class="mb-3">
-                                <label for="confirmNewPassword" class="form-label">Confirmar Nova Senha</label>
-                                <input type="password" class="form-control" id="confirmNewPassword" name="confirmNewPassword" placeholder="••••••••" required>
-                            </div>
-                            <button type="submit" class="btn btn-primary mt-2">Salvar Alterações</button>
-                        </form>
+            <?php if ($this->view->is_superuser) { ?>
+            <!-- Aba Usuários -->
+            <div class="tab-pane fade <?= (isset($_GET['tab']) && $_GET['tab'] == 'users') ? 'show active' : '' ?>" id="users" role="tabpanel" aria-labelledby="users-tab">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">Gerenciar Usuários</h5>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                            <i class="bi bi-plus-circle me-2"></i>Adicionar Usuário
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>Status</th>
+                                        <th>Tipo</th>
+                                        <th>Data de Criação</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php if (isset($this->view->users) && !empty($this->view->users)) { ?>
+                                        <?php foreach ($this->view->users as $user) { ?>
+                                        <tr>
+                                            <td><?= htmlspecialchars($user['nome']) ?></td>
+                                            <td><?= htmlspecialchars($user['email']) ?></td>
+                                            <td>
+                                                <span class="badge <?= $user['active'] ? 'bg-success' : 'bg-danger' ?>">
+                                                    <?= $user['active'] ? 'Ativo' : 'Inativo' ?>
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span class="badge <?= $user['is_superuser'] ? 'bg-warning' : 'bg-info' ?>">
+                                                    <?= $user['is_superuser'] ? 'Super Admin' : 'Usuário' ?>
+                                                </span>
+                                            </td>
+                                            <td><?= date('d/m/Y', strtotime($user['created_at'])) ?></td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button type="button" class="btn btn-sm btn-outline-primary me-1" onclick="editUser('<?= $user['id'] ?>', '<?= htmlspecialchars($user['nome'], ENT_QUOTES) ?>', '<?= htmlspecialchars($user['email'], ENT_QUOTES) ?>', <?= $user['active'] ? 'true' : 'false' ?>, <?= $user['is_superuser'] ? 'true' : 'false' ?>)">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <?php if ($user['id'] != $_SESSION['id']) { ?>
+                                                    <button type="button" class="btn btn-sm btn-outline-warning me-1" onclick="deactivateUser('<?= $user['id'] ?>', '<?= htmlspecialchars($user['nome'], ENT_QUOTES) ?>')">
+                                                        <i class="bi bi-person-x"></i>
+                                                    </button>
+                                                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="deleteUser('<?= $user['id'] ?>', '<?= htmlspecialchars($user['nome'], ENT_QUOTES) ?>')">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                    <?php } ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <?php } ?>
+                                    <?php } else { ?>
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">Nenhum usuário encontrado</td>
+                                        </tr>
+                                    <?php } ?>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+            <?php } ?>
         </div>
     </div>
 </main>
+
+<?php if ($this->view->is_superuser) { ?>
+<!-- Modal para Adicionar Usuário -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel">Adicionar Novo Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/create_user" method="POST" id="addUserForm">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="addNome" class="form-label">Nome *</label>
+                        <input type="text" class="form-control" id="addNome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addEmail" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="addEmail" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addPassword" class="form-label">Senha *</label>
+                        <input type="password" class="form-control" id="addPassword" name="password" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="addConfirmPassword" class="form-label">Confirmar Senha *</label>
+                        <input type="password" class="form-control" id="addConfirmPassword" name="confirm_password" required>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="addIsSuperuser" name="is_superuser" value="1">
+                            <label class="form-check-label" for="addIsSuperuser">
+                                Super Administrador
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Criar Usuário</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para Editar Usuário -->
+<div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editUserModalLabel">Editar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="/update_user" method="POST" id="editUserForm">
+                <input type="hidden" id="editUserId" name="user_id">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="editNome" class="form-label">Nome *</label>
+                        <input type="text" class="form-control" id="editNome" name="nome" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editEmail" class="form-label">Email *</label>
+                        <input type="email" class="form-control" id="editEmail" name="email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editPassword" class="form-label">Nova Senha (deixe em branco para manter a atual)</label>
+                        <input type="password" class="form-control" id="editPassword" name="password">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="editActive" name="active" value="1">
+                            <label class="form-check-label" for="editActive">
+                                Usuário Ativo
+                            </label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="editIsSuperuser" name="is_superuser" value="1">
+                            <label class="form-check-label" for="editIsSuperuser">
+                                Super Administrador
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação para Desativar Usuário -->
+<div class="modal fade" id="deactivateUserModal" tabindex="-1" aria-labelledby="deactivateUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deactivateUserModalLabel">Desativar Usuário</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Tem certeza que deseja desativar o usuário <strong id="deactivateUserName"></strong>?</p>
+                <p class="text-muted">O usuário não conseguirá mais fazer login no sistema.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form action="/deactivate_user" method="POST" style="display: inline;">
+                    <input type="hidden" id="deactivateUserId" name="user_id">
+                    <button type="submit" class="btn btn-warning">Desativar Usuário</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal de Confirmação para Excluir Usuário -->
+<div class="modal fade" id="deleteUserModal" tabindex="-1" aria-labelledby="deleteUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="deleteUserModalLabel">
+                    <i class="bi bi-exclamation-triangle me-2"></i>Excluir Usuário Permanentemente
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="alert alert-danger" role="alert">
+                    <h6 class="alert-heading">
+                        <i class="bi bi-exclamation-triangle me-2"></i>Atenção! Esta ação é irreversível!
+                    </h6>
+                    <p class="mb-0">Tem certeza que deseja excluir permanentemente o usuário <strong id="deleteUserName"></strong>?</p>
+                </div>
+                <div class="bg-light p-3 rounded">
+                    <h6>O que acontecerá:</h6>
+                    <ul class="mb-0">
+                        <li>O usuário será <strong>permanentemente removido</strong> do sistema</li>
+                        <li>Os contratos do usuário <strong>serão mantidos</strong> no banco de dados</li>
+                        <li>Esta ação <strong>não pode ser desfeita</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <form action="/delete_user" method="POST" style="display: inline;">
+                    <input type="hidden" id="deleteUserId" name="user_id">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="bi bi-trash me-2"></i>Excluir Permanentemente
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Função para editar usuário
+function editUser(id, nome, email, active, isSuperuser) {
+    document.getElementById('editUserId').value = id;
+    document.getElementById('editNome').value = nome;
+    document.getElementById('editEmail').value = email;
+    document.getElementById('editActive').checked = active;
+    document.getElementById('editIsSuperuser').checked = isSuperuser;
+    
+    var editModal = new bootstrap.Modal(document.getElementById('editUserModal'));
+    editModal.show();
+}
+
+// Função para desativar usuário
+function deactivateUser(id, nome) {
+    document.getElementById('deactivateUserId').value = id;
+    document.getElementById('deactivateUserName').textContent = nome;
+    
+    var deactivateModal = new bootstrap.Modal(document.getElementById('deactivateUserModal'));
+    deactivateModal.show();
+}
+
+// Função para excluir usuário
+function deleteUser(id, nome) {
+    document.getElementById('deleteUserId').value = id;
+    document.getElementById('deleteUserName').textContent = nome;
+    
+    var deleteModal = new bootstrap.Modal(document.getElementById('deleteUserModal'));
+    deleteModal.show();
+}
+
+// Validação do formulário de adicionar usuário
+document.getElementById('addUserForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('addPassword').value;
+    const confirmPassword = document.getElementById('addConfirmPassword').value;
+    
+    if (password !== confirmPassword) {
+        e.preventDefault();
+        alert('As senhas não correspondem!');
+        return false;
+    }
+    
+    if (password.length < 6) {
+        e.preventDefault();
+        alert('A senha deve ter pelo menos 6 caracteres!');
+        return false;
+    }
+});
+
+// Validação do formulário de editar usuário
+document.getElementById('editUserForm').addEventListener('submit', function(e) {
+    const password = document.getElementById('editPassword').value;
+    
+    if (password && password.length < 6) {
+        e.preventDefault();
+        alert('A senha deve ter pelo menos 6 caracteres!');
+        return false;
+    }
+});
+
+// Gerenciar mudança de abas e atualizar URL
+document.addEventListener('DOMContentLoaded', function() {
+    const tabButtons = document.querySelectorAll('#accountTabs button[data-bs-toggle="tab"]');
+    
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function(e) {
+            const targetTab = this.getAttribute('data-bs-target');
+            let tabName = '';
+            
+            if (targetTab === '#profile') {
+                tabName = 'profile';
+            } else if (targetTab === '#users') {
+                tabName = 'users';
+            }
+            
+            // Atualizar URL com o parâmetro tab
+            if (tabName) {
+                const url = new URL(window.location);
+                url.searchParams.set('tab', tabName);
+                // Usar replaceState para não adicionar ao histórico do navegador
+                window.history.replaceState({}, '', url);
+            }
+        });
+    });
+});
+</script>
+<?php } ?>

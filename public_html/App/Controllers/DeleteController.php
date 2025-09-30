@@ -66,7 +66,7 @@ class DeleteController extends Action
     public function validaAutenticacao()
     {
         if (!isset($_SESSION['id']) || $_SESSION['id'] == '' || !isset($_SESSION['nome']) || $_SESSION['nome'] == '') {
-            header('Location: /login?login=unauthorized');
+            header('Location: /?login=unauthorized');
             exit;
         }
     }

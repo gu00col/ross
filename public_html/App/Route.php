@@ -61,6 +61,26 @@ class Route extends Bootstrap
             'controller' => 'MinhaContaController',
             'action' => 'changePassword'
         );
+        $routes['create_user'] = array(
+            'route' => '/create_user',
+            'controller' => 'MinhaContaController',
+            'action' => 'createUser'
+        );
+        $routes['update_user'] = array(
+            'route' => '/update_user',
+            'controller' => 'MinhaContaController',
+            'action' => 'updateUser'
+        );
+        $routes['deactivate_user'] = array(
+            'route' => '/deactivate_user',
+            'controller' => 'MinhaContaController',
+            'action' => 'deactivateUser'
+        );
+        $routes['delete_user'] = array(
+            'route' => '/delete_user',
+            'controller' => 'MinhaContaController',
+            'action' => 'deleteUser'
+        );
         $routes['upload_contract'] = array(
             'route' => '/upload_contract',
             'controller' => 'UploadController',

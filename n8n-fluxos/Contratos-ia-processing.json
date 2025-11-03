@@ -1,0 +1,623 @@
+{
+  "name": "Contratos-ia-processing",
+  "nodes": [
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {
+          "systemMessage": "=Atue como um advogado especialista em análise contratual, com profundo conhecimento da legislação brasileira. Sua tarefa é realizar uma revisão crítica e detalhada do contrato fornecido e gerar como resposta apenas um array JSON com os resultados das Seções 1 e 2 da análise, sem nenhum texto ou formatação adicional.\nAnálise Requerida (Parte 1 de 2):\nSeção 1: Extração de Dados Essenciais\n\nSeção 2: Análise de Riscos e Cláusulas Perigosas/Leoninas\n\nFormato de Saída Obrigatório:\nSua única saída deve ser um bloco de código contendo um array JSON. Não inclua explicações ou textos introdutórios. Cada objeto no array deve seguir estritamente a estrutura abaixo.\n\nEstrutura dos Objetos JSON:\n\nsection_id: (Número) Use 1 para Dados Essenciais e 2 para Riscos.\n\ndisplay_order: (Número) Ordem sequencial do item dentro de sua seção, começando em 1.\n\nlabel: (Texto) O título ou a chave do item (ex: \"Partes Envolvidas\").\n\ncontent: (Texto) A descrição principal ou o valor do item. sempre formate em markdown e pule linhas com \\n, Titulos devem obrigatoriamente ter negrito.\n\ndetails: (Objeto JSON) Para a Seção 2, mapeie os sub-itens (como \"Citação do Trecho Relevante\", \"Descrição do Risco\", \"Ponto de Atenção\") para este objeto. Para a Seção 1, envie um objeto vazio ({}).sempre  formate em markdown e pule linhas com \\n, Titulos devem obrigatoriamente ter negrito.\n\n\n\nExemplo de Saída JSON (Parte 1):\n\n[\n  {\n    \"section_id\": 1,\n    \"display_order\": 1,\n    \"label\": \"Partes Envolvidas\",\n    \"content\": \"**CONTRATANTE**: ... e \\n**CONTRATADA**: ...\",\n    \"details\": {}\n  },\n  {\n    \"section_id\": 2,\n    \"display_order\": 1,\n    \"label\": \"Cláusula 8. DA TRANSFERÊNCIA DE OBRIGAÇÕES\",\n    \"content\": \"A cláusula cria um desequilíbrio significativo...\",\n    \"details\": {\n      \"Citação do Trecho Relevante\": \"Fica aqui ressalvado o direito da CONTRATANTE...\",\n      \"Descrição do Risco\": \"Retira a autonomia da CONTRATADA...\",\n      \"Ponto de Atenção\": \"Recomenda-se negociar a alteração...\"\n    }\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        -64,
+        48
+      ],
+      "id": "0ef6fb17-2fd7-4676-9cc0-56a048104ec1",
+      "name": "AI Agent",
+      "executeOnce": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Acessa a saída dos nós de IA e de entrada, especificando cada entrada pelo seu índice (0 e 1).\nconst json1String =$('AI Agent').first().json.output.replaceAll('```json','').replaceAll('```','').trim(); \nconst json2String = $input.all(0)[0].json.output.replaceAll('```json','').replaceAll('```','').trim();\n\ntry {\n  // Converte as strings JSON em arrays de objetos JavaScript.\n  const array1 = JSON.parse(json1String);\n  const array2 = JSON.parse(json2String);\n\n  // Mescla (concatena) os dois arrays em um só.\n  const mergedArray = array1.concat(array2);\n\n  // Mapeia o array mesclado para o formato de saída padrão,\n  // onde cada objeto do array se torna um item na saída do nó.\n  return mergedArray.map(item => ({ json: item }));\n\n} catch (error) {\n  // Retorna uma mensagem de erro detalhada caso uma das strings não seja um JSON válido.\n  return [{ \n    json: { \n      error: \"Erro ao processar e mesclar os JSONs.\",\n      errorMessage: error.message,\n      // Inclui os dados originais para facilitar a depuração.\n      json1_received: json1String,\n      json2_received: json2String\n    } \n  }];\n}"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        736,
+        48
+      ],
+      "id": "4b9b3bd9-615d-448d-b481-d969c52d87d1",
+      "name": "Code",
+      "retryOnFail": false
+    },
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "text"
+            },
+            {
+              "name": "postman-token"
+            },
+            {
+              "name": "file_id"
+            }
+          ]
+        }
+      },
+      "id": "bb11243c-0938-4d17-a2be-9a4301ebe43f",
+      "typeVersion": 1.1,
+      "name": "Start",
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "position": [
+        -288,
+        48
+      ]
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 64000,
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        272
+      ],
+      "id": "1da40e3b-4bdb-46e9-88c9-056b87d99034",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NoZ2V8YDYluhza90",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Contrato para Análise: {{ $('Start').item.json.text }}\nContexto (Análise das Seções 1 e 2 já realizada): {{ $json.output }}",
+        "options": {
+          "systemMessage": "=Atue como um advogado especialista em análise contratual. Continue a análise do contrato fornecido, levando em conta os pontos já levantados no contexto abaixo. Sua tarefa é gerar como resposta apenas um array JSON com os resultados das Seções 3 e 4 da análise, sem nenhum texto ou formatação adicional.\nAnálise Requerida (Parte 2 de 2):\nSeção 3: Identificação de Brechas, Falhas e Inconsistências\n\nSeção 4: Parecer Final e Recomendações\n\nFormato de Saída Obrigatório:\nSua única saída deve ser um bloco de código contendo um array JSON. Não inclua explicações ou textos introdutórios. Cada objeto no array deve seguir estritamente a estrutura abaixo.\n\nEstrutura dos Objetos JSON:\n\nsection_id: (Número) Use 3 para Brechas e 4 para Parecer.\n\ndisplay_order: (Número) Ordem sequencial do item dentro de sua seção, começando em 1.\n\nlabel: (Texto) O título ou a chave do item. Para a Seção 4, use \"Parecer Final e Recomendações\".\n\ncontent: (Texto) A descrição principal ou o valor do item. sempre formate em markdown e pule linhas com \\n.\n\ndetails: (Objeto JSON) Para a Seção 3, mapeie os sub-itens (como \"Localização\", \"Impacto Potencial\") para este objeto. Para a Seção 4, envie um objeto vazio ({}). sempre formate em markdown e pule linhas com \\n.\n\nExemplo de Saída JSON (Parte 2):\n\n[\n  {\n    \"section_id\": 3,\n    \"display_order\": 1,\n    \"label\": \"Ambiguidade Crítica\",\n    \"content\": \"A cláusula 3.1 estipula o preço de 'R$ 25.000,00', mas não esclarece...\",\n    \"details\": {\n      \"Localização\": \"Cláusula 3.1. DO PREÇO E FORMA DE PAGAMENTO\",\n      \"Impacto Potencial\": \"Risco de disputa sobre o valor total devido...\"\n    }\n  },\n  {\n    \"section_id\": 4,\n    \"display_order\": 1,\n    \"label\": \"Parecer Final e Recomendações\",\n    \"content\": \"O contrato apresenta um desequilíbrio considerável...\",\n    \"details\": {}\n  }\n]\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        336,
+        48
+      ],
+      "id": "80cdfa38-7c9c-4774-bfbb-1a29de5b15ec",
+      "name": "AI Agent1",
+      "executeOnce": true,
+      "retryOnFail": true
+    },
+    {
+      "parameters": {
+        "options": {
+          "maxOutputTokens": 64000,
+          "temperature": 0.2
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        432,
+        272
+      ],
+      "id": "90b7868c-8268-47c1-a075-0e5e0b04ad5f",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "NoZ2V8YDYluhza90",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "analysis_data_points",
+          "mode": "list",
+          "cachedResultName": "analysis_data_points"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "id": "={{ \"xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx\".replace(/[xy]/g, c => { var r = Math.random() * 16 | 0, v = c == \"x\" ? r : (r & 0x3 | 0x8); return v.toString(16); }) }}",
+            "contract_id": "={{ $('Start').item.json['postman-token'] }}",
+            "section_id": "={{ $json.section_id }}",
+            "display_order": "={{ $json.display_order }}",
+            "label": "={{ $json.label }}",
+            "content": "={{ $json.content }}",
+            "details": "={{ $json.details }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "contract_id",
+              "displayName": "contract_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "section_id",
+              "displayName": "section_id",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "display_order",
+              "displayName": "display_order",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "label",
+              "displayName": "label",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "content",
+              "displayName": "content",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "details",
+              "displayName": "details",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "object",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1168,
+        48
+      ],
+      "id": "f4995b01-2751-4b15-851e-4afc55636f3e",
+      "name": "Novo Ponto",
+      "credentials": {
+        "postgres": {
+          "id": "XOJwY8RukACUz0Ur",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contracts",
+          "mode": "list",
+          "cachedResultName": "contracts"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "processed",
+            "id": "={{ $('Start').item.json['postman-token'] }}",
+            "analyzed_at": "={{ $now.setZone('America/Sao_Paulo').toFormat('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "original_filename",
+              "displayName": "original_filename",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "storage_path",
+              "displayName": "storage_path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "analyzed_at",
+              "displayName": "analyzed_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1392,
+        48
+      ],
+      "id": "00b8afbd-a685-4009-852c-4f4f253343ac",
+      "name": "Atualiza status",
+      "credentials": {
+        "postgres": {
+          "id": "XOJwY8RukACUz0Ur",
+          "name": "Postgres account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "dcff39b0-beaf-4dc5-8021-f5137dca89a7",
+              "leftValue": "={{ $json.error }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "3345a24f-0eee-4db1-9c6b-25c47eb2eb67",
+              "leftValue": "={{ $json.errorMessage }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        944,
+        48
+      ],
+      "id": "8574ea66-f971-42db-b3cf-7114b13391dc",
+      "name": "Verifica erro"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "schema": {
+          "__rl": true,
+          "mode": "list",
+          "value": "public"
+        },
+        "table": {
+          "__rl": true,
+          "value": "contracts",
+          "mode": "list",
+          "cachedResultName": "contracts"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "status": "error",
+            "id": "={{ $('Start').item.json['postman-token'] }}",
+            "analyzed_at": "={{ $now.setZone('America/Sao_Paulo').toFormat('yyyy-MM-dd HH:mm:ss') }}"
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": true,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "original_filename",
+              "displayName": "original_filename",
+              "required": true,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "storage_path",
+              "displayName": "storage_path",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "analyzed_at",
+              "displayName": "analyzed_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "created_at",
+              "displayName": "created_at",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "status",
+              "displayName": "status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.postgres",
+      "typeVersion": 2.6,
+      "position": [
+        1168,
+        -144
+      ],
+      "id": "8bc7e25b-7ca1-43fb-a8fe-4e99d1351a15",
+      "name": "Atualiza status Error",
+      "credentials": {
+        "postgres": {
+          "id": "XOJwY8RukACUz0Ur",
+          "name": "Postgres account 2"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Start": [
+      {
+        "json": {
+          "text": "CONTRATO DE PRESTAÇÃO DE SERVIÇOS\nPelo presente instrumento particular, e na melhor forma de direito, as partes a seguir\nqualificadas:\nCONTRATANTE: NEXTAGS CRM E CHATBOT LTDA, pessoa jurídica de direito\nprivado, inscrita no CNPJ sob o nº 25.282.634/0001-05, com sede na Avenida\nDoutor Lauro Correa da Silva nº 4405, Bloco 03 Apt 401, Graminha – Limeira/SP,\nCEP 13482-896, representada neste ato pelo sócio GUILHERME SANTOS PÊGO,\nbrasileiro, casado, portadora do CPF 090.492.616-80 e de outro lado,\nCONTRATADA: 61.505.048 OTAVIO WILLKER COSTA DE SOUZA, pessoa\njurídica de direito privado, inscrita no CNPJ sob nº 61.505.048/0001-46, com sede\nna RUA ANTONIO RUFINO BORGES, 38, Luizote de Freitas, Uberlândia MG, por\nseu representante legal Otavio Willker Costa De Souza, portador do CPF:\n020.881.416-77 e RG MG 20.407.729 expedida pela SSP/MG.\nTêm entre si, justo e contratado, o presente Contrato de Prestação de Serviços,\nmediante as seguintes cláusulas e condições:\nCláusula Primeira - Do Objeto\nO objeto do presente contrato é a prestação de serviços de Desenvolvedor\nEspecialista em integrações, encarregado de:\n● Auxiliar clientes com dúvidas técnicas sobre integrações na plataforma\nNextags\n● Realizar ajustes técnicos e funcionais nas integrações dos clientes\n● Criar e configurar templates de mensagens homologados pela Meta\n● Desenvolver e configurar fluxogramas de atendimento dentro da plataforma\nNextags\n● Trabalhar com automações utilizando N8N, Javascript e API REST\n● Contribuir com ideias e soluções para evolução do produto\n● Realizar testes e validações técnicas antes da entrega de fluxos\nCláusula Segunda - Do Preço\nD4Sign ff91a66b-cc17-4551-9915-cb1e62b0faf2 - Para confirmar as assinaturas acesse https://secure.d4sign.com.br/verificar\nDocumento assinado eletronicamente, conforme MP 2.200-2/01, Art. 10º, §2.\n\nA CONTRATANTE pagará à CONTRATADA, pela prestação dos serviços ora\ncontratados, o valor de R$3.300,00 (três mil e trezentos reais) mensais, que em caso\nde renovação após experiência de 3 meses passará a ser R$ 3.500,00 (três mil e\nquinhentos reais) mensais.\nO qual será pago até o 5º dia útil do mês subsequente ao da prestação dos serviços,\ncondicionado à apresentação de nota fiscal de serviço.\nParágrafo único: O pagamento ocorrerá mediante transferência bancária para a\nChave pix: 02088141677 - CPF, Banco Inter\nCláusula Terceira - Do Prazo\nO prazo de vigência do presente contrato será de 3 (três) meses, iniciando-se em\n01/07/2025 encerrando em 01/10/2025. Podendo ser prorrogado por igual ou\ndiferente período mediante vontade das partes.\nCláusula Quarta - Da Execução dos Serviços\nOs serviços objeto do presente contrato serão realizados pela CONTRATADA, sob\nsua exclusiva responsabilidade, de forma a atender as necessidades da\nCONTRATANTE, em conformidade com o presente contrato.\nParágrafo Único: Os serviços serão prestados pela CONTRATADA de forma remota,\nem horário flexível e com possibilidades de visitas pontuais a sede em Limeira SP,\npreviamente agendadas.\nCláusula Quinta – Da confidencialidade\nAs Partes comprometem-se, mutuamente, a zelar pela manutenção do sigilo de todos\nos segredos comerciais, conhecimentos técnicos e outras informações que venham a\ntomar conhecimento em função do relacionamento comercial de que trata o presente\ncontrato, não podendo usar qualquer dessas informações confidenciais, a não ser\nquando expressamente autorizadas por seu titular.\nCláusula Sexta - Da Rescisão Contratual\nO contrato estará sujeito a rescisão, quando:\na) Rescisão por inadimplência - Caso quaisquer das partes torne-se inadimplente\ncom as obrigações ora contratadas, a parte inocente notificará por escrito a parte\ninadimplente para que cumpra com suas obrigações ou sane eventuais\nirregularidades no prazo máximo e improrrogável de 10 (dez) dias úteis, a contar da\ndata do recebimento da notificação, sob pena da parte prejudicada considerar a\nrescisão motivada do presente contrato, mediante simples aviso à parte contratada,\ncom a aplicação de multa por inadimplemento no valor correspondente a uma\nremuneração.\nD4Sign ff91a66b-cc17-4551-9915-cb1e62b0faf2 - Para confirmar as assinaturas acesse https://secure.d4sign.com.br/verificar\nDocumento assinado eletronicamente, conforme MP 2.200-2/01, Art. 10º, §2.\n\nb) Não haverá aplicação de multa na rescisão do presente contrato no caso de uma\ndas partes dar aviso prévio de 30 (trinta dias) antes de encerrar as atividades,\npodendo ser encerrado antecipadamente mediante acordo entre as partes. ;\nc) Nos casos de rescisão sem aviso prévio ou inferior a 30 (trinta dias), será aplicado\na cobrança de multa correspondente a 01 (uma) remuneração;\nd) Haverá rescisão contratual em caso do descumprimento de qualquer das cláusulas\ndescritas neste contrato,estando sujeita ao que dispõe a cláusula penal ,a parte que\nder causa à rescisão.\nCláusula Sétima - Da Responsabilidades da Contratada\nA CONTRATADA se obriga:\na) Dominar a ferramenta e suas aplicabilidades em diferentes cenários\n● Auxiliar clientes com dúvidas técnicas sobre integrações na plataforma\nNextags\n● Realizar ajustes técnicos e funcionais nas integrações dos clientes\n● Criar e configurar templates de mensagens homologados pela Meta\n● Desenvolver e configurar fluxogramas de atendimento dentro da plataforma\nNextags\n● Trabalhar com automações utilizando N8N, Javascript e API REST\n● Contribuir com ideias e soluções para evolução do produto\n● Realizar testes e validações técnicas antes da entrega de fluxos\nCláusula Oitava - Da Responsabilidades da Contratante\nA CONTRATANTE se obriga:\na) Fornecer as informações e materiais relevantes para o cumprimento do contrato;\nb) Realizar o pagamento da CONTRATADA pelos serviços realizados no prazo fixado;\nCláusula Nona - Da Exclusividade de Nicho\nO CONTRATADO(A) se obriga a manter a exclusividade enquanto o contrato durar,\nnão devendo firmar contrato ou prestar qualquer serviço com sites, plataformas,\nmídias sociais relacionadas diretamente com a categoria de nicho da\nCONTRATANTE, quais sejam: Disparos em massa via API oficial e não oficial e\nFerramentas de atendimento Omnichannel.\nD4Sign ff91a66b-cc17-4551-9915-cb1e62b0faf2 - Para confirmar as assinaturas acesse https://secure.d4sign.com.br/verificar\nDocumento assinado eletronicamente, conforme MP 2.200-2/01, Art. 10º, §2.\n\nCláusula Décima - Da Não-concorrência\nDurante a vigência deste contrato, a CONTRATADA não poderá explorar, direta ou\nindiretamente, atividades que sejam consideradas concorrentes ao ramo das\natividades da CONTRATANTE, ainda que em área geográfica diferente, sob pena de\naplicação de multa no valor de R$ 100.000,00 (cem mil reais).\nParágrafo primeiro: Mesmo após o término de vigência contratual, a vedação à\nconcorrência perdurará pelo prazo de 03 (três) anos, contado da data de resolução\ndeste contrato.\nParágrafo segundo: A CONTRATADA não poderá vender, divulgar, ceder as\nestratégia de vendas, ofertas e produtos EXCLUSIVOS da CONTRATANTE, sob pena\nde aplicação de multa no valor de R$ 100.000,00 (cem mil reais).\nCláusula Décima Primeira - Da salvaguarda\nEste contrato não gera qualquer tipo de vínculo trabalhista ou responsabilidade,\nsolidária ou não, entre as partes contratantes, especialmente no que tange às\nobrigações trabalhistas e previdenciárias. Reger-se-á exclusivamente na esfera cível\npelos dispositivos do Código Civil Brasileiro.\nCláusula Décima Segunda - Disposições Gerais\nA CONTRATADA poderá exercer atividades para outras empresas de outros nichos,\nou efetuar negócios em seu nome, e por conta própria, desde que não comprometa a\nexecução dos serviços aqui fixados.\nParágrafo Primeiro: Qualquer alteração deste contrato somente produzirá efeitos\njurídicos se efetuada por escrito e assinada por ambas as partes.\nParágrafo Segundo: Nenhuma das partes poderá ceder qualquer dos seus direitos ou\ntransferir qualquer de suas obrigações oriundas do presente contrato sem o prévio\nconsentimento da outra parte.\nParágrafo Terceiro: É expressamente vedado à CONTRATADA realizar qualquer tipo\nde prestação de serviços, venda de informações e fornecimento de mão de obra aos\nclientes e fornecedores do CONTRATANTE, sem autorização prévia do\nCONTRATANTE.\nParágrafo Quarto: A eventual tolerância de qualquer das partes em relação ao\ncumprimento de qualquer cláusula deste contrato, ou a abstenção do exercício de\nqualquer direito, poder, recurso ou faculdade assegurados por lei ou por este\ninstrumento não configura novação.\nCláusula Décima Terceira - Da cláusula penal\nAo inadimplemento total ou parcial de qualquer das obrigações deste contrato\npodem ser aplicadas cumulativamente ou alternativamente,as seguintes sanções:\nD4Sign ff91a66b-cc17-4551-9915-cb1e62b0faf2 - Para confirmar as assinaturas acesse https://secure.d4sign.com.br/verificar\nDocumento assinado eletronicamente, conforme MP 2.200-2/01, Art. 10º, §2.\n\na) Rescisão contratual automática, independentemente de interpelação judicial\nou extrajudicial, não significando a tolerância de qualquer infração como\nrenúncia deste direito, caso a mesma se repita ou se prolongue;\nb) Multa no valor correspondente a 10% (dez por cento) do valor anual do\ncontrato, sem prejuízo de ser exigida indenização por eventuais danos\nsuportados pela parte lesada;\nc) Perdas e danos que se apurarem, incluindo custos processuais.\nCláusula Décima Quarta - Do Foro\nAs partes elegem o Foro da Cidade de Limeira/SP, com renúncia expressa a qualquer\noutro, por mais privilegiado que seja ou venha a ser, para dirimir quaisquer questões\nou dúvidas advindas do presente instrumento.\nE, assim, por estarem justas e contratadas, assinam o presente instrumento em duas\nvias de igual teor, na presença das duas testemunhas abaixo.\nLimeira, 01 de Julho de 2024.\n_________________________________________________\nNextags Crm e Chatbot LTDA\n________________________________________\n61.505.048 OTAVIO WILLKER COSTA DE SOUZA\nTestemunhas:\na)_________________________________________\nb)_________________________________________\nD4Sign ff91a66b-cc17-4551-9915-cb1e62b0faf2 - Para confirmar as assinaturas acesse https://secure.d4sign.com.br/verificar\nDocumento assinado eletronicamente, conforme MP 2.200-2/01, Art. 10º, §2.\n\n7 páginas - Datas e horários baseados em Brasília, Brasil\nSincronizado com o NTP.br e Observatório Nacional (ON)\nCertificado de assinaturas gerado em 02 de July de 2025, 19:13:35\nOtavio Willker - Contrato Nextags v2 docx pdf\nCódigo do documento ff91a66b-cc17-4551-9915-cb1e62b0faf2\nAssinaturas\nGuilherme Santos Pêgo\nsuporte@nextags.com.br\nAssinou como representante legal\nLuiz Claudio Dos Santos Guimarães Junior\nLuiz@nextags.com.br\nAssinou como testemunha\nOtávio Willker Costa de Souza\notavio@nextags.com.br\nAssinou como parte\nEventos do documento\n01 Jul 2025, 16:00:07\nDocumento ff91a66b-cc17-4551-9915-cb1e62b0faf2 criado por PAULO ROBERTO DA SILVA JUNIOR\n(47afae1d-800f-490a-9f72-56d1133a39e5). Email:comercial@nextags.com.br. - DATE_ATOM:\n2025-07-01T16:00:07-03:00\n01 Jul 2025, 16:00:16\nPAULO ROBERTO DA SILVA JUNIOR (47afae1d-800f-490a-9f72-56d1133a39e5). Email: comercial@nextags.com.br.\nREMOVEU o signatário contato@nextags.com.br - DATE_ATOM: 2025-07-01T16:00:16-03:00\n01 Jul 2025, 16:01:01\nAssinaturas iniciadas por PAULO ROBERTO DA SILVA JUNIOR (47afae1d-800f-490a-9f72-56d1133a39e5). Email:\ncomercial@nextags.com.br. - DATE_ATOM: 2025-07-01T16:01:01-03:00\n01 Jul 2025, 16:01:32\nLUIZ CLAUDIO DOS SANTOS GUIMARÃES JUNIOR Assinou como testemunha - Email: Luiz@nextags.com.br - IP:\n179.125.209.9 (179-125-209-9.dynamic.desktop.com.br porta: 9058) - Documento de identificação informado:\n409.949.228-17 - DATE_ATOM: 2025-07-01T16:01:32-03:00\n01 Jul 2025, 18:45:18\nOTÁVIO WILLKER COSTA DE SOUZA Assinou como parte - Email: otavio@nextags.com.br - IP: 177.106.229.23\n(177-106-229-23.xd-dynamic.algarnetsuper.com.br porta: 11488) - Documento de identificação informado:\n020.881.416-77 - DATE_ATOM: 2025-07-01T18:45:18-03:00\n\n7 páginas - Datas e horários baseados em Brasília, Brasil\nSincronizado com o NTP.br e Observatório Nacional (ON)\nCertificado de assinaturas gerado em 02 de July de 2025, 19:13:35\n02 Jul 2025, 18:20:24\nGUILHERME SANTOS PÊGO Assinou como representante legal (21e613e3-6f7f-43f5-aca6-127e63b2ecf5) -\nEmail: suporte@nextags.com.br - IP: 201.42.215.164 (201-42-215-164.dsl.telesp.net.br porta: 62494) - Documento\nde identificação informado: 090.492.616-80 - DATE_ATOM: 2025-07-02T18:20:24-03:00\nHash do documento original\n(SHA256):339f16f520f31004747fac7dadd6d98654633e7d349ec91c8993849929c08560\n(SHA512):198954e3a5d97e2ebfaa443ceb76138b88eddef666c1f8dfc2776100a3360876bf097bc2821087d3c8539cf8887a66fdf000624a979fb0425e218e38dd63ae57\nEsse log pertence única e exclusivamente aos documentos de HASH acima\nEsse documento está assinado e certificado pela D4Sign\nIntegridade certificada no padrão ICP-BRASIL\nAssinaturas eletrônicas e físicas têm igual validade legal, conforme MP 2.200-2/2001 e Lei\n14.063/2020.",
+          "postman-token": "df8f763d-340d-4628-b391-b9127683dec1",
+          "file_id": "1HG3fHGxtwmVcJL8jU3ipK4CzUI7ej2IJ"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Verifica erro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Start": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Novo Ponto": {
+      "main": [
+        [
+          {
+            "node": "Atualiza status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Verifica erro": {
+      "main": [
+        [
+          {
+            "node": "Atualiza status Error",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Novo Ponto",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "27777b48-01b4-48f0-981c-487b93cbf5bf",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "36b90d5d33b956bb3261502af4d10bdd5dc4c3f9f9f4a7059cfb7b5bd41fdc08"
+  },
+  "id": "4WqVlIJCN3Z9j9Cg",
+  "tags": []
+}
